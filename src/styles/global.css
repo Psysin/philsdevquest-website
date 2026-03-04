@@ -1,0 +1,66 @@
+/* ===== EARTHY WARM — PhilsDevQuest Design System ===== */
+
+:root {
+  /* Backgrounds */
+  --pdq-bg-base:     #12100E;
+  --pdq-bg-elevated: #1C1916;
+  --pdq-bg-overlay:  #252018;
+  --pdq-bg-subtle:   #2E2820;
+
+  /* Kernfarben */
+  --pdq-terracotta:       #C1634F;
+  --pdq-terracotta-light: #D4816B;
+  --pdq-sand:             #D4A96A;
+  --pdq-sand-light:       #E3C08A;
+  --pdq-cream:            #E8C99A;
+  --pdq-orange:           #FF6B35;
+  --pdq-orange-dark:      #E85A25;
+
+  /* Text */
+  --pdq-text-primary:   #E8E0D8;
+  --pdq-text-secondary: #B5A99A;
+  --pdq-text-muted:     #7A6E63;
+  --pdq-text-disabled:  #4A4039;
+
+  /* Borders */
+  --pdq-border-subtle:  rgba(232,224,216,0.06);
+  --pdq-border-default: rgba(232,224,216,0.12);
+  --pdq-border-strong:  rgba(232,224,216,0.22);
+
+  /* Fonts */
+  --pdq-font-mono: 'JetBrains Mono', monospace;
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== BASE ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--pdq-bg-base);
+  color: var(--pdq-text-primary);
+  font-family: var(--pdq-font-mono);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--pdq-cream);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--pdq-sand);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
