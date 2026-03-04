@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const tutorials = await getCollection("tutorials");
+  return tutorials.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <main
+    style="max-width: 800px; margin: 0 auto; padding: 80px 24px; color: var(--pdq-text-primary);"
+  >
+    <h1
+      style="font-family: 'JetBrains Mono', monospace; color: var(--pdq-terracotta);"
+    >
+      {entry.data.title}
+    </h1>
+    <article style="color: var(--pdq-text-secondary); line-height: 1.8;">
+      <Content />
+    </article>
+  </main>
+</BaseLayout>

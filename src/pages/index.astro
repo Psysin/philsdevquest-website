@@ -1,115 +1,99 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
 
-const tutorials = [
-  {
-    type: "featured",
-    cat: "py",
-    catLabel: "🐍 Python",
-    title: "Python für Anfänger: Schleifen, Listen & Funktionen verstehen",
-    desc: "Du lernst wie for-Schleifen wirklich funktionieren, was Listen sind und warum Funktionen dein Code-Leben leichter machen. Mit echten Beispielen aus dem Alltag.",
-    url: "/tutorials/schleifen-listen-funktionen",
-    diff: "Einsteiger",
-    diffClass: "diff-beginner",
-    thumbClass: "python-bg",
-    meta: "📖 8 min lesen · Screenshots enthalten",
-    showCode: true,
-  },
-  {
-    type: "small",
-    cat: "gd",
-    catLabel: "🎮 Godot",
-    title: "Dein erstes Godot-Projekt: Scene Tree erklärt",
-    desc: "Was ist ein Node? Was ist eine Scene? Und warum ist der Scene Tree so wichtig? Erklärt ohne Vorkenntnisse.",
-    url: "/tutorials/godot-scene-tree",
-    diff: "Grundlagen",
-    diffClass: "diff-basics",
-    thumbClass: "godot-bg",
-    icon: "🎮",
-    meta: "📖 6 min",
-  },
-  {
-    type: "small",
-    cat: "py",
-    catLabel: "🐍 Python",
-    title: "Dictionaries in Python: Was, warum, wie",
-    desc: "Der unterschätzte Datentyp. Lerne wann du ein Dictionary statt einer Liste nutzen solltest.",
-    url: "/tutorials/python-dictionaries",
-    diff: "Einsteiger",
-    diffClass: "diff-beginner",
-    thumbClass: "python-bg",
-    icon: "🐍",
-    meta: "📖 5 min",
-  },
-];
+// Tutorials: nur nicht-draft, neueste zuerst, max. 3
+const allTutorials = await getCollection(
+  "tutorials",
+  ({ data }) => !data.draft,
+);
+allTutorials.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+const tutorials = allTutorials.slice(0, 3);
 
-const newsItems = [
-  {
-    badge: "py",
-    badgeLabel: "Python",
-    text: "Python 3.15 Alpha 6: JIT-Compiler mit bis zu 8% Performance-Gewinn und UTF-8 als neuer Standard",
-    url: "#",
-  },
-  {
-    badge: "gd",
-    badgeLabel: "Godot",
-    text: "Godot 4.6.1 erschienen: 38 Bugfixes von 25 Contributors — was sich geändert hat",
-    url: "#",
-  },
-  {
-    badge: "co",
-    badgeLabel: "Coding",
-    text: "GitHub führt neue Code-Review-Features ein — Pull Requests werden schneller und übersichtlicher",
-    url: "#",
-  },
-  {
-    badge: "py",
-    badgeLabel: "Python",
-    text: "uv 0.6 released: Der schnellste Python Package Manager bekommt Workspaces-Unterstützung",
-    url: "#",
-  },
-  {
-    badge: "gd",
-    badgeLabel: "Godot",
-    text: "GodotCon 2026 angekündigt: Community-Event für alle Indie Game Devs diesen Sommer",
-    url: "#",
-  },
-];
+// Blog: nur nicht-draft, neueste zuerst, max. 5
+const allBlog = await getCollection("blog", ({ data }) => !data.draft);
+allBlog.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+const blogPosts = allBlog.slice(0, 5);
 
-const blogPosts = [
-  {
-    day: "18",
-    month: "Feb 2026",
-    tag: "allgemein",
-    tagLabel: "Allgemein",
-    title: "Warum ich als kompletter Anfänger mit Godot angefangen habe",
-    excerpt:
-      "Kein Game Dev Hintergrund, keine Erfahrung — trotzdem. Was mich überzeugt hat und was ich nach den ersten Wochen gelernt habe.",
-    url: "/blog/warum-godot",
-  },
-  {
-    day: "12",
-    month: "Feb 2026",
-    tag: "python-t",
-    tagLabel: "Python",
-    title: "Meine ersten 30 Tage mit Python: Was ich anders machen würde",
-    excerpt:
-      "Rückblick auf den Start meiner Python-Journey. Die Fehler, die ich gemacht habe — damit du sie nicht machen musst.",
-    url: "/blog/30-tage-python",
-  },
-  {
-    day: "05",
-    month: "Feb 2026",
-    tag: "allgemein",
-    tagLabel: "Tools",
-    title:
-      "n8n als Content-Maschine: Wie ich meinen Blog fast komplett automatisiert habe",
-    excerpt:
-      "Ein ehrlicher Einblick in meinen Automatisierungs-Stack — was funktioniert, was nicht, und was mich überrascht hat.",
-    url: "/blog/n8n-content-maschine",
-  },
-];
+// News: neueste zuerst, alle
+const allNews = await getCollection("news");
+allNews.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+const newsItems = allNews;
 
+// Helper-Funktionen
+function getCatClass(category: string) {
+  return category === "python" ? "py" : "gd";
+}
+function getCatLabel(category: string) {
+  return category === "python" ? "🐍 Python" : "🎮 Godot";
+}
+function getThumbClass(category: string) {
+  return category === "python" ? "python-bg" : "godot-bg";
+}
+function getGlowClass(category: string) {
+  return category === "python" ? "tg-python" : "tg-godot";
+}
+function getDiffClass(difficulty: string) {
+  if (difficulty === "einsteiger") return "diff-beginner";
+  if (difficulty === "grundlagen") return "diff-basics";
+  return "diff-beginner";
+}
+function getDiffLabel(difficulty: string) {
+  const map: Record<string, string> = {
+    einsteiger: "Einsteiger",
+    grundlagen: "Grundlagen",
+    fortgeschritten: "Fortgeschritten",
+  };
+  return map[difficulty] || difficulty;
+}
+function getNewsBadge(category: string) {
+  const map: Record<string, string> = {
+    Python: "py",
+    Godot: "gd",
+    Coding: "co",
+  };
+  return map[category] || "co";
+}
+function getBlogTagClass(tag: string) {
+  return tag === "python" ? "python-t" : tag;
+}
+function getBlogTagLabel(tag: string) {
+  const map: Record<string, string> = {
+    python: "Python",
+    godot: "Godot",
+    allgemein: "Allgemein",
+    tools: "Tools",
+  };
+  return map[tag] || tag;
+}
+function formatDay(date: Date) {
+  return date.getDate().toString().padStart(2, "0");
+}
+function formatMonth(date: Date) {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mär",
+    "Apr",
+    "Mai",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Okt",
+    "Nov",
+    "Dez",
+  ];
+  return `${months[date.getMonth()]} ${date.getFullYear()}`;
+}
+
+// Tools bleiben vorerst statisch (Phase 2 — eigene Collection kommt)
 const tools = [
   {
     icon: "🎮",
@@ -261,11 +245,11 @@ const tools = [
       {
         [...newsItems, ...newsItems].map((item) => (
           <>
-            <a href={item.url} class="ticker-item">
-              <span class={`ticker-badge ${item.badge}`}>
-                {item.badgeLabel}
+            <a href={`/news/${item.slug}`} class="ticker-item">
+              <span class={`ticker-badge ${getNewsBadge(item.data.category)}`}>
+                {item.data.category}
               </span>
-              <span class="ticker-text">{item.text}</span>
+              <span class="ticker-text">{item.data.summary}</span>
               <span class="ticker-link">→ Artikel lesen</span>
             </a>
             <span class="ticker-sep">·</span>
@@ -286,82 +270,153 @@ const tools = [
         <a href="/tutorials" class="section-link">Alle Tutorials →</a>
       </div>
       <div class="tutorials-grid">
-        <!-- Featured -->
-        <a href={tutorials[0].url} class="tutorial-card featured">
-          <div class="tutorial-thumb python-bg">
-            <div class="tutorial-glow tg-python"></div>
-            <div class="tutorial-thumb-code">
-              <div>
-                <span class="tc-kw">def</span>
-                <span class="tc-plain">berechne_summe(zahlen):</span>
+        <!-- Featured (erstes Tutorial) -->
+        {
+          tutorials[0] && (
+            <a
+              href={`/tutorials/${tutorials[0].slug}`}
+              class="tutorial-card featured"
+            >
+              <div
+                class={`tutorial-thumb ${getThumbClass(tutorials[0].data.category)}`}
+              >
+                <div
+                  class={`tutorial-glow ${getGlowClass(tutorials[0].data.category)}`}
+                />
+                {tutorials[0].data.category === "python" ? (
+                  <div class="tutorial-thumb-code">
+                    <div>
+                      <span class="tc-kw">def</span>{" "}
+                      <span class="tc-plain">berechne_summe(zahlen):</span>
+                    </div>
+                    <div>
+                      &nbsp;&nbsp;
+                      <span class="tc-comment"># Liste durchlaufen</span>
+                    </div>
+                    <div>
+                      &nbsp;&nbsp;<span class="tc-kw">summe</span>{" "}
+                      <span class="tc-plain">= 0</span>
+                    </div>
+                    <div>
+                      &nbsp;&nbsp;<span class="tc-kw">for</span>{" "}
+                      <span class="tc-plain">z in zahlen:</span>
+                    </div>
+                    <div>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <span class="tc-plain">summe += z</span>
+                    </div>
+                    <div>
+                      &nbsp;&nbsp;<span class="tc-kw">return</span>{" "}
+                      <span class="tc-plain">summe</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div class="tutorial-thumb-icon">🎮</div>
+                )}
+                <span
+                  class={`tutorial-diff ${getDiffClass(tutorials[0].data.difficulty)}`}
+                >
+                  {getDiffLabel(tutorials[0].data.difficulty)}
+                </span>
               </div>
-              <div>
-                &nbsp;&nbsp;<span class="tc-comment"># Liste durchlaufen</span>
+              <div class="tutorial-body">
+                <div
+                  class={`tutorial-cat ${getCatClass(tutorials[0].data.category)}`}
+                >
+                  {getCatLabel(tutorials[0].data.category)}
+                </div>
+                <h3 class="tutorial-title">{tutorials[0].data.title}</h3>
+                <p class="tutorial-desc">{tutorials[0].data.description}</p>
+                <div class="tutorial-footer">
+                  <div class="tutorial-meta">
+                    📖 {tutorials[0].data.readTime} lesen
+                  </div>
+                  <span class="tutorial-arrow">→</span>
+                </div>
               </div>
-              <div>
-                &nbsp;&nbsp;<span class="tc-kw">summe</span>
-                <span class="tc-plain">= 0</span>
-              </div>
-              <div>
-                &nbsp;&nbsp;<span class="tc-kw">for</span>
-                <span class="tc-plain">z in zahlen:</span>
-              </div>
-              <div>
-                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tc-plain">summe += z</span>
-              </div>
-              <div>
-                &nbsp;&nbsp;<span class="tc-kw">return</span>
-                <span class="tc-plain">summe</span>
-              </div>
-            </div>
-            <span class="tutorial-diff diff-beginner">Einsteiger</span>
-          </div>
-          <div class="tutorial-body">
-            <div class="tutorial-cat py">🐍 Python</div>
-            <h3 class="tutorial-title">{tutorials[0].title}</h3>
-            <p class="tutorial-desc">{tutorials[0].desc}</p>
-            <div class="tutorial-footer">
-              <div class="tutorial-meta">{tutorials[0].meta}</div>
-              <span class="tutorial-arrow">→</span>
-            </div>
-          </div>
-        </a>
+            </a>
+          )
+        }
 
-        <!-- Small card 1 -->
-        <a href={tutorials[1].url} class="tutorial-card">
-          <div class="tutorial-thumb godot-bg">
-            <div class="tutorial-glow tg-godot"></div>
-            <div class="tutorial-thumb-icon">🎮</div>
-            <span class="tutorial-diff diff-basics">Grundlagen</span>
-          </div>
-          <div class="tutorial-body">
-            <div class="tutorial-cat gd">🎮 Godot</div>
-            <h3 class="tutorial-title">{tutorials[1].title}</h3>
-            <p class="tutorial-desc">{tutorials[1].desc}</p>
-            <div class="tutorial-footer">
-              <div class="tutorial-meta">{tutorials[1].meta}</div>
-              <span class="tutorial-arrow">→</span>
-            </div>
-          </div>
-        </a>
+        <!-- Small card 1 (zweites Tutorial) -->
+        {
+          tutorials[1] && (
+            <a href={`/tutorials/${tutorials[1].slug}`} class="tutorial-card">
+              <div
+                class={`tutorial-thumb ${getThumbClass(tutorials[1].data.category)}`}
+              >
+                <div
+                  class={`tutorial-glow ${getGlowClass(tutorials[1].data.category)}`}
+                />
+                <div class="tutorial-thumb-icon">
+                  {tutorials[1].data.category === "python" ? "🐍" : "🎮"}
+                </div>
+                <span
+                  class={`tutorial-diff ${getDiffClass(tutorials[1].data.difficulty)}`}
+                >
+                  {getDiffLabel(tutorials[1].data.difficulty)}
+                </span>
+              </div>
+              <div class="tutorial-body">
+                <div
+                  class={`tutorial-cat ${getCatClass(tutorials[1].data.category)}`}
+                >
+                  {getCatLabel(tutorials[1].data.category)}
+                </div>
+                <h3 class="tutorial-title">{tutorials[1].data.title}</h3>
+                <p class="tutorial-desc">{tutorials[1].data.description}</p>
+                <div class="tutorial-footer">
+                  <div class="tutorial-meta">
+                    📖 {tutorials[1].data.readTime}
+                  </div>
+                  <span class="tutorial-arrow">→</span>
+                </div>
+              </div>
+            </a>
+          )
+        }
 
-        <!-- Small card 2 -->
-        <a href={tutorials[2].url} class="tutorial-card" style="grid-column:1">
-          <div class="tutorial-thumb python-bg">
-            <div class="tutorial-glow tg-python"></div>
-            <div class="tutorial-thumb-icon">🐍</div>
-            <span class="tutorial-diff diff-beginner">Einsteiger</span>
-          </div>
-          <div class="tutorial-body">
-            <div class="tutorial-cat py">🐍 Python</div>
-            <h3 class="tutorial-title">{tutorials[2].title}</h3>
-            <p class="tutorial-desc">{tutorials[2].desc}</p>
-            <div class="tutorial-footer">
-              <div class="tutorial-meta">{tutorials[2].meta}</div>
-              <span class="tutorial-arrow">→</span>
-            </div>
-          </div>
-        </a>
+        <!-- Small card 2 (drittes Tutorial) -->
+        {
+          tutorials[2] && (
+            <a
+              href={`/tutorials/${tutorials[2].slug}`}
+              class="tutorial-card"
+              style="grid-column:1"
+            >
+              <div
+                class={`tutorial-thumb ${getThumbClass(tutorials[2].data.category)}`}
+              >
+                <div
+                  class={`tutorial-glow ${getGlowClass(tutorials[2].data.category)}`}
+                />
+                <div class="tutorial-thumb-icon">
+                  {tutorials[2].data.category === "python" ? "🐍" : "🎮"}
+                </div>
+                <span
+                  class={`tutorial-diff ${getDiffClass(tutorials[2].data.difficulty)}`}
+                >
+                  {getDiffLabel(tutorials[2].data.difficulty)}
+                </span>
+              </div>
+              <div class="tutorial-body">
+                <div
+                  class={`tutorial-cat ${getCatClass(tutorials[2].data.category)}`}
+                >
+                  {getCatLabel(tutorials[2].data.category)}
+                </div>
+                <h3 class="tutorial-title">{tutorials[2].data.title}</h3>
+                <p class="tutorial-desc">{tutorials[2].data.description}</p>
+                <div class="tutorial-footer">
+                  <div class="tutorial-meta">
+                    📖 {tutorials[2].data.readTime}
+                  </div>
+                  <span class="tutorial-arrow">→</span>
+                </div>
+              </div>
+            </a>
+          )
+        }
       </div>
     </div>
   </section>
@@ -392,9 +447,9 @@ const tools = [
               <div class="avatar">🎮</div>
               <div class="avatar">⚡</div>
             </div>
-            <span class="newsletter-social-text"
-              >Schon <strong>einige Devs</strong> dabei — wirst du der nächste?</span
-            >
+            <span class="newsletter-social-text">
+              Schon <strong>einige Devs</strong> dabei — wirst du der nächste?
+            </span>
           </div>
         </div>
         <div class="newsletter-form-wrap">
@@ -430,15 +485,17 @@ const tools = [
       <div class="blog-list">
         {
           blogPosts.map((post) => (
-            <a href={post.url} class="blog-item">
+            <a href={`/blog/${post.slug}`} class="blog-item">
               <div class="blog-date">
-                <span class="blog-date-day">{post.day}</span>
-                {post.month}
+                <span class="blog-date-day">{formatDay(post.data.date)}</span>
+                {formatMonth(post.data.date)}
               </div>
               <div class="blog-content">
-                <div class={`blog-tag ${post.tag}`}>{post.tagLabel}</div>
-                <div class="blog-title">{post.title}</div>
-                <div class="blog-excerpt">{post.excerpt}</div>
+                <div class={`blog-tag ${getBlogTagClass(post.data.tag)}`}>
+                  {getBlogTagLabel(post.data.tag)}
+                </div>
+                <div class="blog-title">{post.data.title}</div>
+                <div class="blog-excerpt">{post.data.description}</div>
               </div>
               <div class="blog-arrow">→</div>
             </a>
@@ -1295,6 +1352,12 @@ const tools = [
   .blog-tag.allgemein {
     color: var(--pdq-cream);
   }
+  .blog-tag.tools {
+    color: var(--pdq-sand);
+  }
+  .blog-tag.godot {
+    color: var(--pdq-sand);
+  }
   .blog-title {
     font-family: "Caveat", cursive;
     font-size: 19px;
@@ -1370,6 +1433,7 @@ const tools = [
     color: #a8c5a0;
     border: 1px solid rgba(168, 197, 160, 0.2);
   }
+
   /* ════════════════════════════════
      RESPONSIVE
   ════════════════════════════════ */

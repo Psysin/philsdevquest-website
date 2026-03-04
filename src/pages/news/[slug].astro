@@ -1,0 +1,96 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const news = await getCollection("news");
+  return news.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<BaseLayout
+  title={entry.data.category + " News"}
+  description={entry.data.summary}
+>
+  <main class="news-detail">
+    <a href="/news" class="back-link">← Alle News</a>
+    <div class="news-body">
+      <span class="news-cat">{entry.data.category}</span>
+      <p class="news-summary">{entry.data.summary}</p>
+      <p class="news-date">
+        {
+          entry.data.date.toLocaleDateString("de-DE", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          })
+        }
+      </p>
+    </div>
+    <a
+      href={entry.data.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="source-btn"
+    >
+      Zur Quelle →
+    </a>
+  </main>
+</BaseLayout>
+
+<style>
+  .news-detail {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+  .back-link {
+    font-size: 12px;
+    color: var(--pdq-text-muted);
+    text-decoration: none;
+  }
+  .back-link:hover {
+    color: var(--pdq-text-primary);
+  }
+  .news-body {
+    margin-top: 32px;
+  }
+  .news-cat {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--pdq-terracotta);
+  }
+  .news-summary {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--pdq-text-primary);
+    margin-top: 16px;
+  }
+  .news-date {
+    font-size: 11px;
+    color: var(--pdq-text-muted);
+    margin-top: 12px;
+  }
+  .source-btn {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 12px 24px;
+    background: var(--pdq-orange);
+    color: #12100e;
+    border-radius: 8px;
+    font-family: var(--pdq-font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .source-btn:hover {
+    background: var(--pdq-orange-dark);
+  }
+</style>

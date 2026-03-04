@@ -1,0 +1,64 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const allNews = await getCollection("news");
+allNews.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+
+function getBadgeColor(category: string) {
+  if (category === "Python") return "var(--pdq-terracotta)";
+  if (category === "Godot") return "var(--pdq-sand)";
+  return "var(--pdq-cream)";
+}
+---
+
+<BaseLayout
+  title="News"
+  description="Aktuelle News aus der Python & Godot Welt"
+>
+  <main style="max-width: 800px; margin: 0 auto; padding: 80px 24px;">
+    <div style="margin-bottom: 48px;">
+      <div
+        style="font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color: var(--pdq-text-muted); margin-bottom: 12px;"
+      >
+        News
+      </div>
+      <h1
+        style="font-family: 'Fraunces', serif; font-size: 36px; font-weight: 300; color: var(--pdq-text-primary); letter-spacing: -0.5px;"
+      >
+        Aktuelles aus der<br /><em
+          style="font-style:italic; color: var(--pdq-terracotta);">Dev-Welt</em
+        >
+      </h1>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      {
+        allNews.map((item) => (
+          <a
+            href={`/news/${item.slug}`}
+            style="display:grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; padding: 20px 24px; background: var(--pdq-bg-elevated); border: 1px solid var(--pdq-border-subtle); border-radius: 12px; text-decoration: none; transition: border-color 0.2s;"
+          >
+            <span
+              style={`font-size:9px; font-weight:700; padding: 3px 10px; border-radius: 10px; text-transform:uppercase; letter-spacing:0.5px; color: ${getBadgeColor(item.data.category)}; background: rgba(0,0,0,0.2); border: 1px solid currentColor; opacity: 0.9;`}
+            >
+              {item.data.category}
+            </span>
+            <span style="font-size: 13px; color: var(--pdq-text-secondary); line-height: 1.5;">
+              {item.data.summary}
+            </span>
+            <span style="font-size: 10px; color: var(--pdq-text-disabled); white-space: nowrap;">
+              {item.data.date.toLocaleDateString("de-DE", {
+                day: "2-digit",
+                month: "short",
+              })}{" "}
+              →
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+</BaseLayout>
