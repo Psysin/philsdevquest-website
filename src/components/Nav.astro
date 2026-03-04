@@ -68,41 +68,87 @@ const currentPath = Astro.url.pathname;
       </span>
     </a>
 
-    <!-- Links -->
+    <!-- Desktop Links -->
     <ul class="nav-links">
       <li><a href="/" class={currentPath === "/" ? "active" : ""}>Start</a></li>
       <li>
         <a
           href="/tutorials"
           class={currentPath.startsWith("/tutorials") ? "active" : ""}
-          >Tutorials</a>
+          >Tutorials</a
+        >
       </li>
       <li>
         <a href="/blog" class={currentPath.startsWith("/blog") ? "active" : ""}
-          >Blog</a>
+          >Blog</a
+        >
       </li>
       <li>
         <a
           href="/tools"
-          class={currentPath.startsWith("/tools") ? "active" : ""}>Tools</a>
+          class={currentPath.startsWith("/tools") ? "active" : ""}>Tools</a
+        >
       </li>
       <li>
         <a
           href="/ueber-mich"
           class={currentPath.startsWith("/ueber-mich") ? "active" : ""}
-          >Über mich</a>
+          >Über mich</a
+        >
       </li>
     </ul>
 
-    <!-- CTA Button -->
+    <!-- Desktop CTA -->
     <a href="#newsletter" class="nav-cta">Newsletter →</a>
+
+    <!-- Mobile Hamburger -->
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Menü öffnen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="nav-mobile" id="nav-mobile">
+    <ul class="nav-mobile-links">
+      <li><a href="/" class={currentPath === "/" ? "active" : ""}>Start</a></li>
+      <li>
+        <a
+          href="/tutorials"
+          class={currentPath.startsWith("/tutorials") ? "active" : ""}
+          >Tutorials</a
+        >
+      </li>
+      <li>
+        <a href="/blog" class={currentPath.startsWith("/blog") ? "active" : ""}
+          >Blog</a
+        >
+      </li>
+      <li>
+        <a
+          href="/tools"
+          class={currentPath.startsWith("/tools") ? "active" : ""}>Tools</a
+        >
+      </li>
+      <li>
+        <a
+          href="/ueber-mich"
+          class={currentPath.startsWith("/ueber-mich") ? "active" : ""}
+          >Über mich</a
+        >
+      </li>
+      <li><a href="#newsletter" class="nav-mobile-cta">Newsletter →</a></li>
+    </ul>
   </div>
 </nav>
 
 <style>
   .nav {
-    background: var(--pdq-bg-elevated);
-    border-bottom: 1px solid var(--pdq-border-default);
+    background: rgba(18, 16, 14, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--pdq-border-subtle);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -143,6 +189,7 @@ const currentPath = Astro.url.pathname;
     color: var(--pdq-terracotta);
   }
 
+  /* Desktop Links */
   .nav-links {
     list-style: none;
     display: flex;
@@ -171,11 +218,121 @@ const currentPath = Astro.url.pathname;
     border-radius: 6px;
     text-decoration: none;
     flex-shrink: 0;
-    transition: opacity 0.2s;
+    transition: background 0.2s;
   }
-
   .nav-cta:hover {
-    opacity: 0.85;
+    background: var(--pdq-orange-dark);
     color: #fff;
   }
+
+  /* Hamburger Button */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--pdq-text-secondary);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  .nav-hamburger.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav-hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-hamburger.open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile Menu */
+  .nav-mobile {
+    display: none;
+    border-top: 1px solid var(--pdq-border-subtle);
+    background: rgba(18, 16, 14, 0.98);
+  }
+
+  .nav-mobile.open {
+    display: block;
+  }
+
+  .nav-mobile-links {
+    list-style: none;
+    padding: 1rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .nav-mobile-links a {
+    display: block;
+    padding: 0.65rem 0;
+    color: var(--pdq-text-secondary);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid var(--pdq-border-subtle);
+    transition: color 0.2s;
+  }
+
+  .nav-mobile-links a:hover,
+  .nav-mobile-links a.active {
+    color: var(--pdq-sand);
+  }
+
+  .nav-mobile-cta {
+    color: var(--pdq-orange) !important;
+    border-bottom: none !important;
+    margin-top: 0.5rem;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none !important;
+    }
+    .nav-cta {
+      display: none !important;
+    }
+    .nav-hamburger {
+      display: flex;
+    }
+    .nav-links {
+      display: none;
+    }
+    .nav-cta {
+      display: none;
+    }
+    .nav-hamburger {
+      display: flex;
+    }
+  }
 </style>
+
+<script>
+  const hamburger = document.getElementById("nav-hamburger");
+  const mobileMenu = document.getElementById("nav-mobile");
+
+  hamburger?.addEventListener("click", () => {
+    hamburger.classList.toggle("open");
+    mobileMenu?.classList.toggle("open");
+  });
+
+  // Menü schließen wenn Link geklickt
+  mobileMenu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      hamburger?.classList.remove("open");
+      mobileMenu.classList.remove("open");
+    });
+  });
+</script>

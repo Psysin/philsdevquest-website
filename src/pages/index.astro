@@ -183,15 +183,18 @@ const tools = [
               <div><span class="t-comment"># Wer bin ich?</span></div>
               <div>
                 <span class="t-keyword">class </span><span class="t-plain"
-                  >PhilsDevQuest:</span>
+                  >PhilsDevQuest:</span
+                >
               </div>
               <div>
                 &nbsp;&nbsp;<span class="t-builtin">def </span><span
-                  class="t-plain">__init__(self):</span>
+                  class="t-plain">__init__(self):</span
+                >
               </div>
               <div>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span class="t-plain"
-                  >self.focus = [</span>
+                  >self.focus = [</span
+                >
               </div>
               <div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-string"
@@ -205,7 +208,8 @@ const tools = [
               </div>
               <div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-string"
-                  >"Indie Game Dev"</span>
+                  >"Indie Game Dev"</span
+                >
               </div>
               <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-plain">]</span></div>
               <div>
@@ -220,13 +224,15 @@ const tools = [
               </div>
               <div>
                 &nbsp;&nbsp;<span class="t-builtin">def </span><span
-                  class="t-plain">mitmachen(self):</span>
+                  class="t-plain">mitmachen(self):</span
+                >
               </div>
               <div>
                 &nbsp;&nbsp;&nbsp;&nbsp;<span class="t-orange">print</span><span
                   class="t-plain">(</span
                 ><span class="t-string">"Let's go! 🚀"</span><span
-                  class="t-plain">)</span>
+                  class="t-plain">)</span
+                >
               </div>
               <div style="margin-top:8px">
                 <span class="t-plain">pdq = PhilsDevQuest()</span>
@@ -1363,5 +1369,125 @@ const tools = [
     background: rgba(168, 197, 160, 0.12);
     color: #a8c5a0;
     border: 1px solid rgba(168, 197, 160, 0.2);
+  }
+  /* ════════════════════════════════
+     RESPONSIVE
+  ════════════════════════════════ */
+
+  /* Tablet */
+  @media (max-width: 1024px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .hero-visual-wrap {
+      display: none;
+    }
+    .tutorials-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .tutorial-card.featured {
+      grid-column: span 2;
+    }
+    .tools-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .newsletter-box {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 40px;
+    }
+    .footer-inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .container {
+      padding: 0 1.25rem;
+    }
+    .section {
+      padding: 60px 0;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 60px 0 48px;
+    }
+    .hero-headline {
+      font-size: 2.2rem;
+    }
+    .hero-form {
+      flex-direction: column;
+    }
+    .hero-form input,
+    .hero-form button {
+      width: 100%;
+    }
+
+    /* Tutorials */
+    .tutorials-grid {
+      grid-template-columns: 1fr;
+    }
+    .tutorial-card.featured {
+      grid-column: span 1;
+    }
+
+    /* Newsletter */
+    .newsletter-box {
+      padding: 28px 24px;
+      border-radius: 16px;
+    }
+    .newsletter-headline {
+      font-size: 28px;
+    }
+
+    /* Blog */
+    .blog-item {
+      grid-template-columns: 60px 1fr auto;
+      gap: 16px;
+      padding: 16px;
+    }
+    .blog-date-day {
+      font-size: 22px;
+    }
+
+    /* Tools */
+    .tools-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Footer */
+    .footer-inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+    }
+
+    /* Section header */
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+  }
+
+  /* Kleines Mobile */
+  @media (max-width: 400px) {
+    .tools-grid {
+      grid-template-columns: 1fr;
+    }
+    .blog-item {
+      grid-template-columns: 1fr;
+    }
+    .blog-date {
+      display: none;
+    }
   }
 </style>
