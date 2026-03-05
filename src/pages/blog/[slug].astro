@@ -1,10 +1,10 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
-  const blog = await getCollection("blog");
-  return blog.map((entry) => ({
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
   }));
@@ -12,19 +12,379 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+const { title, description, tag, date } = entry.data;
+
+// Verwandte Artikel: gleicher Tag, nicht der aktuelle, max. 3
+const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+const related = allPosts
+  .filter((p) => p.slug !== entry.slug && p.data.tag === tag)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const tagLabel: Record<string, string> = {
+  python: "🐍 Python",
+  godot: "🎮 Godot",
+  allgemein: "💡 Allgemein",
+  tools: "🛠 Tools",
+};
+
+const formattedDate = date.toLocaleDateString("de-DE", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+});
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description}>
-  <main
-    style="max-width: 800px; margin: 0 auto; padding: 80px 24px; color: var(--pdq-text-primary);"
-  >
-    <h1
-      style="font-family: 'JetBrains Mono', monospace; color: var(--pdq-terracotta);"
-    >
-      {entry.data.title}
-    </h1>
-    <article style="color: var(--pdq-text-secondary); line-height: 1.8;">
-      <Content />
-    </article>
-  </main>
+<BaseLayout title={title} description={description}>
+  <article class="post">
+    <div class="post__inner">
+      <!-- ─── BREADCRUMB ─── -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/" class="breadcrumb__link">Start</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href="/blog/" class="breadcrumb__link">Blog</a>
+        <span class="breadcrumb__sep">›</span>
+        <span class="breadcrumb__current">{title}</span>
+      </nav>
+
+      <!-- ─── HEADER ─── -->
+      <header class="post__header">
+        <span class={`badge badge--${tag}`}>{tagLabel[tag]}</span>
+        <h1 class="post__title">{title}</h1>
+        <p class="post__description">{description}</p>
+        <div class="post__meta">
+          <span>📅 {formattedDate}</span>
+        </div>
+      </header>
+
+      <!-- ─── CONTENT ─── -->
+      <div class="post__content prose">
+        <Content />
+      </div>
+
+      <!-- ─── VERWANDTE ARTIKEL ─── -->
+      {
+        related.length > 0 && (
+          <aside class="post__related">
+            <p class="post__related-label">Weitere Artikel zum Thema</p>
+            <div class="post__related-grid">
+              {related.map((p) => {
+                const d = p.data.date.toLocaleDateString("de-DE", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                });
+                return (
+                  <a href={`/blog/${p.slug}`} class="related-card">
+                    <span class={`badge badge--${p.data.tag}`}>
+                      {tagLabel[p.data.tag]}
+                    </span>
+                    <p class="related-card__title">{p.data.title}</p>
+                    <p class="related-card__date">{d}</p>
+                  </a>
+                );
+              })}
+            </div>
+          </aside>
+        )
+      }
+
+      <!-- ─── ZURÜCK ─── -->
+      <div class="post__back">
+        <a href="/blog/" class="back-link">← Alle Artikel</a>
+      </div>
+    </div>
+  </article>
 </BaseLayout>
+
+<style>
+  /* ── LAYOUT ── */
+  .post {
+    padding: 3rem 1.5rem 5rem;
+  }
+  .post__inner {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    font-family: var(--pdq-font-mono);
+    font-size: 0.78rem;
+    color: var(--pdq-text-muted);
+  }
+  .breadcrumb__link {
+    color: var(--pdq-text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .breadcrumb__link:hover {
+    color: var(--pdq-orange);
+  }
+  .breadcrumb__sep {
+    opacity: 0.5;
+  }
+  .breadcrumb__current {
+    color: var(--pdq-text-secondary);
+  }
+
+  /* ── HEADER ── */
+  .post__header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--pdq-border-subtle);
+  }
+
+  /* Badges */
+  .badge {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.2em 0.65em;
+    border-radius: 4px;
+    width: fit-content;
+  }
+  .badge--python {
+    background: rgba(193, 99, 79, 0.15);
+    color: var(--pdq-terracotta-light);
+    border: 1px solid rgba(193, 99, 79, 0.3);
+  }
+  .badge--godot {
+    background: rgba(212, 169, 106, 0.15);
+    color: var(--pdq-sand-light);
+    border: 1px solid rgba(212, 169, 106, 0.3);
+  }
+  .badge--allgemein {
+    background: rgba(232, 201, 154, 0.12);
+    color: var(--pdq-cream);
+    border: 1px solid rgba(232, 201, 154, 0.25);
+  }
+  .badge--tools {
+    background: rgba(255, 107, 53, 0.12);
+    color: var(--pdq-orange);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+  }
+
+  .post__title {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    font-weight: 400;
+    color: var(--pdq-text-primary);
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  .post__description {
+    font-family: var(--pdq-font-mono);
+    font-size: 1rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.65;
+    margin: 0;
+    padding-bottom: 0.25rem;
+    border-left: 3px solid var(--pdq-sand);
+    padding-left: 1rem;
+  }
+
+  .post__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--pdq-font-mono);
+    font-size: 0.82rem;
+    color: var(--pdq-text-muted);
+  }
+
+  /* ── MARKDOWN CONTENT ── */
+  .prose {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: var(--pdq-text-secondary);
+  }
+
+  .prose :global(h2) {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 1.65rem;
+    font-weight: 400;
+    color: var(--pdq-text-primary);
+    margin: 2.5rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--pdq-border-subtle);
+  }
+
+  .prose :global(h3) {
+    font-family: var(--pdq-font-mono);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--pdq-text-primary);
+    margin: 2rem 0 0.5rem;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 1.25rem;
+  }
+
+  .prose :global(a) {
+    color: var(--pdq-orange);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(255, 107, 53, 0.4);
+    transition: text-decoration-color 0.15s;
+  }
+  .prose :global(a:hover) {
+    text-decoration-color: var(--pdq-orange);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .prose :global(li) {
+    margin-bottom: 0.45rem;
+  }
+  .prose :global(li::marker) {
+    color: var(--pdq-sand);
+  }
+
+  .prose :global(strong) {
+    color: var(--pdq-text-primary);
+    font-weight: 700;
+  }
+  .prose :global(em) {
+    color: var(--pdq-sand);
+    font-style: italic;
+  }
+
+  .prose :global(code:not(pre code)) {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.88em;
+    background: var(--pdq-bg-overlay);
+    color: var(--pdq-terracotta-light);
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 4px;
+    padding: 0.1em 0.4em;
+  }
+
+  .prose :global(pre) {
+    background: var(--pdq-bg-overlay);
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    line-height: 1.65;
+  }
+  .prose :global(pre code) {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.875rem;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--pdq-cream);
+  }
+
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--pdq-sand);
+    padding: 0.75rem 1.25rem;
+    margin: 1.5rem 0;
+    background: var(--pdq-bg-overlay);
+    border-radius: 0 6px 6px 0;
+    color: var(--pdq-text-muted);
+    font-style: italic;
+  }
+
+  .prose :global(hr) {
+    border: none;
+    border-top: 1px solid var(--pdq-border-subtle);
+    margin: 2.5rem 0;
+  }
+
+  /* ── VERWANDTE ARTIKEL ── */
+  .post__related {
+  }
+
+  .post__related-label {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pdq-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .post__related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .post__related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    border: 1px solid var(--pdq-border-default);
+    background: var(--pdq-bg-elevated);
+    text-decoration: none;
+    transition:
+      border-color 0.18s,
+      background 0.18s;
+  }
+  .related-card:hover {
+    border-color: var(--pdq-sand);
+    background: var(--pdq-bg-overlay);
+  }
+
+  .related-card__title {
+    font-family: "Caveat", cursive;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--pdq-text-primary);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .related-card__date {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.75rem;
+    color: var(--pdq-text-muted);
+    margin: 0;
+  }
+
+  /* ── ZURÜCK ── */
+  .post__back {
+    padding-top: 0.5rem;
+  }
+
+  .back-link {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.85rem;
+    color: var(--pdq-text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .back-link:hover {
+    color: var(--pdq-orange);
+  }
+</style>

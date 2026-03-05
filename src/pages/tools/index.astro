@@ -1,21 +1,311 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allTools = await getCollection('tools', ({ data }) => !data.draft);
+allTools.sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const categories = [
+  {
+    key: 'python',
+    label: '🐍 Python Empfehlungen',
+    desc: 'Python nutze ich als Grundlage, um Programmierlogik zu lernen. Diese Tools helfen mir dabei, Schritt für Schritt besser zu werden.',
+  },
+  {
+    key: 'godot',
+    label: '🎮 Godot Empfehlungen',
+    desc: 'Für Godot sammle ich hier Seiten, die mir beim Einstieg in die Engine helfen. Dokumentation, Beispiele und praktische Helfer.',
+  },
+  {
+    key: 'allgemein',
+    label: '🛠 Tools für Devs',
+    desc: 'Diese Helfer nutze ich für Planung, Code-Workflow und kleine Experimente — unabhängig von Python oder Godot.',
+  },
+];
 ---
 
-<BaseLayout
-  title="Tools"
-  description="Empfohlene Tools für Python & Godot Entwickler"
->
-  <main
-    style="max-width: 1200px; margin: 0 auto; padding: 80px 24px; color: var(--pdq-text-primary);"
-  >
-    <h1
-      style="font-family: 'JetBrains Mono', monospace; color: var(--pdq-terracotta);"
-    >
-      Tools
-    </h1>
-    <p style="color: var(--pdq-text-secondary);">
-      Kommt bald — Schritt 4 verbindet hier echte Inhalte.
-    </p>
-  </main>
+<BaseLayout title="Tools" description="Meine empfohlenen Tools, Ressourcen und Links für Python- und Godot-Einsteiger.">
+
+  <!-- ─── HERO ─────────────────────────────────────────────── -->
+  <section class="tools-hero">
+    <div class="tools-hero__inner">
+      <p class="tools-hero__kicker">Kuratierte Empfehlungen</p>
+      <h1 class="tools-hero__headline">Tools & Ressourcen</h1>
+      <p class="tools-hero__sub">
+        Keine riesige Link-Liste — nur die Tools, die ich selbst täglich nutze
+        oder die mir als Einsteiger wirklich weitergeholfen haben.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── KATEGORIEN ────────────────────────────────────────── -->
+  <section class="tools-main">
+    <div class="tools-main__inner">
+
+      {categories.map(cat => {
+        const tools = allTools.filter(t => t.data.category === cat.key);
+        if (tools.length === 0) return null;
+
+        return (
+          <div class="tools-section">
+            <!-- Kategorie-Header -->
+            <div class="tools-section__header">
+              <h2 class="tools-section__title">{cat.label}</h2>
+              <p class="tools-section__desc">{cat.desc}</p>
+            </div>
+
+            <!-- Tool-Grid -->
+            <div class="tools-grid">
+              {tools.map(tool => (
+                <a href={`/tools/${tool.slug}`} class={`tool-card tool-card--${cat.key}`}>
+
+                  <!-- Top: Badges -->
+                  <div class="tool-card__top">
+                    {tool.data.free
+                      ? <span class="badge badge--free">Kostenlos</span>
+                      : <span class="badge badge--paid">Kostenpflichtig</span>
+                    }
+                    {tool.data.affiliateUrl && (
+                      <span class="badge badge--affiliate">Affiliate</span>
+                    )}
+                  </div>
+
+                  <!-- Titel -->
+                  <h3 class="tool-card__title">{tool.data.title}</h3>
+
+                  <!-- Beschreibung -->
+                  <p class="tool-card__desc">{tool.data.description}</p>
+
+                  <!-- Tags -->
+                  {tool.data.tags.length > 0 && (
+                    <div class="tool-card__tags">
+                      {tool.data.tags.map(tag => (
+                        <span class="tool-tag">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+
+                  <!-- Footer -->
+                  <div class="tool-card__footer">
+                    <span class="tool-card__cta">Details ansehen →</span>
+                  </div>
+
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+
+      <!-- Kein Inhalt -->
+      {allTools.length === 0 && (
+        <div class="tools-empty">
+          <p>Noch keine Tools vorhanden — bald geht's los! 🛠</p>
+        </div>
+      )}
+
+    </div>
+  </section>
+
 </BaseLayout>
+
+<style>
+  /* ── HERO ── */
+  .tools-hero {
+    padding: 4rem 1.5rem 3rem;
+    text-align: center;
+    border-bottom: 1px solid var(--pdq-border-subtle);
+  }
+  .tools-hero__inner { max-width: 680px; margin: 0 auto; }
+
+  .tools-hero__kicker {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pdq-cream);
+    margin-bottom: 0.75rem;
+  }
+
+  .tools-hero__headline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 400;
+    color: var(--pdq-text-primary);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .tools-hero__sub {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.95rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.7;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  /* ── MAIN ── */
+  .tools-main { padding: 3rem 1.5rem 5rem; }
+  .tools-main__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  /* ── KATEGORIE-SECTION ── */
+  .tools-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .tools-section__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--pdq-border-default);
+  }
+
+  .tools-section__title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--pdq-text-primary);
+    margin: 0;
+  }
+
+  .tools-section__desc {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.88rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.65;
+    max-width: 65ch;
+    margin: 0;
+  }
+
+  /* ── GRID ── */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 1024px) {
+    .tools-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .tools-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── CARD ── */
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: 1.35rem;
+    border-radius: 10px;
+    border: 1px solid var(--pdq-border-default);
+    background: var(--pdq-bg-elevated);
+    text-decoration: none;
+    transition: border-color 0.18s, background 0.18s, transform 0.18s;
+  }
+
+  .tool-card--python:hover  { border-color: var(--pdq-terracotta); background: var(--pdq-bg-overlay); transform: translateY(-2px); }
+  .tool-card--godot:hover   { border-color: var(--pdq-sand);       background: var(--pdq-bg-overlay); transform: translateY(-2px); }
+  .tool-card--allgemein:hover { border-color: var(--pdq-cream);    background: var(--pdq-bg-overlay); transform: translateY(-2px); }
+
+  .tool-card__top {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  /* Badges */
+  .badge {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.18em 0.6em;
+    border-radius: 4px;
+  }
+  .badge--free {
+    background: rgba(109, 184, 138, 0.12);
+    color: #6db88a;
+    border: 1px solid rgba(109, 184, 138, 0.3);
+  }
+  .badge--paid {
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--pdq-orange);
+    border: 1px solid rgba(255, 107, 53, 0.25);
+  }
+  .badge--affiliate {
+    background: rgba(212, 169, 106, 0.1);
+    color: var(--pdq-sand);
+    border: 1px solid rgba(212, 169, 106, 0.25);
+  }
+
+  .tool-card__title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--pdq-text-primary);
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .tool-card__desc {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.83rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.6;
+    flex: 1;
+    margin: 0;
+  }
+
+  /* Tags */
+  .tool-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tool-tag {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.68rem;
+    color: var(--pdq-text-muted);
+    background: var(--pdq-bg-subtle);
+    border: 1px solid var(--pdq-border-subtle);
+    border-radius: 4px;
+    padding: 0.15em 0.5em;
+  }
+
+  .tool-card__footer {
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--pdq-border-subtle);
+    margin-top: auto;
+  }
+
+  .tool-card__cta {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--pdq-orange);
+  }
+
+  /* ── LEER ── */
+  .tools-empty {
+    text-align: center;
+    padding: 4rem 1rem;
+    font-family: var(--pdq-font-mono);
+    font-size: 0.9rem;
+    color: var(--pdq-text-muted);
+  }
+</style>

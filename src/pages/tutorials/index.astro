@@ -1,21 +1,350 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allTutorials = await getCollection('tutorials', ({ data }) => !data.draft);
+allTutorials.sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+
+const difficultyLabel: Record<string, string> = {
+  einsteiger:    'Einsteiger',
+  grundlagen:    'Grundlagen',
+  fortgeschritten: 'Fortgeschritten',
+};
+
+const difficultyOrder: Record<string, number> = {
+  einsteiger: 0,
+  grundlagen: 1,
+  fortgeschritten: 2,
+};
 ---
 
-<BaseLayout
-  title="Tutorials"
-  description="Python & Godot Tutorials für Einsteiger"
->
-  <main
-    style="max-width: 1200px; margin: 0 auto; padding: 80px 24px; color: var(--pdq-text-primary);"
-  >
-    <h1
-      style="font-family: 'JetBrains Mono', monospace; color: var(--pdq-terracotta);"
-    >
-      Tutorials
-    </h1>
-    <p style="color: var(--pdq-text-secondary);">
-      Kommt bald — Schritt 4 verbindet hier echte Inhalte.
-    </p>
-  </main>
+<BaseLayout title="Tutorials" description="Python- und Godot-Tutorials für Einsteiger — Schritt für Schritt erklärt.">
+
+  <!-- ─── HERO ─────────────────────────────────────────────── -->
+  <section class="tut-hero">
+    <div class="tut-hero__inner">
+      <p class="tut-hero__kicker">Lernen, Schritt für Schritt</p>
+      <h1 class="tut-hero__headline">Tutorials</h1>
+      <p class="tut-hero__sub">
+        Von Variablen bis Spielmechaniken — hier findest du praktische Anleitungen
+        für Python und Godot, erklärt von Anfänger zu Anfänger.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── FILTER + GRID ─────────────────────────────────────── -->
+  <section class="tut-main">
+    <div class="tut-main__inner">
+
+      <!-- Filter-Tabs -->
+      <div class="tut-filter" role="tablist" aria-label="Kategorie filtern">
+        <button class="tut-filter__btn active" data-filter="all" role="tab" aria-selected="true">
+          Alle <span class="tut-filter__count" id="count-all">{allTutorials.length}</span>
+        </button>
+        <button class="tut-filter__btn" data-filter="python" role="tab" aria-selected="false">
+          <span class="tut-filter__dot dot--python"></span> Python
+          <span class="tut-filter__count" id="count-python">{allTutorials.filter(t => t.data.category === 'python').length}</span>
+        </button>
+        <button class="tut-filter__btn" data-filter="godot" role="tab" aria-selected="false">
+          <span class="tut-filter__dot dot--godot"></span> Godot
+          <span class="tut-filter__count" id="count-godot">{allTutorials.filter(t => t.data.category === 'godot').length}</span>
+        </button>
+      </div>
+
+      <!-- Kein Inhalt -->
+      {allTutorials.length === 0 && (
+        <div class="tut-empty">
+          <p>Noch keine Tutorials vorhanden — bald geht's los! 🚀</p>
+        </div>
+      )}
+
+      <!-- Tutorial-Grid -->
+      <div class="tut-grid" id="tut-grid">
+        {allTutorials.map((tutorial) => (
+          <a
+            href={`/tutorials/${tutorial.slug}`}
+            class="tut-card"
+            data-category={tutorial.data.category}
+          >
+            <!-- Badges -->
+            <div class="tut-card__badges">
+              <span class={`badge badge--cat badge--${tutorial.data.category}`}>
+                {tutorial.data.category === 'python' ? '🐍 Python' : '🎮 Godot'}
+              </span>
+              <span class={`badge badge--diff badge--diff-${tutorial.data.difficulty}`}>
+                {difficultyLabel[tutorial.data.difficulty]}
+              </span>
+            </div>
+
+            <!-- Titel -->
+            <h2 class="tut-card__title">{tutorial.data.title}</h2>
+
+            <!-- Beschreibung -->
+            <p class="tut-card__desc">{tutorial.data.description}</p>
+
+            <!-- Footer -->
+            <div class="tut-card__footer">
+              <span class="tut-card__readtime">⏱ {tutorial.data.readTime}</span>
+              <span class="tut-card__cta">Lesen →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- No results (JS-gesteuert) -->
+      <div class="tut-noresult" id="tut-noresult" style="display:none;">
+        <p>Keine Tutorials in dieser Kategorie gefunden.</p>
+      </div>
+
+    </div>
+  </section>
+
 </BaseLayout>
+
+<!-- ─── FILTER-SCRIPT ──────────────────────────────────────── -->
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.tut-filter__btn');
+  const cards   = document.querySelectorAll<HTMLElement>('.tut-card');
+  const noResult = document.getElementById('tut-noresult')!;
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter!;
+
+      // Aktiven Tab setzen
+      buttons.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
+      // Karten ein-/ausblenden
+      let visible = 0;
+      cards.forEach(card => {
+        const match = filter === 'all' || card.dataset.category === filter;
+        card.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+
+      noResult.style.display = visible === 0 ? 'block' : 'none';
+    });
+  });
+</script>
+
+<style>
+  /* ── HERO ── */
+  .tut-hero {
+    padding: 4rem 1.5rem 3rem;
+    text-align: center;
+    border-bottom: 1px solid var(--pdq-border-subtle);
+  }
+  .tut-hero__inner { max-width: 680px; margin: 0 auto; }
+
+  .tut-hero__kicker {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pdq-terracotta);
+    margin-bottom: 0.75rem;
+  }
+
+  .tut-hero__headline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 400;
+    color: var(--pdq-text-primary);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .tut-hero__sub {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.95rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.7;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  /* ── MAIN ── */
+  .tut-main { padding: 3rem 1.5rem 5rem; }
+  .tut-main__inner { max-width: 1100px; margin: 0 auto; }
+
+  /* ── FILTER ── */
+  .tut-filter {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+
+  .tut-filter__btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid var(--pdq-border-default);
+    background: var(--pdq-bg-elevated);
+    color: var(--pdq-text-secondary);
+    font-family: var(--pdq-font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  .tut-filter__btn:hover {
+    border-color: var(--pdq-border-strong);
+    color: var(--pdq-text-primary);
+  }
+  .tut-filter__btn.active {
+    background: var(--pdq-terracotta);
+    border-color: var(--pdq-terracotta);
+    color: #fff;
+  }
+
+  .tut-filter__count {
+    font-size: 0.72rem;
+    opacity: 0.7;
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+    padding: 0.05em 0.45em;
+  }
+
+  .tut-filter__dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .dot--python { background: var(--pdq-terracotta); }
+  .dot--godot  { background: var(--pdq-sand); }
+
+  /* ── GRID ── */
+  .tut-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .tut-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .tut-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── CARD ── */
+  .tut-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--pdq-border-default);
+    background: var(--pdq-bg-elevated);
+    text-decoration: none;
+    transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
+  }
+  .tut-card:hover {
+    border-color: var(--pdq-terracotta);
+    background: var(--pdq-bg-overlay);
+    transform: translateY(-2px);
+  }
+  .tut-card[data-category="godot"]:hover {
+    border-color: var(--pdq-sand);
+  }
+
+  .tut-card__badges {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  /* Badges allgemein */
+  .badge {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.2em 0.65em;
+    border-radius: 4px;
+  }
+
+  /* Kategorie-Badge */
+  .badge--python {
+    background: rgba(193, 99, 79, 0.15);
+    color: var(--pdq-terracotta-light);
+    border: 1px solid rgba(193, 99, 79, 0.3);
+  }
+  .badge--godot {
+    background: rgba(212, 169, 106, 0.15);
+    color: var(--pdq-sand-light);
+    border: 1px solid rgba(212, 169, 106, 0.3);
+  }
+
+  /* Schwierigkeits-Badge */
+  .badge--diff {
+    background: var(--pdq-bg-subtle);
+    color: var(--pdq-text-muted);
+    border: 1px solid var(--pdq-border-subtle);
+  }
+  .badge--diff-einsteiger    { color: #6db88a; border-color: rgba(109,184,138,0.3); background: rgba(109,184,138,0.08); }
+  .badge--diff-grundlagen    { color: var(--pdq-sand); border-color: rgba(212,169,106,0.3); background: rgba(212,169,106,0.08); }
+  .badge--diff-fortgeschritten { color: var(--pdq-terracotta-light); border-color: rgba(193,99,79,0.3); background: rgba(193,99,79,0.08); }
+
+  .tut-card__title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--pdq-text-primary);
+    line-height: 1.25;
+    margin: 0;
+  }
+
+  .tut-card__desc {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.85rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.6;
+    flex: 1;
+    margin: 0;
+  }
+
+  .tut-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--pdq-border-subtle);
+    margin-top: auto;
+  }
+
+  .tut-card__readtime {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.78rem;
+    color: var(--pdq-text-muted);
+  }
+
+  .tut-card__cta {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--pdq-orange);
+    transition: gap 0.15s ease;
+  }
+  .tut-card:hover .tut-card__cta { letter-spacing: 0.03em; }
+
+  /* ── LEER / NO RESULT ── */
+  .tut-empty,
+  .tut-noresult {
+    text-align: center;
+    padding: 4rem 1rem;
+    font-family: var(--pdq-font-mono);
+    font-size: 0.9rem;
+    color: var(--pdq-text-muted);
+  }
+</style>

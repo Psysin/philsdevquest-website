@@ -2,17 +2,475 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Über mich" description="Die Person hinter PhilsDevQuest">
-  <main
-    style="max-width: 800px; margin: 0 auto; padding: 80px 24px; color: var(--pdq-text-primary);"
-  >
-    <h1
-      style="font-family: 'JetBrains Mono', monospace; color: var(--pdq-terracotta);"
-    >
-      Über mich
-    </h1>
-    <p style="color: var(--pdq-text-secondary);">
-      Von Anfänger zu Anfänger — kommt bald.
-    </p>
-  </main>
+<BaseLayout
+  title="Über mich"
+  description="Ich bin Philipp — Projektmanager, Lernender, und der Kopf hinter PhilsDevQuest. Python und Godot für Einsteiger, von Anfänger zu Anfänger."
+>
+  <!-- ─── HERO ─────────────────────────────────────────────── -->
+  <section class="about-hero">
+    <div class="about-hero__inner">
+      <p class="about-hero__kicker">Themen für Anfänger</p>
+      <h1 class="about-hero__headline">Über mich</h1>
+      <p class="about-hero__intro">
+        Ich bin Philipp in meiner freien Zeit tauche ich Schritt für Schritt in
+        Programmierung und Game Development ein.
+      </p>
+      <p class="about-hero__intro">
+        Zeit ist bei mir wie wahrscheinlich bei vielen, eher knapp. Genau
+        deshalb möchte ich Inhalte bauen, die <strong
+          >kompakt, verständlich</strong
+        > und <strong>praxisnah</strong> sind. Nicht „perfekt von Anfang an", sondern
+        so, wie man wirklich lernt: mit kleinen Projekten, echten Problemen, Lösungen,
+        die funktionieren und dem Gefühl, wieder ein Stück weitergekommen zu sein.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── MAIN CONTENT ──────────────────────────────────────── -->
+  <section class="about-main">
+    <div class="about-main__inner">
+      <!-- Was dich erwartet -->
+      <div class="about-block">
+        <h2 class="about-block__title">Was dich bei PhilsDevQuest erwartet</h2>
+        <p class="about-block__text">
+          PhilsDevQuest ist mein persönlicher Lern- und Tech-Hub. Ich sammle
+          hier alles, was mir beim Einstieg in Godot, GDScript, Python und
+          angrenzende Themen hilft und bereite es so auf, dass du es als
+          Einsteiger direkt nutzen kannst.
+        </p>
+        <p class="about-block__text">
+          Wenn du gerade startest (oder nach einer Pause wieder reinkommen
+          willst), bist du hier genau richtig.
+        </p>
+
+        <ul class="about-list">
+          <li>
+            <span class="about-list__icon">📖</span>
+            <span
+              ><strong>Einsteigerfreundliche Guides & Erklärungen</strong> rund um
+              Godot, GDScript und Python</span
+            >
+          </li>
+          <li>
+            <span class="about-list__icon">🛠</span>
+            <span
+              ><strong>Kleine Tools & Mini-Projekte</strong>, die dir Zeit
+              sparen oder Dinge vereinfachen</span
+            >
+          </li>
+          <li>
+            <span class="about-list__icon">📰</span>
+            <span
+              ><strong>News & Updates</strong>, aber gefiltert: nur das, was für
+              Lernende und Solo-Devs wirklich relevant ist</span
+            >
+          </li>
+          <li>
+            <span class="about-list__icon">🔗</span>
+            <span
+              ><strong>Ressourcen & Setups</strong>, die sich bewährt haben</span
+            >
+          </li>
+          <li>
+            <span class="about-list__icon">💪</span>
+            <span
+              ><strong>Motivation & Dranbleiben</strong>: realistisch bleiben,
+              Routinen finden, Fortschritt sichtbar machen</span
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Themen-Schwerpunkte -->
+      <div class="about-block">
+        <h2 class="about-block__title">Meine Themen-Schwerpunkte</h2>
+        <p class="about-block__text">
+          Ich baue die Seite so auf, dass du schnell findest, was du gerade
+          brauchst egal ob du lernen, ein Problem lösen oder dein Setup
+          verbessern willst.
+        </p>
+
+        <div class="about-topics">
+          <div class="about-topic about-topic--python">
+            <span class="about-topic__icon">🐍</span>
+            <div>
+              <p class="about-topic__label">Python</p>
+              <p class="about-topic__desc">
+                Grundlagen festigen, kleine Tools bauen, praktische Automationen
+              </p>
+            </div>
+          </div>
+          <div class="about-topic about-topic--godot">
+            <span class="about-topic__icon">🎮</span>
+            <div>
+              <p class="about-topic__label">Godot & GDScript</p>
+              <p class="about-topic__desc">
+                Einstieg, Workflows, typische Stolperfallen, kleine
+                Game-Dev-Bausteine
+              </p>
+            </div>
+          </div>
+          <div class="about-topic about-topic--gamedev">
+            <span class="about-topic__icon">🕹</span>
+            <div>
+              <p class="about-topic__label">Game Dev als Solo-Dev</p>
+              <p class="about-topic__desc">
+                Pragmatisch denken, klein anfangen, iterativ verbessern
+              </p>
+            </div>
+          </div>
+          <div class="about-topic about-topic--ai">
+            <span class="about-topic__icon">🤖</span>
+            <div>
+              <p class="about-topic__label">KI als Unterstützung</p>
+              <p class="about-topic__desc">
+                Sinnvoll einsetzen (z.B. Ideen, Assets, Workflows) – ohne „Hype"
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lern-Philosophie -->
+      <div class="about-block">
+        <h2 class="about-block__title">Meine Lern-Philosophie</h2>
+        <blockquote class="about-quote">
+          Ich glaube an <strong>Learning by Doing</strong>. Gerade am Anfang
+          fühlt sich vieles verwirrend an aber wenn man dranbleibt, wird's mit
+          jeder Aufgabe klarer. Fehler gehören dazu. Wichtig ist nur, dass man
+          sie versteht und daraus den nächsten Schritt ableitet.
+        </blockquote>
+        <p class="about-block__text">
+          Mein Ziel ist, dass du hier nicht nur Infos liest, sondern
+          <strong>wirklich weiterkommst</strong> auch mit wenig Zeit.
+        </p>
+      </div>
+
+      <!-- Social / Links -->
+      <div class="about-block">
+        <h2 class="about-block__title">Wo du mich findest</h2>
+        <div class="about-socials">
+          <a
+            href="https://www.instagram.com/philsdevquest"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="about-social"
+          >
+            <span class="about-social__icon">📸</span>
+            <div>
+              <p class="about-social__name">Instagram</p>
+              <p class="about-social__handle">@philsdevquest</p>
+            </div>
+          </a>
+          <a
+            href="https://x.com/PhilsDevQuest"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="about-social"
+          >
+            <span class="about-social__icon">𝕏</span>
+            <div>
+              <p class="about-social__name">X / Twitter</p>
+              <p class="about-social__handle">@PhilsDevQuest</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="about-cta">
+        <p class="about-cta__text">
+          Wenn du neugierig bist, schau gern vorbei:
+        </p>
+        <div class="about-cta__buttons">
+          <a href="/tutorials/" class="btn btn--primary">Tutorials ansehen →</a>
+          <a href="/tools/" class="btn btn--ghost">Tools & Ressourcen</a>
+          <a href="/news/" class="btn btn--ghost">Aktuelle News</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  /* ── HERO ── */
+  .about-hero {
+    padding: 4rem 1.5rem 3rem;
+    border-bottom: 1px solid var(--pdq-border-subtle);
+  }
+  .about-hero__inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .about-hero__kicker {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pdq-terracotta);
+    margin-bottom: 0.75rem;
+  }
+
+  .about-hero__headline {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 400;
+    color: var(--pdq-text-primary);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-hero__intro {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.95rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    max-width: 65ch;
+  }
+  .about-hero__intro strong {
+    color: var(--pdq-text-primary);
+    font-weight: 700;
+  }
+
+  /* ── MAIN ── */
+  .about-main {
+    padding: 3rem 1.5rem 5rem;
+  }
+  .about-main__inner {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  /* ── BLOCK ── */
+  .about-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .about-block__title {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 1.65rem;
+    font-weight: 400;
+    color: var(--pdq-text-primary);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--pdq-border-subtle);
+  }
+
+  .about-block__text {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.92rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.8;
+  }
+  .about-block__text strong {
+    color: var(--pdq-text-primary);
+    font-weight: 700;
+  }
+
+  /* ── LIST ── */
+  .about-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .about-list li {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    font-family: var(--pdq-font-mono);
+    font-size: 0.88rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.65;
+  }
+  .about-list li strong {
+    color: var(--pdq-text-primary);
+    font-weight: 700;
+  }
+
+  .about-list__icon {
+    flex-shrink: 0;
+    margin-top: 0.1em;
+  }
+
+  /* ── TOPICS ── */
+  .about-topics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .about-topics {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .about-topic {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    padding: 1.1rem 1.25rem;
+    border-radius: 10px;
+    border: 1px solid var(--pdq-border-default);
+    background: var(--pdq-bg-elevated);
+  }
+
+  .about-topic--python {
+    border-left: 3px solid var(--pdq-terracotta);
+  }
+  .about-topic--godot {
+    border-left: 3px solid var(--pdq-sand);
+  }
+  .about-topic--gamedev {
+    border-left: 3px solid var(--pdq-cream);
+  }
+  .about-topic--ai {
+    border-left: 3px solid var(--pdq-orange);
+  }
+
+  .about-topic__icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    margin-top: 0.1em;
+  }
+
+  .about-topic__label {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--pdq-text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .about-topic__desc {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.8rem;
+    color: var(--pdq-text-muted);
+    line-height: 1.55;
+  }
+
+  /* ── QUOTE ── */
+  .about-quote {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.95rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.8;
+    border-left: 3px solid var(--pdq-terracotta);
+    padding: 1rem 1.25rem;
+    background: var(--pdq-bg-overlay);
+    border-radius: 0 8px 8px 0;
+  }
+  .about-quote strong {
+    color: var(--pdq-text-primary);
+    font-weight: 700;
+  }
+
+  /* ── SOCIALS ── */
+  .about-socials {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .about-social {
+    display: flex;
+    gap: 0.85rem;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    border: 1px solid var(--pdq-border-default);
+    background: var(--pdq-bg-elevated);
+    text-decoration: none;
+    transition:
+      border-color 0.18s,
+      background 0.18s;
+    flex: 1;
+    min-width: 200px;
+  }
+  .about-social:hover {
+    border-color: var(--pdq-orange);
+    background: var(--pdq-bg-overlay);
+  }
+
+  .about-social__icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .about-social__name {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--pdq-text-primary);
+  }
+
+  .about-social__handle {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.78rem;
+    color: var(--pdq-text-muted);
+  }
+
+  /* ── CTA ── */
+  .about-cta {
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--pdq-border-default);
+    background: var(--pdq-bg-elevated);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .about-cta__text {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.9rem;
+    color: var(--pdq-text-secondary);
+  }
+
+  .about-cta__buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.6em 1.3em;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.18s ease;
+    display: inline-block;
+  }
+  .btn--primary {
+    background: var(--pdq-orange);
+    color: #fff;
+    border: 1px solid var(--pdq-orange);
+  }
+  .btn--primary:hover {
+    background: var(--pdq-orange-dark);
+    border-color: var(--pdq-orange-dark);
+  }
+  .btn--ghost {
+    background: transparent;
+    color: var(--pdq-text-secondary);
+    border: 1px solid var(--pdq-border-default);
+  }
+  .btn--ghost:hover {
+    border-color: var(--pdq-border-strong);
+    color: var(--pdq-text-primary);
+  }
+</style>

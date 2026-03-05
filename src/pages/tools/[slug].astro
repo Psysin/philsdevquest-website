@@ -1,9 +1,9 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
-  const tools = await getCollection("tools");
+  const tools = await getCollection("tools", ({ data }) => !data.draft);
   return tools.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
@@ -12,37 +12,469 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+const { title, description, category, tags, websiteUrl, affiliateUrl, free } =
+  entry.data;
+
+// Weitere Tools in gleicher Kategorie
+const allTools = await getCollection("tools", ({ data }) => !data.draft);
+const related = allTools
+  .filter((t) => t.slug !== entry.slug && t.data.category === category)
+  .slice(0, 3);
+
+const categoryLabel: Record<string, string> = {
+  python: "🐍 Python",
+  godot: "🎮 Godot",
+  allgemein: "🛠 Allgemein",
+};
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description}>
-  <main
-    style="max-width: 800px; margin: 0 auto; padding: 80px 24px; color: var(--pdq-text-primary);"
-  >
-    <h1
-      style="font-family: 'JetBrains Mono', monospace; color: var(--pdq-terracotta);"
-    >
-      {entry.data.title}
-    </h1>
-    {
-      entry.data.affiliateUrl && (
-        <a
-          href={entry.data.affiliateUrl}
-          target="_blank"
-          style="display:inline-block; margin: 16px 0; padding: 12px 24px; background: var(--pdq-orange); color: white; border-radius: 8px; font-family: 'JetBrains Mono', monospace; text-decoration: none;"
-        >
-          → Jetzt ansehen *
-        </a>
-      )
-    }
-    <article style="color: var(--pdq-text-secondary); line-height: 1.8;">
-      <Content />
-    </article>
-    {
-      entry.data.affiliateUrl && (
-        <p style="color: var(--pdq-text-muted); font-size: 12px; margin-top: 40px;">
-          * Affiliate-Link
-        </p>
-      )
-    }
-  </main>
+<BaseLayout title={title} description={description}>
+  <article class="tool">
+    <div class="tool__inner">
+      <!-- ─── BREADCRUMB ─── -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/" class="breadcrumb__link">Start</a>
+        <span class="breadcrumb__sep">›</span>
+        <a href="/tools/" class="breadcrumb__link">Tools</a>
+        <span class="breadcrumb__sep">›</span>
+        <span class="breadcrumb__current">{title}</span>
+      </nav>
+
+      <!-- ─── HEADER ─── -->
+      <header class="tool__header">
+        <div class="tool__badges">
+          <span class={`badge badge--cat badge--${category}`}>
+            {categoryLabel[category]}
+          </span>
+          {
+            free ? (
+              <span class="badge badge--free">Kostenlos</span>
+            ) : (
+              <span class="badge badge--paid">Kostenpflichtig</span>
+            )
+          }
+          {
+            affiliateUrl && (
+              <span class="badge badge--affiliate">Affiliate-Link</span>
+            )
+          }
+        </div>
+
+        <h1 class="tool__title">{title}</h1>
+        <p class="tool__description">{description}</p>
+
+        <!-- Tags -->
+        {
+          tags.length > 0 && (
+            <div class="tool__tags">
+              {tags.map((tag) => (
+                <span class="tool-tag">{tag}</span>
+              ))}
+            </div>
+          )
+        }
+
+        <!-- CTAs -->
+        <div class="tool__ctas">
+          {
+            affiliateUrl ? (
+              <>
+                <a
+                  href={affiliateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn--primary"
+                >
+                  Jetzt ansehen →
+                </a>
+                <a
+                  href={websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn--ghost"
+                >
+                  Offizielle Website
+                </a>
+                <p class="tool__affiliate-note">
+                  * Affiliate-Link — für dich kostenlos, ich erhalte ggf. eine
+                  kleine Provision.
+                </p>
+              </>
+            ) : (
+              <a
+                href={websiteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn--primary"
+              >
+                Website besuchen →
+              </a>
+            )
+          }
+        </div>
+      </header>
+
+      <!-- ─── CONTENT ─── -->
+      <div class="tool__content prose">
+        <Content />
+      </div>
+
+      <!-- ─── WEITERE TOOLS ─── -->
+      {
+        related.length > 0 && (
+          <aside class="tool__related">
+            <p class="tool__related-label">
+              Weitere {categoryLabel[category]} Tools
+            </p>
+            <div class="tool__related-grid">
+              {related.map((t) => (
+                <a href={`/tools/${t.slug}`} class="related-card">
+                  <div class="related-card__badges">
+                    {t.data.free ? (
+                      <span class="badge badge--free">Kostenlos</span>
+                    ) : (
+                      <span class="badge badge--paid">Kostenpflichtig</span>
+                    )}
+                  </div>
+                  <p class="related-card__title">{t.data.title}</p>
+                  <p class="related-card__desc">{t.data.description}</p>
+                </a>
+              ))}
+            </div>
+          </aside>
+        )
+      }
+
+      <!-- ─── ZURÜCK ─── -->
+      <div class="tool__back">
+        <a href="/tools/" class="back-link">← Alle Tools</a>
+      </div>
+    </div>
+  </article>
 </BaseLayout>
+
+<style>
+  /* ── LAYOUT ── */
+  .tool {
+    padding: 3rem 1.5rem 5rem;
+  }
+  .tool__inner {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    font-family: var(--pdq-font-mono);
+    font-size: 0.78rem;
+    color: var(--pdq-text-muted);
+  }
+  .breadcrumb__link {
+    color: var(--pdq-text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .breadcrumb__link:hover {
+    color: var(--pdq-orange);
+  }
+  .breadcrumb__sep {
+    opacity: 0.5;
+  }
+  .breadcrumb__current {
+    color: var(--pdq-text-secondary);
+  }
+
+  /* ── HEADER ── */
+  .tool__header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--pdq-border-subtle);
+  }
+
+  .tool__badges {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  /* Badges */
+  .badge {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.2em 0.65em;
+    border-radius: 4px;
+  }
+  .badge--python {
+    background: rgba(193, 99, 79, 0.15);
+    color: var(--pdq-terracotta-light);
+    border: 1px solid rgba(193, 99, 79, 0.3);
+  }
+  .badge--godot {
+    background: rgba(212, 169, 106, 0.15);
+    color: var(--pdq-sand-light);
+    border: 1px solid rgba(212, 169, 106, 0.3);
+  }
+  .badge--allgemein {
+    background: rgba(232, 201, 154, 0.12);
+    color: var(--pdq-cream);
+    border: 1px solid rgba(232, 201, 154, 0.25);
+  }
+  .badge--free {
+    background: rgba(109, 184, 138, 0.12);
+    color: #6db88a;
+    border: 1px solid rgba(109, 184, 138, 0.3);
+  }
+  .badge--paid {
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--pdq-orange);
+    border: 1px solid rgba(255, 107, 53, 0.25);
+  }
+  .badge--affiliate {
+    background: rgba(212, 169, 106, 0.1);
+    color: var(--pdq-sand);
+    border: 1px solid rgba(212, 169, 106, 0.25);
+  }
+
+  .tool__title {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    font-weight: 400;
+    color: var(--pdq-text-primary);
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  .tool__description {
+    font-family: var(--pdq-font-mono);
+    font-size: 1rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.65;
+    margin: 0;
+    border-left: 3px solid var(--pdq-cream);
+    padding-left: 1rem;
+  }
+
+  /* Tags */
+  .tool__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .tool-tag {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.72rem;
+    color: var(--pdq-text-muted);
+    background: var(--pdq-bg-subtle);
+    border: 1px solid var(--pdq-border-subtle);
+    border-radius: 4px;
+    padding: 0.15em 0.55em;
+  }
+
+  /* CTAs */
+  .tool__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    padding-top: 0.25rem;
+  }
+
+  .btn {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.65em 1.4em;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.18s ease;
+    display: inline-block;
+  }
+  .btn--primary {
+    background: var(--pdq-orange);
+    color: #fff;
+    border: 1px solid var(--pdq-orange);
+  }
+  .btn--primary:hover {
+    background: var(--pdq-orange-dark);
+    border-color: var(--pdq-orange-dark);
+    transform: translateY(-1px);
+  }
+  .btn--ghost {
+    background: transparent;
+    color: var(--pdq-text-secondary);
+    border: 1px solid var(--pdq-border-default);
+  }
+  .btn--ghost:hover {
+    border-color: var(--pdq-border-strong);
+    color: var(--pdq-text-primary);
+  }
+
+  .tool__affiliate-note {
+    width: 100%;
+    font-family: var(--pdq-font-mono);
+    font-size: 0.72rem;
+    color: var(--pdq-text-muted);
+    margin: 0;
+  }
+
+  /* ── PROSE ── */
+  .prose {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: var(--pdq-text-secondary);
+  }
+  .prose :global(h2) {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 1.65rem;
+    font-weight: 400;
+    color: var(--pdq-text-primary);
+    margin: 2.5rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--pdq-border-subtle);
+  }
+  .prose :global(h3) {
+    font-family: var(--pdq-font-mono);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--pdq-text-primary);
+    margin: 2rem 0 0.5rem;
+  }
+  .prose :global(p) {
+    margin-bottom: 1.25rem;
+  }
+  .prose :global(a) {
+    color: var(--pdq-orange);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(255, 107, 53, 0.4);
+    transition: text-decoration-color 0.15s;
+  }
+  .prose :global(a:hover) {
+    text-decoration-color: var(--pdq-orange);
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .prose :global(li) {
+    margin-bottom: 0.45rem;
+  }
+  .prose :global(li::marker) {
+    color: var(--pdq-cream);
+  }
+  .prose :global(strong) {
+    color: var(--pdq-text-primary);
+    font-weight: 700;
+  }
+  .prose :global(code:not(pre code)) {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.88em;
+    background: var(--pdq-bg-overlay);
+    color: var(--pdq-terracotta-light);
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 4px;
+    padding: 0.1em 0.4em;
+  }
+  .prose :global(pre) {
+    background: var(--pdq-bg-overlay);
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+  }
+  .prose :global(pre code) {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.875rem;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--pdq-cream);
+  }
+
+  /* ── VERWANDTE TOOLS ── */
+  .tool__related-label {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pdq-text-muted);
+    margin-bottom: 1rem;
+  }
+  .tool__related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 768px) {
+    .tool__related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    border: 1px solid var(--pdq-border-default);
+    background: var(--pdq-bg-elevated);
+    text-decoration: none;
+    transition:
+      border-color 0.18s,
+      background 0.18s;
+  }
+  .related-card:hover {
+    border-color: var(--pdq-cream);
+    background: var(--pdq-bg-overlay);
+  }
+  .related-card__badges {
+    display: flex;
+    gap: 0.35rem;
+  }
+  .related-card__title {
+    font-family: "Caveat", cursive;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--pdq-text-primary);
+    margin: 0;
+  }
+  .related-card__desc {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.78rem;
+    color: var(--pdq-text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* ── ZURÜCK ── */
+  .tool__back {
+    padding-top: 0.5rem;
+  }
+  .back-link {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.85rem;
+    color: var(--pdq-text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .back-link:hover {
+    color: var(--pdq-orange);
+  }
+</style>

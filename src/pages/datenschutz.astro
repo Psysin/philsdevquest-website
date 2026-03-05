@@ -6,16 +6,143 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   title="Datenschutz"
   description="Datenschutzerklärung von PhilsDevQuest"
 >
-  <main
-    style="max-width: 800px; margin: 0 auto; padding: 80px 24px; color: var(--pdq-text-primary);"
-  >
-    <h1
-      style="font-family: 'JetBrains Mono', monospace; color: var(--pdq-terracotta);"
-    >
-      Datenschutz
-    </h1>
-    <p style="color: var(--pdq-text-secondary);">
-      Datenschutzerklärung folgt vor dem Launch.
-    </p>
-  </main>
+  <section class="legal">
+    <div class="legal__inner">
+      <h1 class="legal__headline">Datenschutzerklärung</h1>
+      <p class="legal__updated">Stand: März 2026</p>
+
+      <div class="legal__block">
+        <h2>1. Verantwortlicher</h2>
+        <p>
+          Philipp Edelbrock<br />
+          c/o MDC Management #5854<br />
+          Welserstraße 3<br />
+          87463 Dietmannsried<br />
+          Deutschland <br />
+          E-Mail: philsdevquest@pm.me
+        </p>
+      </div>
+
+      <div class="legal__block">
+        <h2>2. Hosting</h2>
+        <p>
+          Diese Website wird über <strong>Netlify</strong> (Netlify, Inc., 44 Montgomery
+          Street, Suite 300, San Francisco, California 94104, USA) gehostet. Wenn
+          du die Website aufrufst, werden von Netlify Server-Logfiles gespeichert
+          (IP-Adresse, Datum/Uhrzeit, aufgerufene Seite). Dies ist technisch notwendig
+          und erfolgt auf Basis von Art. 6 Abs. 1 lit. f DSGVO.
+        </p>
+      </div>
+
+      <div class="legal__block">
+        <h2>3. Newsletter</h2>
+        <p>
+          Für den Newsletter wird <strong>Brevo</strong> (Sendinblue GmbH, Köpenicker
+          Str. 126, 10179 Berlin) eingesetzt. Wenn du dich anmeldest, speichert Brevo
+          deine E-Mail-Adresse und den Zeitpunkt der Anmeldung. Die Anmeldung erfolgt
+          per Double-Opt-In. Du kannst dich jederzeit über den Abmeldelink im Newsletter
+          oder per E-Mail abmelden.
+        </p>
+        <p>Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung).</p>
+      </div>
+
+      <div class="legal__block">
+        <h2>4. Keine Cookies / Tracking</h2>
+        <p>
+          Diese Website setzt keine Tracking-Cookies und verwendet kein
+          Analyse-Tool (wie Google Analytics). Es werden keine personenbezogenen
+          Daten für Werbezwecke verarbeitet.
+        </p>
+      </div>
+
+      <div class="legal__block">
+        <h2>5. Externe Links</h2>
+        <p>
+          Diese Website enthält Links zu externen Seiten. Für die Inhalte und
+          Datenschutzpraktiken dieser Seiten bin ich nicht verantwortlich. Bitte
+          prüfe die Datenschutzerklärungen der jeweiligen Anbieter.
+        </p>
+      </div>
+
+      <div class="legal__block">
+        <h2>6. Deine Rechte</h2>
+        <p>
+          Du hast gemäß DSGVO das Recht auf Auskunft, Berichtigung, Löschung,
+          Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch.
+          Wende dich dazu an: philsdevquest@pm.me
+        </p>
+        <p>
+          Du hast außerdem das Recht, dich bei einer Datenschutzbehörde zu
+          beschweren, z.B. beim Landesbeauftragten für Datenschutz deines
+          Bundeslandes.
+        </p>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .legal {
+    padding: 4rem 1.5rem 5rem;
+  }
+  .legal__inner {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .legal__headline {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    color: var(--pdq-text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .legal__updated {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.8rem;
+    color: var(--pdq-text-muted);
+  }
+
+  .legal__block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--pdq-border-subtle);
+  }
+
+  .legal__block h2 {
+    font-family: var(--pdq-font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--pdq-text-primary);
+  }
+
+  .legal__block p {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.88rem;
+    color: var(--pdq-text-muted);
+    line-height: 1.75;
+  }
+
+  .legal__block strong {
+    color: var(--pdq-text-secondary);
+    font-weight: 700;
+  }
+
+  .legal__note {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.82rem;
+    color: var(--pdq-orange);
+    background: rgba(255, 107, 53, 0.08);
+    border: 1px solid rgba(255, 107, 53, 0.25);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    line-height: 1.6;
+  }
+</style>

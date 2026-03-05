@@ -3,16 +3,141 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="Impressum" description="Impressum von PhilsDevQuest">
-  <main
-    style="max-width: 800px; margin: 0 auto; padding: 80px 24px; color: var(--pdq-text-primary);"
-  >
-    <h1
-      style="font-family: 'JetBrains Mono', monospace; color: var(--pdq-terracotta);"
-    >
-      Impressum
-    </h1>
-    <p style="color: var(--pdq-text-secondary);">
-      Pflichtangaben folgen vor dem Launch.
-    </p>
-  </main>
+  <section class="legal">
+    <div class="legal__inner">
+      <h1 class="legal__headline">Impressum</h1>
+      <p class="legal__updated">Angaben gemäß § 5 TMG</p>
+
+      <div class="legal__block">
+        <h2>Angaben zum Betreiber</h2>
+        <p>
+          Philipp Edelbrock<br />
+          c/o MDC Management #5854<br />
+          Welserstraße 3<br />
+          87463 Dietmannsried<br />
+          Deutschland
+        </p>
+      </div>
+
+      <div class="legal__block">
+        <h2>Kontakt</h2>
+        <p>E-Mail: philsdevquest@pm.me</p>
+      </div>
+
+      <div class="legal__block">
+        <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+        <p>
+          Philipp Edelbrock<br />
+          c/o MDC Management #5854<br />
+          Welserstraße 3<br />
+          87463 Dietmannsried<br />
+          Deutschland
+        </p>
+      </div>
+
+      <div class="legal__block">
+        <h2>Haftungsausschluss</h2>
+        <h3>Haftung für Inhalte</h3>
+        <p>
+          Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt
+          erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der
+          Inhalte kann jedoch keine Gewähr übernommen werden. Als
+          Diensteanbieter bin ich gemäß § 7 Abs. 1 TMG für eigene Inhalte auf
+          diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
+        </p>
+
+        <h3>Haftung für Links</h3>
+        <p>
+          Diese Website enthält Links zu externen Webseiten Dritter, auf deren
+          Inhalte ich keinen Einfluss habe. Für die Inhalte der verlinkten
+          Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten
+          verantwortlich. Zum Zeitpunkt der Verlinkung waren keine
+          Rechtsverstöße erkennbar.
+        </p>
+
+        <h3>Urheberrecht</h3>
+        <p>
+          Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen
+          Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung,
+          Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der
+          Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des
+          jeweiligen Autors bzw. Erstellers.
+        </p>
+      </div>
+
+      <div class="legal__note">
+        ⚠️ <strong>Vor dem Launch ausfüllen:</strong> Nachname, Adresse und E-Mail-Adresse
+        eintragen und diese Notiz entfernen.
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .legal {
+    padding: 4rem 1.5rem 5rem;
+  }
+  .legal__inner {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .legal__headline {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    color: var(--pdq-text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .legal__updated {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.8rem;
+    color: var(--pdq-text-muted);
+  }
+
+  .legal__block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--pdq-border-subtle);
+  }
+
+  .legal__block h2 {
+    font-family: var(--pdq-font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--pdq-text-primary);
+  }
+
+  .legal__block h3 {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--pdq-text-secondary);
+    margin-top: 0.5rem;
+  }
+
+  .legal__block p {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.88rem;
+    color: var(--pdq-text-muted);
+    line-height: 1.75;
+  }
+
+  .legal__note {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.82rem;
+    color: var(--pdq-orange);
+    background: rgba(255, 107, 53, 0.08);
+    border: 1px solid rgba(255, 107, 53, 0.25);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    line-height: 1.6;
+  }
+</style>
