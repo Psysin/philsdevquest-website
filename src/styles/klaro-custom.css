@@ -1,10 +1,3 @@
-/* ============================================================
-   DATEI 1: public/klaro-config.js  → bereits erstellt
-   DATEI 2: src/styles/klaro-custom.css  → diese Datei
-
-   Einfügen: src/styles/klaro-custom.css anlegen
-   ============================================================ */
-
 /* Earthy Warm Overrides für Klaro Cookie Banner */
 
 .klaro .cookie-modal,
@@ -12,7 +5,7 @@
   font-family: 'JetBrains Mono', monospace !important;
 }
 
-/* Banner unten */
+/* Banner */
 .klaro .cookie-notice {
   background: #1C1916 !important;
   border-top: 1px solid #2E2820 !important;
@@ -20,54 +13,62 @@
   padding: 1.25rem 1.5rem !important;
 }
 
-.klaro .cookie-notice p {
+.klaro .cookie-notice p,
+.klaro .cookie-notice .cn-body p {
   color: #B5A99A !important;
   font-size: 0.85rem !important;
   line-height: 1.6 !important;
 }
 
-.klaro .cookie-notice a {
+.klaro .cookie-notice a,
+.klaro .cookie-notice .cn-body a {
   color: #FF6B35 !important;
   text-decoration: underline !important;
 }
 
-/* Buttons im Banner */
-.klaro .cookie-notice .cn-buttons button.cm-btn-success,
-.klaro .cookie-notice .cn-buttons button.cm-btn-accept-all {
-  background: #FF6B35 !important;
-  color: #12100E !important;
-  border: none !important;
-  border-radius: 6px !important;
+/* ── Alle Buttons: Basis-Reset ── */
+.klaro button {
   font-family: 'JetBrains Mono', monospace !important;
-  font-weight: 600 !important;
+  border-radius: 6px !important;
   font-size: 0.85rem !important;
   padding: 0.5rem 1rem !important;
   cursor: pointer !important;
+  transition: opacity 0.15s !important;
 }
 
-.klaro .cookie-notice .cn-buttons button.cm-btn-decline,
-.klaro .cookie-notice .cn-buttons button.cm-btn-no {
-  background: transparent !important;
-  color: #B5A99A !important;
-  border: 1px solid #2E2820 !important;
-  border-radius: 6px !important;
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.85rem !important;
-  padding: 0.5rem 1rem !important;
-  cursor: pointer !important;
-}
-
-.klaro .cookie-notice .cn-buttons button:hover {
+.klaro button:hover {
   opacity: 0.85 !important;
 }
 
-/* Einstellungen-Link */
-.klaro .cookie-notice .cn-learn-more {
+/* ── Accept / Success Buttons → Orange ── */
+.klaro button.cm-btn-accept-all,
+.klaro button.cm-btn-accept,
+.klaro button.cm-btn-success,
+.klaro .cm-btn.cm-btn-success,
+.klaro .cm-btn.cm-btn-accept-all {
+  background: #FF6B35 !important;
+  color: #12100E !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+
+/* ── Decline Buttons → Transparent ── */
+.klaro button.cm-btn-decline,
+.klaro button.cm-btn-no,
+.klaro .cm-btn.cm-btn-decline {
+  background: transparent !important;
+  color: #B5A99A !important;
+  border: 1px solid #2E2820 !important;
+}
+
+/* ── "Einstellungen" Link ── */
+.klaro .cn-learn-more,
+.klaro a.cm-learn-more {
   color: #D4A96A !important;
   font-size: 0.8rem !important;
 }
 
-/* Modal */
+/* ── Modal ── */
 .klaro .cookie-modal .cm-modal {
   background: #1C1916 !important;
   border: 1px solid #2E2820 !important;
@@ -77,6 +78,7 @@
 
 .klaro .cookie-modal .cm-header {
   border-bottom: 1px solid #2E2820 !important;
+  background: #1C1916 !important;
 }
 
 .klaro .cookie-modal .cm-header h1 {
@@ -86,41 +88,43 @@
   font-size: 1.4rem !important;
 }
 
+.klaro .cookie-modal .cm-body {
+  background: #1C1916 !important;
+}
+
 .klaro .cookie-modal .cm-body p,
-.klaro .cookie-modal .cm-body span {
+.klaro .cookie-modal .cm-service-description {
   color: #B5A99A !important;
   font-size: 0.85rem !important;
 }
 
-.klaro .cookie-modal .cm-service .cm-service-title {
+.klaro .cookie-modal .cm-service .cm-service-title,
+.klaro .cookie-modal .cm-app-title {
   color: #E8E0D8 !important;
   font-weight: 600 !important;
 }
 
-/* Toggle Switches */
-.klaro .cookie-modal .cm-service .slider {
+.klaro .cookie-modal .cm-list-title {
+  color: #D4A96A !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* Toggle */
+.klaro .cookie-modal .slider {
   background: #2E2820 !important;
 }
 
-.klaro .cookie-modal input:checked + .cm-service .slider,
-.klaro .cookie-modal .cm-toggle-all input:checked + label .slider {
+.klaro input:checked ~ .slider {
   background: #FF6B35 !important;
 }
 
-/* Buttons im Modal */
-.klaro .cookie-modal .cm-footer .cm-btn-success {
-  background: #FF6B35 !important;
-  color: #12100E !important;
-  border-radius: 6px !important;
-  font-family: 'JetBrains Mono', monospace !important;
-  font-weight: 600 !important;
-}
-
-.klaro .cookie-modal .cm-footer .cm-btn-decline {
-  background: transparent !important;
-  color: #B5A99A !important;
-  border: 1px solid #2E2820 !important;
-  border-radius: 6px !important;
+/* Modal Footer */
+.klaro .cookie-modal .cm-footer {
+  background: #1C1916 !important;
+  border-top: 1px solid #2E2820 !important;
 }
 
 .klaro .cookie-modal .cm-footer a {
@@ -131,26 +135,3 @@
 .klaro .cookie-modal .cm-bg {
   background: rgba(18, 16, 14, 0.85) !important;
 }
-
-
-/* ============================================================
-   ÄNDERUNGEN IN BaseLayout.astro
-
-   Folgendes in den <head> Block einfügen:
-   ============================================================
-
-  <!-- ── Klaro Cookie Consent ── -->
-  <link rel="stylesheet" href="https://cdn.kiprotect.com/klaro/v0.7/klaro.min.css" />
-  <link rel="stylesheet" href="/styles/klaro-custom.css" />
-  <script defer src="/klaro-config.js"></script>
-  <script defer src="https://cdn.kiprotect.com/klaro/v0.7/klaro.js"></script>
-
-   ============================================================
-   WICHTIG: AdSense Script aus dem <head> entfernen!
-
-   Der bisherige AdSense Script-Tag im BaseLayout muss weg,
-   da AdSense jetzt erst nach Zustimmung via Klaro geladen wird.
-
-   Entfernen (falls vorhanden):
-   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js..."></script>
-   ============================================================ */
