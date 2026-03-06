@@ -26,46 +26,43 @@
   text-decoration: underline !important;
 }
 
-/* ── Alle Buttons: Basis-Reset ── */
-.klaro button {
+/* ── Einstellungen Link ── */
+.klaro .cn-learn-more,
+.klaro a.cm-learn-more {
+  color: #D4A96A !important;
+  font-size: 0.8rem !important;
+}
+
+/* ── Alle Buttons Basis ── */
+.klaro button,
+.klaro .cm-btn {
   font-family: 'JetBrains Mono', monospace !important;
   border-radius: 6px !important;
   font-size: 0.85rem !important;
-  padding: 0.5rem 1rem !important;
   cursor: pointer !important;
-  transition: opacity 0.15s !important;
 }
 
-.klaro button:hover {
-  opacity: 0.85 !important;
-}
-
-/* ── Accept / Success Buttons → Orange ── */
-.klaro button.cm-btn-accept-all,
-.klaro button.cm-btn-accept,
-.klaro button.cm-btn-success,
-.klaro .cm-btn.cm-btn-success,
-.klaro .cm-btn.cm-btn-accept-all {
+/* ── "Das ist ok" → Orange ── */
+button.cm-btn.cm-btn-success,
+.klaro button.cm-btn.cm-btn-success,
+.klaro .cookie-notice button.cm-btn-success,
+.klaro .cn-buttons button.cm-btn-success {
   background: #FF6B35 !important;
+  background-color: #FF6B35 !important;
   color: #12100E !important;
   border: none !important;
   font-weight: 600 !important;
 }
 
-/* ── Decline Buttons → Transparent ── */
-.klaro button.cm-btn-decline,
-.klaro button.cm-btn-no,
-.klaro .cm-btn.cm-btn-decline {
+/* ── "Ich lehne ab" → Transparent ── */
+button.cm-btn.cm-btn-decline,
+.klaro button.cm-btn.cm-btn-decline,
+.klaro .cookie-notice button.cm-btn-decline,
+.klaro .cn-buttons button.cm-btn-decline {
   background: transparent !important;
+  background-color: transparent !important;
   color: #B5A99A !important;
   border: 1px solid #2E2820 !important;
-}
-
-/* ── "Einstellungen" Link ── */
-.klaro .cn-learn-more,
-.klaro a.cm-learn-more {
-  color: #D4A96A !important;
-  font-size: 0.8rem !important;
 }
 
 /* ── Modal ── */
@@ -98,7 +95,6 @@
   font-size: 0.85rem !important;
 }
 
-.klaro .cookie-modal .cm-service .cm-service-title,
 .klaro .cookie-modal .cm-app-title {
   color: #E8E0D8 !important;
   font-weight: 600 !important;
@@ -129,6 +125,21 @@
 
 .klaro .cookie-modal .cm-footer a {
   color: #FF6B35 !important;
+}
+
+/* Modal Buttons */
+.klaro .cookie-modal button.cm-btn-success {
+  background: #FF6B35 !important;
+  background-color: #FF6B35 !important;
+  color: #12100E !important;
+  font-weight: 600 !important;
+  border: none !important;
+}
+
+.klaro .cookie-modal button.cm-btn-decline {
+  background: transparent !important;
+  color: #B5A99A !important;
+  border: 1px solid #2E2820 !important;
 }
 
 /* Overlay */

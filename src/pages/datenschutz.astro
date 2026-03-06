@@ -18,7 +18,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           c/o MDC Management #5854<br />
           Welserstraße 3<br />
           87463 Dietmannsried<br />
-          Deutschland <br />
+          Deutschland<br />
           E-Mail: philsdevquest@pm.me
         </p>
       </div>
@@ -35,7 +35,68 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
 
       <div class="legal__block">
-        <h2>3. Newsletter</h2>
+        <h2>3. Google Fonts</h2>
+        <p>
+          Diese Website verwendet <strong>Google Fonts</strong> (Google Ireland Limited,
+          Gordon House, Barrow Street, Dublin 4, Irland) zur Darstellung von Schriftarten.
+          Beim Laden der Seite werden die Schriftarten direkt von Google-Servern abgerufen,
+          wobei deine IP-Adresse an Google übertragen wird.
+        </p>
+        <p>
+          Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an
+          einheitlicher Darstellung). Weitere Informationen findest du in der
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener">Datenschutzerklärung von Google</a
+          >.
+        </p>
+      </div>
+
+      <div class="legal__block">
+        <h2>4. Werbung (Google AdSense)</h2>
+        <p>
+          Diese Website nutzt <strong>Google AdSense</strong> (Google Ireland Limited,
+          Gordon House, Barrow Street, Dublin 4, Irland) zur Einblendung von Werbeanzeigen.
+          Google AdSense verwendet Cookies und ähnliche Technologien, um personalisierte
+          Werbung basierend auf deinen Interessen anzuzeigen. Dabei können Daten an
+          Google-Server in den USA übertragen werden.
+        </p>
+        <p>
+          Google AdSense wird erst nach deiner ausdrücklichen Einwilligung über
+          unser Cookie-Banner geladen. Du kannst deine Einwilligung jederzeit
+          über den „Einstellungen"-Link im Cookie-Banner widerrufen.
+        </p>
+        <p>
+          Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung). Weitere
+          Informationen findest du in der
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener">Datenschutzerklärung von Google</a
+          >.
+        </p>
+      </div>
+
+      <div class="legal__block">
+        <h2>5. Cookie-Einwilligung (Klaro)</h2>
+        <p>
+          Zur Verwaltung deiner Cookie-Einwilligungen nutzen wir <strong
+            >Klaro</strong
+          >, eine Open-Source-Lösung die lokal auf unseren Servern betrieben
+          wird. Klaro speichert deine Einwilligungsentscheidung in einem Cookie
+          namens
+          <code>pdq-consent</code> für 365 Tage. Es werden dabei keine Daten an Dritte
+          übertragen.
+        </p>
+        <p>
+          Rechtsgrundlage: Art. 6 Abs. 1 lit. c DSGVO (rechtliche
+          Verpflichtung).
+        </p>
+      </div>
+
+      <div class="legal__block">
+        <h2>6. Newsletter</h2>
         <p>
           Für den Newsletter wird <strong>Brevo</strong> (Sendinblue GmbH, Köpenicker
           Str. 126, 10179 Berlin) eingesetzt. Wenn du dich anmeldest, speichert Brevo
@@ -47,16 +108,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
 
       <div class="legal__block">
-        <h2>4. Keine Cookies / Tracking</h2>
-        <p>
-          Diese Website setzt keine Tracking-Cookies und verwendet kein
-          Analyse-Tool (wie Google Analytics). Es werden keine personenbezogenen
-          Daten für Werbezwecke verarbeitet.
-        </p>
-      </div>
-
-      <div class="legal__block">
-        <h2>5. Externe Links</h2>
+        <h2>7. Externe Links</h2>
         <p>
           Diese Website enthält Links zu externen Seiten. Für die Inhalte und
           Datenschutzpraktiken dieser Seiten bin ich nicht verantwortlich. Bitte
@@ -65,7 +117,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
 
       <div class="legal__block">
-        <h2>6. Deine Rechte</h2>
+        <h2>8. Deine Rechte</h2>
         <p>
           Du hast gemäß DSGVO das Recht auf Auskunft, Berichtigung, Löschung,
           Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch.
@@ -135,14 +187,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     font-weight: 700;
   }
 
-  .legal__note {
-    font-family: var(--pdq-font-mono);
-    font-size: 0.82rem;
+  .legal__block a {
     color: var(--pdq-orange);
-    background: rgba(255, 107, 53, 0.08);
-    border: 1px solid rgba(255, 107, 53, 0.25);
-    border-radius: 8px;
-    padding: 1rem 1.25rem;
-    line-height: 1.6;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .legal__block code {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.85em;
+    background: var(--pdq-bg-overlay);
+    color: var(--pdq-terracotta-light);
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 4px;
+    padding: 0.1em 0.4em;
   }
 </style>
