@@ -190,6 +190,7 @@ Das `\n` erzeugt eine leere Zeile in der Ausgabe.
 Schreibe ein Programm, das zwei Zahlen vom Nutzer abfragt und dann Summe, Differenz, Produkt und Quotienten ausgibt.
 
 **Beispiel-Ausgabe:**
+
 ```
 Erste Zahl: 10
 Zweite Zahl: 4
@@ -250,6 +251,7 @@ Schreibe ein Programm, das Größe (in Metern) und Gewicht (in kg) abfragt und d
 **Formel:** BMI = Gewicht / (Größe × Größe)
 
 **Beispiel-Ausgabe:**
+
 ```
 Dein BMI beträgt: 21.60
 ```
@@ -271,5 +273,3 @@ print(f"Dein BMI beträgt: {bmi:.2f}")
 ---
 
 Im nächsten Teil lernst du Bedingungen — damit dein Programm unterschiedlich reagieren kann, je nachdem was der Nutzer eingibt oder welchen Wert eine Variable hat.
-
-➡️ **Weiter zu: Python Basics 3 – Bedingungen**

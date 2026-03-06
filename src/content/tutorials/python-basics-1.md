@@ -76,6 +76,7 @@ print(groesse) # 1.82
 ```
 
 **Regeln für Variablennamen:**
+
 - Nur Buchstaben, Zahlen und Unterstriche
 - Darf nicht mit einer Zahl beginnen
 - Groß- und Kleinschreibung wird unterschieden (`name` ≠ `Name`)
@@ -164,7 +165,7 @@ print(type(z))  # <class 'float'>
 
 ## 5. Variablen kombinieren
 
-Du kannst Strings mit `+` zusammenfügen (das nennt man *konkatenieren*):
+Du kannst Strings mit `+` zusammenfügen (das nennt man _konkatenieren_):
 
 ```python
 vorname = "Phil"
@@ -192,6 +193,7 @@ print(a * b)  # 30
 Erstelle drei Variablen: `name`, `beruf` und `hobby`. Gib dann einen Text aus, der alle drei Variablen verwendet.
 
 **Beispiel-Ausgabe:**
+
 ```
 Name: Philipp
 Beruf: Projektmanager
@@ -281,5 +283,3 @@ print(b)  # 10
 ---
 
 Gut gemacht! Im nächsten Teil lernst du Operatoren, Benutzereingaben mit `input()` und wie du Text mit f-Strings formatierst — damit deine Programme interaktiv werden.
-
-➡️ **Weiter zu: Python Basics 2 – Operatoren & Eingaben**

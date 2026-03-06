@@ -8,7 +8,7 @@ readTime: "13 min"
 draft: false
 ---
 
-Bisher haben deine Programme immer das Gleiche gemacht — Schritt für Schritt von oben nach unten. Jetzt lernst du, wie ein Programm entscheiden kann: *Wenn das zutrifft, mache dies — sonst mache das.* Das ist die Grundlage für jede Spiellogik, jede App, jedes sinnvolle Programm.
+Bisher haben deine Programme immer das Gleiche gemacht — Schritt für Schritt von oben nach unten. Jetzt lernst du, wie ein Programm entscheiden kann: _Wenn das zutrifft, mache dies — sonst mache das._ Das ist die Grundlage für jede Spiellogik, jede App, jedes sinnvolle Programm.
 
 ## 1. if — die einfache Bedingung
 
@@ -20,6 +20,7 @@ if alter >= 18:
 ```
 
 **Syntax:**
+
 - Nach `if` kommt die Bedingung (ein Vergleich)
 - Die Zeile endet mit einem Doppelpunkt `:`
 - Der Code darunter wird **eingerückt** (4 Leerzeichen oder Tab) — das ist Pflicht in Python!
@@ -205,6 +206,7 @@ else:
 Schreibe ein Programm, das eine Farbe abfragt ("rot", "gelb" oder "grün") und die passende Bedeutung ausgibt.
 
 **Beispiel-Ausgabe:**
+
 ```
 Farbe: grün
 → Fahren!
@@ -257,6 +259,7 @@ else:
 ### Übung 3 — Notenrechner
 
 Frage eine Punktzahl ab (0–100) und gib die entsprechende Note aus:
+
 - 90–100: Sehr gut (1)
 - 75–89: Gut (2)
 - 60–74: Befriedigend (3)
@@ -302,5 +305,3 @@ if punkte >= 0 and punkte <= 100:
 ---
 
 Im nächsten Teil lernst du Schleifen — damit dein Programm Aufgaben automatisch wiederholen kann, ohne dass du denselben Code 100 Mal schreiben musst.
-
-➡️ **Weiter zu: Python Basics 4 – Schleifen**

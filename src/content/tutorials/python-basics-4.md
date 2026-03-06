@@ -25,6 +25,7 @@ print("Fertig!")
 ```
 
 **Ausgabe:**
+
 ```
 Durchgang 1
 Durchgang 2
@@ -150,6 +151,7 @@ for zeile in range(1, 4):
 ```
 
 **Ausgabe:**
+
 ```
 1x1=1  1x2=2  1x3=3
 2x1=2  2x2=4  2x3=6
@@ -160,10 +162,10 @@ for zeile in range(1, 4):
 
 ## 6. while vs. for — wann was?
 
-| | `while` | `for` |
-|---|---|---|
-| **Wann?** | Wenn unbekannt ist, wie oft die Schleife läuft | Wenn bekannt ist, wie oft (oder über was iteriert wird) |
-| **Typisch für** | Benutzereingaben, Spielschleifen, Warten auf Ereignisse | Zahlenreihen, Listen durchgehen, Texte verarbeiten |
+|                 | `while`                                                 | `for`                                                   |
+| --------------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| **Wann?**       | Wenn unbekannt ist, wie oft die Schleife läuft          | Wenn bekannt ist, wie oft (oder über was iteriert wird) |
+| **Typisch für** | Benutzereingaben, Spielschleifen, Warten auf Ereignisse | Zahlenreihen, Listen durchgehen, Texte verarbeiten      |
 
 ```python
 # for: ich weiß, ich will 10 Mal zählen
@@ -201,6 +203,7 @@ Das `:2` und `:3` in den f-Strings sorgt für rechtsbündige Ausrichtung mit Min
 Schreibe ein Programm, das eine Zahl abfragt und dann von dieser Zahl bis 1 runterzählt, und am Ende "Start!" ausgibt.
 
 **Beispiel:**
+
 ```
 Zahl: 5
 5
@@ -266,6 +269,7 @@ while not geraten:
 ### Übung 3 — FizzBuzz
 
 Klassisches Programmierübung: Gib alle Zahlen von 1 bis 30 aus — aber:
+
 - Wenn die Zahl durch 3 teilbar ist, gib "Fizz" aus
 - Wenn sie durch 5 teilbar ist, gib "Buzz" aus
 - Wenn sie durch beides teilbar ist, gib "FizzBuzz" aus
@@ -294,5 +298,3 @@ for i in range(1, 31):
 ---
 
 Fast geschafft mit den Basics! Im letzten Teil lernst du Funktionen und Listen — damit kannst du deinen Code strukturieren und Daten speichern, was die Tür zu echten kleinen Projekten öffnet.
-
-➡️ **Weiter zu: Python Basics 5 – Funktionen & Listen**

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdSlot from "../../components/AdSlot.astro";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -47,6 +48,9 @@ const formattedDate = date.toLocaleDateString("de-DE", {
         <span class="breadcrumb__current">{title}</span>
       </nav>
 
+      <!-- ─── AD POSITION 1 ─── (zwischen Breadcrumb und Badges) -->
+      <AdSlot slotId="5030653446" />
+
       <!-- ─── HEADER ─── -->
       <header class="tutorial__header">
         <!-- Badges -->
@@ -74,6 +78,48 @@ const formattedDate = date.toLocaleDateString("de-DE", {
       <div class="tutorial__content prose">
         <Content />
       </div>
+
+      <!-- ─── AD POSITIONEN 2 + 3 via JavaScript ─── -->
+      <script is:inline>
+        document.addEventListener("DOMContentLoaded", () => {
+          const publisherId = "ca-pub-1972800950201366";
+
+          function createAd(slotId) {
+            const wrapper = document.createElement("div");
+            wrapper.className = "ad-slot ad-slot--injected";
+            wrapper.innerHTML = `
+              <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="${publisherId}"
+                data-ad-slot="${slotId}"
+                data-ad-format="auto"
+                data-full-width-responsive="true">
+              </ins>
+            `;
+            return wrapper;
+          }
+
+          // ── POSITION 2: Direkt VOR der h2 "Übungen" ──────────────────────
+          document.querySelectorAll(".tutorial__content h2").forEach((h2) => {
+            if (h2.textContent.trim() === "Übungen") {
+              const ad = createAd("1091408436");
+              h2.parentNode.insertBefore(ad, h2);
+              (window.adsbygoogle = window.adsbygoogle || []).push({});
+            }
+          });
+
+          // ── POSITION 3: Nach dem letzten <details> (Lösung anzeigen) ─────
+          const allDetails = document.querySelectorAll(
+            ".tutorial__content details",
+          );
+          if (allDetails.length > 0) {
+            const lastDetails = allDetails[allDetails.length - 1];
+            const ad = createAd("7361449107");
+            lastDetails.parentNode.insertBefore(ad, lastDetails.nextSibling);
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+          }
+        });
+      </script>
 
       <!-- ─── NEXT TUTORIAL ─── -->
       {
@@ -337,10 +383,16 @@ const formattedDate = date.toLocaleDateString("de-DE", {
     margin: 2.5rem 0;
   }
 
-  /* ── NÄCHSTES TUTORIAL ── */
-  .tutorial__next {
+  /* ── AD SLOTS ── */
+  :global(.ad-slot) {
+    width: 100%;
+    min-height: 90px;
+  }
+  :global(.ad-slot--injected) {
+    margin: 2rem 0;
   }
 
+  /* ── NÄCHSTES TUTORIAL ── */
   .tutorial__next-label {
     font-family: var(--pdq-font-mono);
     font-size: 0.78rem;
