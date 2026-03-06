@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import NewsletterForm from "../components/NewsletterForm.astro";
 
 // Tutorials: nur nicht-draft, neueste zuerst, max. 3
 const allTutorials = await getCollection(
@@ -142,13 +143,7 @@ const tools = [
             Tutorials, Tipps und Einblicke rund um Python, Godot und Indie Game
             Dev. Monatlich — direkt, verständlich, praktisch.
           </p>
-          <form class="hero-form" action="#newsletter">
-            <input type="email" placeholder="deine@email.de" />
-            <button type="submit">Dabei sein →</button>
-          </form>
-          <p class="hero-form-note">
-            Einmal pro Monat · Kein Spam · Jederzeit abmeldbar
-          </p>
+          <NewsletterForm variant="hero" />
         </div>
 
         <div class="fade-up-2 hero-visual-wrap">
@@ -452,86 +447,73 @@ const tools = [
             </span>
           </div>
         </div>
-        <div class="newsletter-form-wrap">
-          <span class="newsletter-form-label">// Jetzt eintragen</span>
-          <form class="newsletter-form" action="#" method="post">
-            <input type="text" placeholder="Dein Vorname (optional)" />
-            <input type="email" placeholder="deine@email.de" required />
-            <button type="submit">Jetzt anmelden — kostenlos →</button>
-          </form>
-          <p class="newsletter-note">
-            Kein Spam. Nur relevantes für Indie Game Dev Einsteiger.<br />
-            Jederzeit mit einem Klick abmeldbar. DSGVO-konform.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="section-divider"></div>
-
-  <!-- ══════════ BLOG ══════════ -->
-  <section class="section" style="padding-top:80px">
-    <div class="container">
-      <div class="section-header">
-        <div>
-          <div class="section-label">Blog</div>
-          <h2 class="section-title-display">
-            Gedanken, Erfahrungen & Einblicke
-          </h2>
-        </div>
-        <a href="/blog" class="section-link">Alle Artikel →</a>
-      </div>
-      <div class="blog-list">
-        {
-          blogPosts.map((post) => (
-            <a href={`/blog/${post.slug}`} class="blog-item">
-              <div class="blog-date">
-                <span class="blog-date-day">{formatDay(post.data.date)}</span>
-                {formatMonth(post.data.date)}
-              </div>
-              <div class="blog-content">
-                <div class={`blog-tag ${getBlogTagClass(post.data.tag)}`}>
-                  {getBlogTagLabel(post.data.tag)}
-                </div>
-                <div class="blog-title">{post.data.title}</div>
-                <div class="blog-excerpt">{post.data.description}</div>
-              </div>
-              <div class="blog-arrow">→</div>
-            </a>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <div class="section-divider"></div>
-
-  <!-- ══════════ TOOLS ══════════ -->
-  <section class="section" style="padding-top:80px;padding-bottom:96px">
-    <div class="container">
-      <div class="section-header">
-        <div>
-          <div class="section-label">Tools & Ressourcen</div>
-          <h2 class="section-title-display">Was ich täglich nutze</h2>
-        </div>
-        <a href="/tools" class="section-link">Alle Tools →</a>
-      </div>
-      <div class="tools-grid">
-        {
-          tools.map((tool) => (
-            <div class="tool-card">
-              <div class="tool-icon">{tool.icon}</div>
-              <div class="tool-name">{tool.name}</div>
-              <div class="tool-desc">{tool.desc}</div>
-              <span class={`tool-tag ${tool.tag}`}>{tool.tagLabel}</span>
-            </div>
-          ))
-        }
+        <NewsletterForm variant="hero" />
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<div class="section-divider"></div>
+
+<!-- ══════════ BLOG ══════════ -->
+<section class="section" style="padding-top:80px">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Blog</div>
+        <h2 class="section-title-display">Gedanken, Erfahrungen & Einblicke</h2>
+      </div>
+      <a href="/blog" class="section-link">Alle Artikel →</a>
+    </div>
+    <div class="blog-list">
+      {
+        blogPosts.map((post) => (
+          <a href={`/blog/${post.slug}`} class="blog-item">
+            <div class="blog-date">
+              <span class="blog-date-day">{formatDay(post.data.date)}</span>
+              {formatMonth(post.data.date)}
+            </div>
+            <div class="blog-content">
+              <div class={`blog-tag ${getBlogTagClass(post.data.tag)}`}>
+                {getBlogTagLabel(post.data.tag)}
+              </div>
+              <div class="blog-title">{post.data.title}</div>
+              <div class="blog-excerpt">{post.data.description}</div>
+            </div>
+            <div class="blog-arrow">→</div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════ TOOLS ══════════ -->
+<section class="section" style="padding-top:80px;padding-bottom:96px">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Tools & Ressourcen</div>
+        <h2 class="section-title-display">Was ich täglich nutze</h2>
+      </div>
+      <a href="/tools" class="section-link">Alle Tools →</a>
+    </div>
+    <div class="tools-grid">
+      {
+        tools.map((tool) => (
+          <div class="tool-card">
+            <div class="tool-icon">{tool.icon}</div>
+            <div class="tool-name">{tool.name}</div>
+            <div class="tool-desc">{tool.desc}</div>
+            <span class={`tool-tag ${tool.tag}`}>{tool.tagLabel}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
 
 <style>
   /* ── Layout ── */
