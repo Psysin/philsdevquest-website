@@ -1,5 +1,4 @@
 // netlify/functions/subscribe.js
-// Ablegen unter: PhilsDevQuest-Website/netlify/functions/subscribe.js
 
 export default async (request) => {
   if (request.method !== "POST") {
@@ -38,16 +37,15 @@ export default async (request) => {
     );
   }
 
-  // Kontakt-Payload aufbauen
   const payload = {
     email: email,
     listIds: [3],
     updateEnabled: true,
   };
 
-  // Vorname nur mitsenden wenn angegeben
+  // Brevo nutzt "VORNAME" als Attributname (nicht FIRSTNAME)
   if (firstname) {
-    payload.attributes = { FIRSTNAME: firstname };
+    payload.attributes = { VORNAME: firstname };
   }
 
   try {
@@ -65,7 +63,7 @@ export default async (request) => {
       return new Response(
         JSON.stringify({
           success: true,
-          message: `Du bist dabei${name}! Willkommen bei PhilsDevQuest Weekly. 🎉`,
+          message: `Du bist dabei${name}! Willkommen bei PhilsDevQuest. 🎉`,
         }),
         { status: 200, headers: { "Content-Type": "application/json" } }
       );
