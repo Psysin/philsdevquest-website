@@ -24,9 +24,12 @@ const blog = defineCollection({
 
 const news = defineCollection({
   schema: z.object({
-    summary: z.string().max(400),
-    url: z.string().url(),
+    title: z.string(),                              // Überschrift des Artikels
+    summary: z.string().max(200),                   // Kurzzusammenfassung für Übersichtsseite (~150 Zeichen)
+    url: z.string().url(),                          // Link zur Originalquelle
+    source: z.string().optional(),                  // Quellenname, z.B. "Planet Python", "Godot Blog"
     category: z.enum(['Python', 'Godot', 'Coding']),
+    tags: z.array(z.string()).optional(),           // z.B. ["pip", "performance", "packaging"]
     date: z.date(),
   })
 });

@@ -1,64 +1,208 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
 
 const allNews = await getCollection("news");
-allNews.sort(
-  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
-);
+allNews.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-function getBadgeColor(category: string) {
-  if (category === "Python") return "var(--pdq-terracotta)";
-  if (category === "Godot") return "var(--pdq-sand)";
-  return "var(--pdq-cream)";
-}
+const categoryColors: Record<string, string> = {
+  Python: "badge-python",
+  Godot: "badge-godot",
+  Coding: "badge-coding",
+};
 ---
 
 <BaseLayout
   title="News"
-  description="Aktuelle News aus der Python & Godot Welt"
+  description="Aktuelle Neuigkeiten aus der Python- und Godot-Welt, zusammengefasst für Einsteiger."
 >
-  <main style="max-width: 800px; margin: 0 auto; padding: 80px 24px;">
-    <div style="margin-bottom: 48px;">
-      <div
-        style="font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color: var(--pdq-text-muted); margin-bottom: 12px;"
-      >
-        News
-      </div>
-      <h1
-        style="font-family: 'Fraunces', serif; font-size: 36px; font-weight: 300; color: var(--pdq-text-primary); letter-spacing: -0.5px;"
-      >
-        Aktuelles aus der<br /><em
-          style="font-style:italic; color: var(--pdq-terracotta);">Dev-Welt</em
-        >
-      </h1>
+  <main class="news-index">
+    <div class="page-header">
+      <span class="page-label">Neuigkeiten</span>
+      <h1>News</h1>
+      <p class="page-subtitle">
+        Was gerade in der Python- und Godot-Welt passiert — kurz
+        zusammengefasst.
+      </p>
     </div>
 
-    <div style="display: flex; flex-direction: column; gap: 12px;">
+    <div class="news-list">
       {
-        allNews.map((item) => (
-          <a
-            href={`/news/${item.slug}`}
-            style="display:grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; padding: 20px 24px; background: var(--pdq-bg-elevated); border: 1px solid var(--pdq-border-subtle); border-radius: 12px; text-decoration: none; transition: border-color 0.2s;"
-          >
-            <span
-              style={`font-size:9px; font-weight:700; padding: 3px 10px; border-radius: 10px; text-transform:uppercase; letter-spacing:0.5px; color: ${getBadgeColor(item.data.category)}; background: rgba(0,0,0,0.2); border: 1px solid currentColor; opacity: 0.9;`}
-            >
-              {item.data.category}
-            </span>
-            <span style="font-size: 13px; color: var(--pdq-text-secondary); line-height: 1.5;">
-              {item.data.summary}
-            </span>
-            <span style="font-size: 10px; color: var(--pdq-text-disabled); white-space: nowrap;">
-              {item.data.date.toLocaleDateString("de-DE", {
-                day: "2-digit",
-                month: "short",
-              })}{" "}
-              →
-            </span>
-          </a>
-        ))
+        allNews.map((entry) => {
+          const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          });
+          return (
+            <a href={`/news/${entry.slug}/`} class="news-card">
+              <div class="news-card-meta">
+                <span
+                  class={`badge ${categoryColors[entry.data.category] ?? ""}`}
+                >
+                  {entry.data.category}
+                </span>
+                {entry.data.source && (
+                  <span class="news-source">via {entry.data.source}</span>
+                )}
+                <span class="news-date">{dateFormatted}</span>
+              </div>
+              <h2 class="news-card-title">{entry.data.title}</h2>
+              <p class="news-card-summary">{entry.data.summary}</p>
+              <span class="news-read-more">Weiterlesen →</span>
+            </a>
+          );
+        })
       }
     </div>
   </main>
 </BaseLayout>
+
+<style>
+  .news-index {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  /* Page Header */
+  .page-header {
+    margin-bottom: 3rem;
+  }
+
+  .page-label {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pdq-orange);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header h1 {
+    font-family: var(--pdq-font-mono);
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--pdq-text-primary);
+    margin: 0 0 0.75rem;
+  }
+
+  .page-subtitle {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.95rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* News List */
+  .news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* News Card */
+  .news-card {
+    display: block;
+    padding: 1.5rem;
+    background: var(--pdq-bg-elevated);
+    text-decoration: none;
+    transition: background 0.15s ease;
+    border-bottom: 1px solid var(--pdq-border-subtle);
+  }
+
+  .news-card:last-child {
+    border-bottom: none;
+  }
+
+  .news-card:hover {
+    background: var(--pdq-bg-overlay);
+  }
+
+  .news-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .news-source {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.75rem;
+    color: var(--pdq-text-muted);
+  }
+
+  .news-date {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.75rem;
+    color: var(--pdq-text-muted);
+    margin-left: auto;
+  }
+
+  .news-card-title {
+    font-family: var(--pdq-font-mono);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--pdq-text-primary);
+    margin: 0 0 0.5rem;
+    line-height: 1.4;
+  }
+
+  .news-card-summary {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.875rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.6;
+    margin: 0 0 0.75rem;
+  }
+
+  .news-read-more {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.8rem;
+    color: var(--pdq-orange);
+    font-weight: 600;
+  }
+
+  /* Badges */
+  .badge {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+  }
+
+  .badge-python {
+    background: var(--pdq-terracotta-dim);
+    color: var(--pdq-terracotta-light);
+    border: 1px solid rgba(193, 99, 79, 0.3);
+  }
+
+  .badge-godot {
+    background: var(--pdq-sand-dim);
+    color: var(--pdq-sand);
+    border: 1px solid rgba(212, 169, 106, 0.3);
+  }
+
+  .badge-coding {
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--pdq-orange);
+    border: 1px solid rgba(255, 107, 53, 0.25);
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .news-date {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+</style>
