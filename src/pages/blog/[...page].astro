@@ -1,0 +1,430 @@
+---
+// DATEI: src/pages/blog/[...page].astro
+// Ersetzt die bisherige: src/pages/blog/index.astro
+// WICHTIG: Datei umbenennen von index.astro → [...page].astro !
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import type { GetStaticPathsOptions, Page } from "astro";
+import type { CollectionEntry } from "astro:content";
+
+export async function getStaticPaths({ paginate }: { paginate: Function }) {
+  const allPosts = await getCollection(
+    "blog",
+    ({ data }: { data: any }) => !data.draft,
+  );
+  allPosts.sort(
+    (a: any, b: any) => b.data.date.valueOf() - a.data.date.valueOf(),
+  );
+  return paginate(allPosts, { pageSize: 9 });
+}
+
+const { page } = Astro.props as { page: Page<CollectionEntry<"blog">> };
+
+// Neuester Artikel = Featured Card (nur auf Seite 1)
+const featured = page.currentPage === 1 ? page.data[0] : null;
+const rest = page.currentPage === 1 ? page.data.slice(1) : page.data;
+
+const tagColors: Record<string, string> = {
+  python: "tag-python",
+  godot: "tag-godot",
+  allgemein: "tag-allgemein",
+  tools: "tag-tools",
+};
+---
+
+<BaseLayout
+  title={page.currentPage === 1 ? "Blog" : `Blog — Seite ${page.currentPage}`}
+  description="Gedanken, Erfahrungen und Tipps rund um Python, Godot und das Programmieren lernen."
+>
+  <main class="blog-index">
+    <div class="page-header">
+      <span class="page-label">Artikel</span>
+      <h1>Blog</h1>
+      <p class="page-subtitle">
+        Gedanken, Erfahrungen und Tipps — von Anfänger zu Anfänger.
+      </p>
+    </div>
+
+    <!-- Featured Card (nur Seite 1, neuester Artikel) -->
+    {
+      featured && (
+        <a href={`/blog/${featured.slug}/`} class="featured-card">
+          <div class="featured-meta">
+            <span class={`tag ${tagColors[featured.data.tag] ?? ""}`}>
+              {featured.data.tag}
+            </span>
+            <span class="featured-badge">Neu</span>
+            <span class="featured-date">
+              {featured.data.date.toLocaleDateString("de-DE", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+          <h2 class="featured-title">{featured.data.title}</h2>
+          <p class="featured-description">{featured.data.description}</p>
+          <span class="featured-read-more">Artikel lesen →</span>
+        </a>
+      )
+    }
+
+    <!-- Blog Grid -->
+    {
+      rest.length > 0 && (
+        <div class="blog-grid">
+          {rest.map((entry: any) => {
+            const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            });
+            return (
+              <a href={`/blog/${entry.slug}/`} class="blog-card">
+                <div class="blog-card-meta">
+                  <span class={`tag ${tagColors[entry.data.tag] ?? ""}`}>
+                    {entry.data.tag}
+                  </span>
+                  <span class="blog-card-date">{dateFormatted}</span>
+                </div>
+                <h2 class="blog-card-title">{entry.data.title}</h2>
+                <p class="blog-card-desc">{entry.data.description}</p>
+                <span class="blog-read-more">Lesen →</span>
+              </a>
+            );
+          })}
+        </div>
+      )
+    }
+
+    <!-- Pagination Navigation -->
+    {
+      page.lastPage > 1 && (
+        <nav class="pagination" aria-label="Seitennavigation">
+          <a
+            href={page.url.prev ?? "#"}
+            class={`pagination-btn ${!page.url.prev ? "disabled" : ""}`}
+            aria-disabled={!page.url.prev}
+          >
+            ← Neuer
+          </a>
+
+          <div class="pagination-pages">
+            {Array.from({ length: page.lastPage }, (_, i) => i + 1).map(
+              (num) => (
+                <a
+                  href={num === 1 ? "/blog/" : `/blog/${num}/`}
+                  class={`pagination-page ${num === page.currentPage ? "active" : ""}`}
+                >
+                  {num}
+                </a>
+              ),
+            )}
+          </div>
+
+          <a
+            href={page.url.next ?? "#"}
+            class={`pagination-btn ${!page.url.next ? "disabled" : ""}`}
+            aria-disabled={!page.url.next}
+          >
+            Älter →
+          </a>
+        </nav>
+      )
+    }
+
+    {
+      page.lastPage > 1 && (
+        <p class="pagination-info">
+          Seite {page.currentPage} von {page.lastPage} · {page.total} Artikel
+          gesamt
+        </p>
+      )
+    }
+  </main>
+</BaseLayout>
+
+<style>
+  .blog-index {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  /* Page Header */
+  .page-header {
+    margin-bottom: 3rem;
+  }
+  .page-label {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pdq-orange);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .page-header h1 {
+    font-family: var(--pdq-font-mono);
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--pdq-text-primary);
+    margin: 0 0 0.75rem;
+  }
+  .page-subtitle {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.95rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Featured Card */
+  .featured-card {
+    display: block;
+    padding: 2rem;
+    background: var(--pdq-bg-elevated);
+    border: 1px solid var(--pdq-border-default);
+    border-left: 4px solid var(--pdq-orange);
+    border-radius: 12px;
+    text-decoration: none;
+    margin-bottom: 2.5rem;
+    transition: background 0.15s;
+  }
+  .featured-card:hover {
+    background: var(--pdq-bg-overlay);
+  }
+
+  .featured-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .featured-badge {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    background: rgba(255, 107, 53, 0.15);
+    color: var(--pdq-orange);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+    border-radius: 4px;
+  }
+  .featured-date {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.78rem;
+    color: var(--pdq-text-muted);
+    margin-left: auto;
+  }
+  .featured-title {
+    font-family: var(--pdq-font-mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--pdq-text-primary);
+    margin: 0 0 0.75rem;
+    line-height: 1.35;
+  }
+  .featured-description {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.95rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.7;
+    margin: 0 0 1rem;
+  }
+  .featured-read-more {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.875rem;
+    color: var(--pdq-orange);
+    font-weight: 600;
+  }
+
+  /* Blog Grid */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Blog Card */
+  .blog-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    background: var(--pdq-bg-elevated);
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 12px;
+    text-decoration: none;
+    transition:
+      background 0.15s,
+      border-color 0.15s;
+  }
+  .blog-card:hover {
+    background: var(--pdq-bg-overlay);
+    border-color: var(--pdq-border-strong);
+  }
+  .blog-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .blog-card-date {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.72rem;
+    color: var(--pdq-text-muted);
+    margin-left: auto;
+  }
+  .blog-card-title {
+    font-family: var(--pdq-font-mono);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--pdq-text-primary);
+    margin: 0 0 0.5rem;
+    line-height: 1.4;
+  }
+  .blog-card-desc {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.83rem;
+    color: var(--pdq-text-secondary);
+    line-height: 1.6;
+    margin: 0 0 auto;
+    padding-bottom: 1rem;
+  }
+  .blog-read-more {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.78rem;
+    color: var(--pdq-orange);
+    font-weight: 600;
+  }
+
+  /* Tag Styles */
+  .tag {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+  }
+  .tag-python {
+    background: var(--pdq-terracotta-dim);
+    color: var(--pdq-terracotta-light);
+    border: 1px solid rgba(193, 99, 79, 0.3);
+  }
+  .tag-godot {
+    background: var(--pdq-sand-dim);
+    color: var(--pdq-sand);
+    border: 1px solid rgba(212, 169, 106, 0.3);
+  }
+  .tag-allgemein {
+    background: rgba(181, 169, 154, 0.1);
+    color: var(--pdq-text-secondary);
+    border: 1px solid rgba(181, 169, 154, 0.2);
+  }
+  .tag-tools {
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--pdq-orange);
+    border: 1px solid rgba(255, 107, 53, 0.25);
+  }
+
+  /* Pagination */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .pagination-btn {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.85rem;
+    color: var(--pdq-text-secondary);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 8px;
+    background: var(--pdq-bg-elevated);
+    transition: all 0.15s;
+  }
+  .pagination-btn:hover:not(.disabled) {
+    background: var(--pdq-bg-overlay);
+    color: var(--pdq-orange);
+    border-color: var(--pdq-orange);
+  }
+  .pagination-btn.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .pagination-pages {
+    display: flex;
+    gap: 0.35rem;
+  }
+  .pagination-page {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--pdq-text-secondary);
+    text-decoration: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 8px;
+    background: var(--pdq-bg-elevated);
+    transition: all 0.15s;
+  }
+  .pagination-page:hover {
+    background: var(--pdq-bg-overlay);
+    color: var(--pdq-orange);
+    border-color: var(--pdq-orange);
+  }
+  .pagination-page.active {
+    background: var(--pdq-orange);
+    color: #fff;
+    border-color: var(--pdq-orange);
+  }
+  .pagination-info {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.78rem;
+    color: var(--pdq-text-muted);
+    text-align: center;
+    margin: 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+    .featured-title {
+      font-size: 1.2rem;
+    }
+    .featured-date {
+      margin-left: 0;
+    }
+    .blog-card-date {
+      margin-left: 0;
+    }
+    .pagination-btn {
+      padding: 0.4rem 0.7rem;
+      font-size: 0.8rem;
+    }
+  }
+</style>

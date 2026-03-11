@@ -1,9 +1,20 @@
 ---
+// DATEI: src/pages/news/[...page].astro
+// Ersetzt die bisherige: src/pages/news/index.astro
+// WICHTIG: Datei umbenennen von index.astro → [...page].astro !
+
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import type { GetStaticPathsOptions, Page } from "astro";
+import type { CollectionEntry } from "astro:content";
 
-const allNews = await getCollection("news");
-allNews.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+export async function getStaticPaths({ paginate }: { paginate: Function }) {
+  const allNews = await getCollection("news");
+  allNews.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return paginate(allNews, { pageSize: 10 });
+}
+
+const { page } = Astro.props as { page: Page<CollectionEntry<"news">> };
 
 const categoryColors: Record<string, string> = {
   Python: "badge-python",
@@ -13,7 +24,7 @@ const categoryColors: Record<string, string> = {
 ---
 
 <BaseLayout
-  title="News"
+  title={page.currentPage === 1 ? "News" : `News — Seite ${page.currentPage}`}
   description="Aktuelle Neuigkeiten aus der Python- und Godot-Welt, zusammengefasst für Einsteiger."
 >
   <main class="news-index">
@@ -26,9 +37,10 @@ const categoryColors: Record<string, string> = {
       </p>
     </div>
 
+    <!-- News Liste -->
     <div class="news-list">
       {
-        allNews.map((entry) => {
+        page.data.map((entry: any) => {
           const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
             day: "numeric",
             month: "long",
@@ -55,6 +67,52 @@ const categoryColors: Record<string, string> = {
         })
       }
     </div>
+
+    <!-- Pagination Navigation -->
+    {
+      page.lastPage > 1 && (
+        <nav class="pagination" aria-label="Seitennavigation">
+          <a
+            href={page.url.prev ?? "#"}
+            class={`pagination-btn ${!page.url.prev ? "disabled" : ""}`}
+            aria-disabled={!page.url.prev}
+          >
+            ← Neuer
+          </a>
+
+          <div class="pagination-pages">
+            {Array.from({ length: page.lastPage }, (_, i) => i + 1).map(
+              (num) => (
+                <a
+                  href={num === 1 ? "/news/" : `/news/${num}/`}
+                  class={`pagination-page ${num === page.currentPage ? "active" : ""}`}
+                >
+                  {num}
+                </a>
+              ),
+            )}
+          </div>
+
+          <a
+            href={page.url.next ?? "#"}
+            class={`pagination-btn ${!page.url.next ? "disabled" : ""}`}
+            aria-disabled={!page.url.next}
+          >
+            Älter →
+          </a>
+        </nav>
+      )
+    }
+
+    <!-- Seitenanzeige -->
+    {
+      page.lastPage > 1 && (
+        <p class="pagination-info">
+          Seite {page.currentPage} von {page.lastPage} · {page.total} Einträge
+          gesamt
+        </p>
+      )
+    }
   </main>
 </BaseLayout>
 
@@ -69,7 +127,6 @@ const categoryColors: Record<string, string> = {
   .page-header {
     margin-bottom: 3rem;
   }
-
   .page-label {
     font-family: var(--pdq-font-mono);
     font-size: 0.75rem;
@@ -79,7 +136,6 @@ const categoryColors: Record<string, string> = {
     display: block;
     margin-bottom: 0.5rem;
   }
-
   .page-header h1 {
     font-family: var(--pdq-font-mono);
     font-size: 2.25rem;
@@ -87,7 +143,6 @@ const categoryColors: Record<string, string> = {
     color: var(--pdq-text-primary);
     margin: 0 0 0.75rem;
   }
-
   .page-subtitle {
     font-family: var(--pdq-font-mono);
     font-size: 0.95rem;
@@ -104,6 +159,7 @@ const categoryColors: Record<string, string> = {
     border: 1px solid var(--pdq-border-default);
     border-radius: 12px;
     overflow: hidden;
+    margin-bottom: 2.5rem;
   }
 
   /* News Card */
@@ -115,11 +171,9 @@ const categoryColors: Record<string, string> = {
     transition: background 0.15s ease;
     border-bottom: 1px solid var(--pdq-border-subtle);
   }
-
   .news-card:last-child {
     border-bottom: none;
   }
-
   .news-card:hover {
     background: var(--pdq-bg-overlay);
   }
@@ -131,20 +185,17 @@ const categoryColors: Record<string, string> = {
     margin-bottom: 0.6rem;
     flex-wrap: wrap;
   }
-
   .news-source {
     font-family: var(--pdq-font-mono);
     font-size: 0.75rem;
     color: var(--pdq-text-muted);
   }
-
   .news-date {
     font-family: var(--pdq-font-mono);
     font-size: 0.75rem;
     color: var(--pdq-text-muted);
     margin-left: auto;
   }
-
   .news-card-title {
     font-family: var(--pdq-font-mono);
     font-size: 1.05rem;
@@ -153,7 +204,6 @@ const categoryColors: Record<string, string> = {
     margin: 0 0 0.5rem;
     line-height: 1.4;
   }
-
   .news-card-summary {
     font-family: var(--pdq-font-mono);
     font-size: 0.875rem;
@@ -161,7 +211,6 @@ const categoryColors: Record<string, string> = {
     line-height: 1.6;
     margin: 0 0 0.75rem;
   }
-
   .news-read-more {
     font-family: var(--pdq-font-mono);
     font-size: 0.8rem;
@@ -179,23 +228,88 @@ const categoryColors: Record<string, string> = {
     padding: 0.25rem 0.6rem;
     border-radius: 4px;
   }
-
   .badge-python {
     background: var(--pdq-terracotta-dim);
     color: var(--pdq-terracotta-light);
     border: 1px solid rgba(193, 99, 79, 0.3);
   }
-
   .badge-godot {
     background: var(--pdq-sand-dim);
     color: var(--pdq-sand);
     border: 1px solid rgba(212, 169, 106, 0.3);
   }
-
   .badge-coding {
     background: rgba(255, 107, 53, 0.1);
     color: var(--pdq-orange);
     border: 1px solid rgba(255, 107, 53, 0.25);
+  }
+
+  /* Pagination */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .pagination-btn {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.85rem;
+    color: var(--pdq-text-secondary);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 8px;
+    background: var(--pdq-bg-elevated);
+    transition: all 0.15s;
+  }
+  .pagination-btn:hover:not(.disabled) {
+    background: var(--pdq-bg-overlay);
+    color: var(--pdq-orange);
+    border-color: var(--pdq-orange);
+  }
+  .pagination-btn.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .pagination-pages {
+    display: flex;
+    gap: 0.35rem;
+  }
+  .pagination-page {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--pdq-text-secondary);
+    text-decoration: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 8px;
+    background: var(--pdq-bg-elevated);
+    transition: all 0.15s;
+  }
+  .pagination-page:hover {
+    background: var(--pdq-bg-overlay);
+    color: var(--pdq-orange);
+    border-color: var(--pdq-orange);
+  }
+  .pagination-page.active {
+    background: var(--pdq-orange);
+    color: #fff;
+    border-color: var(--pdq-orange);
+  }
+  .pagination-info {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.78rem;
+    color: var(--pdq-text-muted);
+    text-align: center;
+    margin: 0;
   }
 
   /* Responsive */
@@ -203,6 +317,10 @@ const categoryColors: Record<string, string> = {
     .news-date {
       margin-left: 0;
       width: 100%;
+    }
+    .pagination-btn {
+      padding: 0.4rem 0.7rem;
+      font-size: 0.8rem;
     }
   }
 </style>
