@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhilsDevQuest – Wartungsmodus</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Fraunces:ital,wght@1,700&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --pdq-bg-base:            #12100E;
+      --pdq-bg-elevated:        #1C1916;
+      --pdq-bg-overlay:         #252018;
+      --pdq-bg-subtle:          #2E2820;
+      --pdq-terracotta:         #C1634F;
+      --pdq-terracotta-light:   #D4816B;
+      --pdq-terracotta-dim:     rgba(193,99,79,0.18);
+      --pdq-sand:               #D4A96A;
+      --pdq-sand-light:         #E3C08A;
+      --pdq-sand-dim:           rgba(212,169,106,0.15);
+      --pdq-cream:              #E8C99A;
+      --pdq-orange:             #FF6B35;
+      --pdq-text-primary:       #E8E0D8;
+      --pdq-text-secondary:     #B5A99A;
+      --pdq-text-muted:         #7A6E63;
+      --pdq-border-default:     rgba(232,224,216,0.12);
+      --pdq-border-strong:      rgba(232,224,216,0.22);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--pdq-bg-base);
+      color: var(--pdq-text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Hintergrund-Glow wie auf der echten Site */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: -10%;
+      width: 50vw;
+      height: 50vw;
+      background: radial-gradient(circle, rgba(193,99,79,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -20%;
+      right: -10%;
+      width: 40vw;
+      height: 40vw;
+      background: radial-gradient(circle, rgba(212,169,106,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .card {
+      background: var(--pdq-bg-elevated);
+      border: 1px solid var(--pdq-border-default);
+      border-radius: 12px;
+      padding: 3rem 3.5rem;
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Terracotta-Akzentlinie oben */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--pdq-terracotta), var(--pdq-sand));
+      border-radius: 12px 12px 0 0;
+    }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--pdq-terracotta);
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: var(--pdq-text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--pdq-terracotta-dim);
+      border: 1px solid rgba(193,99,79,0.3);
+      color: var(--pdq-terracotta-light);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.75rem;
+    }
+
+    .status-badge::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background: var(--pdq-terracotta);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--pdq-text-primary);
+      line-height: 1.3;
+      margin-bottom: 1rem;
+    }
+
+    h1 span {
+      color: var(--pdq-sand);
+    }
+
+    p {
+      color: var(--pdq-text-secondary);
+      font-size: 0.875rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--pdq-border-default);
+      margin: 2rem 0;
+    }
+
+    .social-label {
+      font-size: 0.75rem;
+      color: var(--pdq-text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--pdq-cream);
+      text-decoration: none;
+      font-size: 0.8rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--pdq-border-default);
+      border-radius: 6px;
+      background: var(--pdq-bg-overlay);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .social-links a:hover {
+      border-color: var(--pdq-terracotta);
+      color: var(--pdq-terracotta-light);
+    }
+
+    .footer-note {
+      margin-top: 2.5rem;
+      font-size: 0.7rem;
+      color: var(--pdq-text-muted);
+    }
+
+    /* Code-Deko unten */
+    .code-deco {
+      margin-top: 2rem;
+      text-align: left;
+      background: var(--pdq-bg-overlay);
+      border: 1px solid var(--pdq-border-default);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-size: 0.75rem;
+      line-height: 1.8;
+    }
+
+    .c-comment  { color: rgba(232,224,216,0.28); }
+    .c-keyword  { color: #D4A96A; }
+    .c-string   { color: #A8C5A0; }
+    .c-number   { color: #E8C99A; }
+    .c-builtin  { color: #C1634F; }
+
+    @media (max-width: 520px) {
+      .card { padding: 2rem 1.5rem; }
+      h1 { font-size: 1.3rem; }
+      .social-links { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="logo">PhilsDevQuest</div>
+
+    <div class="status-badge">Wartungsmodus</div>
+
+    <h1>Gleich geht's <span>weiter!</span></h1>
+
+    <p>
+      Die Website wird gerade überarbeitet und bekommt ein paar neue Features.<br />
+      Schau bald wieder vorbei — es lohnt sich!
+    </p>
+
+    <div class="code-deco">
+      <span class="c-comment"># Was gerade passiert:</span><br />
+      <span class="c-keyword">status</span> = <span class="c-string">"Neue Features werden gebaut"</span><br />
+      <span class="c-keyword">eta</span>    = <span class="c-string">"Bald™"</span><br />
+      <span class="c-builtin">print</span>(<span class="c-string">"Danke für deine Geduld!"</span>)
+    </div>
+
+    <hr class="divider" />
+
+    <div class="social-label">In der Zwischenzeit</div>
+    <div class="social-links">
+      <a href="https://www.instagram.com/philsdevquest" target="_blank" rel="noopener">
+        Instagram
+      </a>
+      <a href="https://x.com/philsdevquest" target="_blank" rel="noopener">
+        X / Twitter
+      </a>
+    </div>
+
+    <div class="footer-note">philsdevquest.de · &copy; 2026</div>
+  </div>
+
+</body>
+</html>
