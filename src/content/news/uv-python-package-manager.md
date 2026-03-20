@@ -4,4 +4,5 @@ summary: "uv — der neue Python Package Manager in Rust — wird immer beliebte
 url: "https://github.com/astral-sh/uv"
 category: Python
 date: 2026-02-25
+description: "Kurze Beschreibung des Artikels hier"
 ---
