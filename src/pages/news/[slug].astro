@@ -26,7 +26,11 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
 });
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.summary}>
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  ogImage={entry.data.og_image}
+>
   <main class="news-detail">
     <!-- Breadcrumb -->
     <nav class="breadcrumb">
@@ -60,6 +64,19 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
         )
       }
     </header>
+
+    <!-- Beitragsbild -->
+    {
+      entry.data.og_image && (
+        <div class="article-hero-image">
+          <img
+            src={entry.data.og_image}
+            alt={entry.data.title}
+            loading="lazy"
+          />
+        </div>
+      )
+    }
 
     <!-- Trennlinie -->
     <hr class="article-divider" />
@@ -179,6 +196,20 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
     border: 1px solid var(--pdq-border-subtle);
     padding: 0.2rem 0.5rem;
     border-radius: 4px;
+  }
+
+  /* Beitragsbild */
+  .article-hero-image {
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--pdq-border-default);
+  }
+
+  .article-hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
   /* Divider */

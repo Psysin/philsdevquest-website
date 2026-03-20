@@ -3,4 +3,4 @@
 # WARTUNGSMODUS EIN:  Die nächste Zeile auskommentieren (# entfernen), dann pushen
 # WARTUNGSMODUS AUS:  Die nächste Zeile auskommentieren (# hinzufügen), dann pushen
 #
- /* /maintenance.html 200!
+# /* /maintenance.html 200!

@@ -25,12 +25,14 @@ const blog = defineCollection({
 const news = defineCollection({
   schema: z.object({
     title: z.string(),                              // Überschrift des Artikels
-    summary: z.string().max(200),                   // Kurzzusammenfassung für Übersichtsseite (~150 Zeichen)
+    description: z.string().max(155),               // SEO Meta-Description
+    summary: z.string().max(400),                   // Kurzzusammenfassung für Übersichtsseite
     url: z.string().url(),                          // Link zur Originalquelle
-    source: z.string().optional(),                  // Quellenname, z.B. "Planet Python", "Godot Blog"
+    source: z.string().optional(),                  // Quellenname, z.B. "Planet Python"
     category: z.enum(['Python', 'Godot', 'Coding']),
-    tags: z.array(z.string()).optional(),           // z.B. ["pip", "performance", "packaging"]
+    tags: z.array(z.string()).default([]),           // z.B. ["pip", "performance", "packaging"]
     date: z.date(),
+    og_image: z.string().optional(),                // Beitragsbild-URL (Twitter 16:9, auch OG-Image)
   })
 });
 
