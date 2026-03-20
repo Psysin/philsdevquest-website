@@ -4,4 +4,5 @@ summary: "Godot 4.4 ist released: Bessere Performance beim Rendering, überarbei
 url: "https://godotengine.org/releases/4.4/"
 category: Godot
 date: 2026-02-18
-description: "Kurze Beschreibung des Artikels hier"
+description: "Godot 4.4 bringt Performance-Verbesserungen, einen überarbeiteten AnimationTree und zahlreiche Bug-Fixes."
+---
