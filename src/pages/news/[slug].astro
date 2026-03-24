@@ -53,11 +53,7 @@ const localImageUrl = entry.data.og_image?.replace(
         <span class={`badge ${categoryColors[entry.data.category] ?? ""}`}>
           {entry.data.category}
         </span>
-        {
-          entry.data.source && (
-            <span class="source-label">via {entry.data.source}</span>
-          )
-        }
+
         <span class="article-date">
           {dateFormatted} · {readingTime} Min. Lesezeit
         </span>
@@ -143,12 +139,6 @@ const localImageUrl = entry.data.og_image?.replace(
     gap: 0.75rem;
     margin-bottom: 1rem;
     flex-wrap: wrap;
-  }
-
-  .source-label {
-    font-family: var(--pdq-font-mono);
-    font-size: 0.8rem;
-    color: var(--pdq-text-muted);
   }
 
   .article-date {

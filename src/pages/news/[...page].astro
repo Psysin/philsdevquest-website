@@ -54,9 +54,7 @@ const categoryColors: Record<string, string> = {
                 >
                   {entry.data.category}
                 </span>
-                {entry.data.source && (
-                  <span class="news-source">via {entry.data.source}</span>
-                )}
+
                 <span class="news-date">{dateFormatted}</span>
               </div>
               <h2 class="news-card-title">{entry.data.title}</h2>
@@ -185,11 +183,7 @@ const categoryColors: Record<string, string> = {
     margin-bottom: 0.6rem;
     flex-wrap: wrap;
   }
-  .news-source {
-    font-family: var(--pdq-font-mono);
-    font-size: 0.75rem;
-    color: var(--pdq-text-muted);
-  }
+
   .news-date {
     font-family: var(--pdq-font-mono);
     font-size: 0.75rem;
