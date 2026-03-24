@@ -12,7 +12,7 @@ tags: [
   "mobile",
   "fehlerbehebung"
 ]
-date: 2026-03-24
+date: 2026-03-20
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-24-godot-452-wichtiges-update-fuer-mehr-stabilitaet-auf-android.jpg"
 ---
 

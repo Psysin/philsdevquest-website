@@ -12,7 +12,7 @@ tags: [
   "godot 4",
   "fehlerbehebung"
 ]
-date: 2026-03-24
+date: 2026-02-20
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-24-godot-461-erschienen-was-das-wartungs-update-fuer-dich-bedeu.jpg"
 ---
 
