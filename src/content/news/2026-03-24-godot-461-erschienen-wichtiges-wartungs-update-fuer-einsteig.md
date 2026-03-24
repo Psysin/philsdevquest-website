@@ -12,7 +12,7 @@ tags: [
   "godot 4",
   "anfänger"
 ]
-date: 2026-03-24
+date: 2025-12-24
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-24-godot-461-erschienen-wichtiges-wartungs-update-fuer-einsteig.jpg"
 ---
 

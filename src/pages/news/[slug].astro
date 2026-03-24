@@ -28,6 +28,12 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
 // Lesezeit berechnen (ca. 200 Wörter/min)
 const wordCount = entry.body.split(/\s+/).length;
 const readingTime = Math.max(1, Math.round(wordCount / 200));
+
+// Lokale Bild-URL für <img> Tag (raw.githubusercontent → eigene Domain)
+const localImageUrl = entry.data.og_image?.replace(
+  "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public",
+  "",
+);
 ---
 
 <BaseLayout
@@ -62,10 +68,10 @@ const readingTime = Math.max(1, Math.round(wordCount / 200));
 
     <!-- Beitragsbild (vor Summary) -->
     {
-      entry.data.og_image && (
+      localImageUrl && (
         <div class="article-hero-image">
           <img
-            src={entry.data.og_image}
+            src={localImageUrl}
             alt={entry.data.image_alt_text ?? entry.data.title}
             loading="eager"
           />

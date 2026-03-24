@@ -1,0 +1,508 @@
+---
+// src/pages/cheatsheets.astro
+// Landingpage für Python Cheat Sheet Downloads
+---
+
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Python Cheat Sheets – Kostenloser Download | PhilsDevQuest</title>
+    <meta
+      name="description"
+      content="Kostenlose Python Cheat Sheets zum Download – Anfänger und Fortgeschrittene. Alle wichtigen Konzepte auf einen Blick, im PhilsDevQuest Earthy Warm Design."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Fraunces:ital,wght@0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-base: #12100e;
+        --bg-elevated: #1c1916;
+        --bg-overlay: #252018;
+        --terracotta: #c1634f;
+        --terracotta-l: #d4816b;
+        --sand: #d4a96a;
+        --cream: #e8c99a;
+        --orange: #ff6b35;
+        --text-primary: #e8e0d8;
+        --text-sec: #b5a99a;
+        --text-muted: #7a6e63;
+        --border: rgba(232, 224, 216, 0.1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--bg-base);
+        color: var(--text-primary);
+        font-family: "JetBrains Mono", monospace;
+        min-height: 100vh;
+      }
+
+      /* ── Hero ── */
+      .hero {
+        text-align: center;
+        padding: 64px 24px 48px;
+        max-width: 720px;
+        margin: 0 auto;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        background: rgba(193, 99, 79, 0.15);
+        color: var(--terracotta);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 6px 14px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(193, 99, 79, 0.25);
+      }
+
+      .hero h1 {
+        font-family: "Fraunces", serif;
+        font-style: italic;
+        font-size: clamp(36px, 6vw, 54px);
+        font-weight: 400;
+        color: var(--text-primary);
+        line-height: 1.15;
+        margin-bottom: 16px;
+      }
+
+      .hero h1 em {
+        color: var(--terracotta);
+        font-style: inherit;
+      }
+
+      .hero p {
+        font-size: 15px;
+        color: var(--text-sec);
+        line-height: 1.7;
+        max-width: 540px;
+        margin: 0 auto 12px;
+      }
+
+      .hero-note {
+        font-size: 12px;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .hero-note::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background: #4caf50;
+        border-radius: 50%;
+      }
+
+      /* ── Divider ── */
+      .divider {
+        max-width: 800px;
+        margin: 0 auto 48px;
+        border: none;
+        border-top: 1px solid var(--border);
+      }
+
+      /* ── Cards Container ── */
+      .cards {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 0 24px 80px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+
+      @media (max-width: 640px) {
+        .cards {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ── Download Card ── */
+      .card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        transition:
+          border-color 0.2s,
+          transform 0.2s;
+      }
+
+      .card:hover {
+        border-color: rgba(193, 99, 79, 0.35);
+        transform: translateY(-2px);
+      }
+
+      .card-header {
+        padding: 24px 24px 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .card-level {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      .card-level.beginner {
+        color: var(--terracotta);
+      }
+      .card-level.advanced {
+        color: var(--sand);
+      }
+
+      .card h2 {
+        font-family: "Caveat", cursive;
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+      }
+
+      .card p {
+        font-size: 12.5px;
+        color: var(--text-sec);
+        line-height: 1.6;
+      }
+
+      .card-body {
+        padding: 20px 24px;
+      }
+
+      /* Topics list */
+      .topics {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        margin-bottom: 24px;
+      }
+
+      .topic {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 12px;
+        color: var(--text-sec);
+      }
+
+      .topic-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .beginner-dot {
+        background: var(--terracotta);
+      }
+      .advanced-dot {
+        background: var(--sand);
+      }
+
+      /* Meta info */
+      .card-meta {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 20px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .meta-label {
+        font-size: 10px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .meta-value {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      /* Download button */
+      .btn-download {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 13px 20px;
+        border-radius: 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: opacity 0.2s;
+        cursor: pointer;
+        border: none;
+      }
+
+      .btn-download:hover {
+        opacity: 0.88;
+      }
+
+      .btn-beginner {
+        background: var(--terracotta);
+        color: #12100e;
+      }
+
+      .btn-advanced {
+        background: var(--sand);
+        color: #12100e;
+      }
+
+      .btn-icon {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+      }
+
+      /* ── Info Section ── */
+      .info {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 24px 64px;
+        text-align: center;
+      }
+
+      .info h3 {
+        font-family: "Fraunces", serif;
+        font-style: italic;
+        font-size: 24px;
+        font-weight: 400;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+      }
+
+      .info p {
+        font-size: 13px;
+        color: var(--text-muted);
+        line-height: 1.7;
+        margin-bottom: 8px;
+      }
+
+      .info code {
+        background: rgba(232, 224, 216, 0.08);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: var(--cream);
+      }
+
+      /* ── Back link ── */
+      .back {
+        display: block;
+        text-align: center;
+        padding: 0 0 40px;
+        font-size: 13px;
+        color: var(--text-muted);
+        text-decoration: none;
+      }
+      .back:hover {
+        color: var(--terracotta);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-badge">🎁 Kostenloser Download</div>
+      <h1><em>Python Cheat Sheets</em><br />Alle Konzepte auf einen Blick</h1>
+      <p>
+        Kompakte Referenzkarten im PhilsDevQuest Design — von Variablen bis
+        Context Manager. Einfach herunterladen, ausdrucken, und griffbereit
+        haben.
+      </p>
+      <div class="hero-note">
+        Kostenlos · Kein Account nötig · Teilen erwünscht
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- Cards -->
+    <div class="cards">
+      <!-- Anfänger -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-level beginner">🐍 Anfänger</div>
+          <h2>Python Grundlagen</h2>
+          <p>
+            Alles was du für den Einstieg brauchst — von Variablen bis Module.
+            Perfekt zum Ausdrucken und neben den Monitor legen.
+          </p>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <div class="meta-item">
+              <span class="meta-label">Seiten</span>
+              <span class="meta-value">3</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Themen</span>
+              <span class="meta-value">12</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Sprache</span>
+              <span class="meta-value">Deutsch</span>
+            </div>
+          </div>
+          <div class="topics">
+            <div class="topic">
+              <span class="topic-dot beginner-dot"></span>Variablen &amp;
+              Datentypen
+            </div>
+            <div class="topic">
+              <span class="topic-dot beginner-dot"></span>Strings &amp; Listen
+            </div>
+            <div class="topic">
+              <span class="topic-dot beginner-dot"></span>Bedingungen &amp;
+              Schleifen
+            </div>
+            <div class="topic">
+              <span class="topic-dot beginner-dot"></span>Funktionen &amp;
+              Dictionaries
+            </div>
+            <div class="topic">
+              <span class="topic-dot beginner-dot"></span>Fehlerbehandlung &amp;
+              Module
+            </div>
+            <div class="topic">
+              <span class="topic-dot beginner-dot"></span>Operatoren &amp;
+              Built-ins
+            </div>
+          </div>
+          <a
+            href="/downloads/python-cheatsheet-anfaenger.pdf"
+            download
+            class="btn-download btn-beginner"
+          >
+            <svg
+              class="btn-icon"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M12 16l-6-6h4V4h4v6h4l-6 6zm-8 2h16v2H4v-2z"></path>
+            </svg>
+            PDF herunterladen
+          </a>
+        </div>
+      </div>
+
+      <!-- Fortgeschritten -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-level advanced">🚀 Fortgeschritten</div>
+          <h2>Python Vertiefung</h2>
+          <p>
+            Für alle die über die Grundlagen hinausgehen wollen — von List
+            Comprehensions bis Context Manager. Mit vollständigen
+            Code-Beispielen.
+          </p>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <div class="meta-item">
+              <span class="meta-label">Seiten</span>
+              <span class="meta-value">3</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Themen</span>
+              <span class="meta-value">12</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Sprache</span>
+              <span class="meta-value">Deutsch</span>
+            </div>
+          </div>
+          <div class="topics">
+            <div class="topic">
+              <span class="topic-dot advanced-dot"></span>List Comprehensions
+              &amp; Lambda
+            </div>
+            <div class="topic">
+              <span class="topic-dot advanced-dot"></span>*args, **kwargs &amp;
+              Klassen
+            </div>
+            <div class="topic">
+              <span class="topic-dot advanced-dot"></span>Vererbung &amp;
+              Decorators
+            </div>
+            <div class="topic">
+              <span class="topic-dot advanced-dot"></span>Generators &amp; File
+              I/O
+            </div>
+            <div class="topic">
+              <span class="topic-dot advanced-dot"></span>Dataclasses &amp; Dict
+              Tricks
+            </div>
+            <div class="topic">
+              <span class="topic-dot advanced-dot"></span>f-Strings &amp;
+              Context Manager
+            </div>
+          </div>
+          <a
+            href="/downloads/python-cheatsheet-fortgeschritten.pdf"
+            download
+            class="btn-download btn-advanced"
+          >
+            <svg
+              class="btn-icon"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M12 16l-6-6h4V4h4v6h4l-6 6zm-8 2h16v2H4v-2z"></path>
+            </svg>
+            PDF herunterladen
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <section class="info">
+      <h3>Wie drucke ich das am besten?</h3>
+      <p>
+        PDF öffnen → Drucken → Papierformat <code>A4</code> → Ränder <code
+          >Keine</code
+        > → Hintergrundgrafiken <code>aktivieren</code>
+      </p>
+      <p>
+        Für den Bildschirm: einfach die PDF-Datei speichern und in jedem
+        PDF-Reader öffnen.
+      </p>
+    </section>
+
+    <a href="/" class="back">← Zurück zur Startseite</a>
+  </body>
+</html>
