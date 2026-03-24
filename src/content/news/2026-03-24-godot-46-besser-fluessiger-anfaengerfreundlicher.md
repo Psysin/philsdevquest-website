@@ -12,7 +12,7 @@ tags: [
   "godot 4",
   "update"
 ]
-date: 2026-01-30
+date: 2026-01-29
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-24-godot-46-besser-fluessiger-anfaengerfreundlicher.jpg"
 ---
 
