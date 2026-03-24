@@ -24,6 +24,10 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
   month: "long",
   year: "numeric",
 });
+
+// Lesezeit berechnen (ca. 200 Wörter/min)
+const wordCount = entry.body.split(/\s+/).length;
+const readingTime = Math.max(1, Math.round(wordCount / 200));
 ---
 
 <BaseLayout
@@ -48,32 +52,37 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
             <span class="source-label">via {entry.data.source}</span>
           )
         }
-        <span class="article-date">{dateFormatted}</span>
+        <span class="article-date">
+          {dateFormatted} · {readingTime} Min. Lesezeit
+        </span>
       </div>
 
       <h1>{entry.data.title}</h1>
-      <p class="article-summary">{entry.data.summary}</p>
-
-      {
-        entry.data.tags && entry.data.tags.length > 0 && (
-          <div class="tag-list">
-            {entry.data.tags.map((tag: string) => (
-              <span class="tag">#{tag}</span>
-            ))}
-          </div>
-        )
-      }
     </header>
 
-    <!-- Beitragsbild -->
+    <!-- Beitragsbild (vor Summary) -->
     {
       entry.data.og_image && (
         <div class="article-hero-image">
           <img
             src={entry.data.og_image}
-            alt={entry.data.title}
-            loading="lazy"
+            alt={entry.data.image_alt_text ?? entry.data.title}
+            loading="eager"
           />
+        </div>
+      )
+    }
+
+    <!-- Summary -->
+    {entry.data.summary && <p class="article-summary">{entry.data.summary}</p>}
+
+    <!-- Tags -->
+    {
+      entry.data.tags && entry.data.tags.length > 0 && (
+        <div class="tag-list">
+          {entry.data.tags.map((tag: string) => (
+            <span class="tag">#{tag}</span>
+          ))}
         </div>
       )
     }
@@ -81,28 +90,10 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
     <!-- Trennlinie -->
     <hr class="article-divider" />
 
-    <!-- Artikel-Body (von n8n generierter Langtext) -->
+    <!-- Artikel-Body -->
     <article class="article-body prose">
       <Content />
     </article>
-
-    <!-- Quelle -->
-    <div class="source-box">
-      <span class="source-box-label">Originalquelle</span>
-      {
-        entry.data.source && (
-          <span class="source-box-name">{entry.data.source}</span>
-        )
-      }
-      <a
-        href={entry.data.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="btn-source"
-      >
-        Zum Originalartikel →
-      </a>
-    </div>
 
     <!-- Back -->
     <div class="back-link">
@@ -137,7 +128,7 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
 
   /* Header */
   .article-header {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   .article-meta {
@@ -167,14 +158,30 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
     font-weight: 700;
     color: var(--pdq-text-primary);
     line-height: 1.35;
-    margin: 0 0 1rem;
+    margin: 0;
   }
 
+  /* Beitragsbild */
+  .article-hero-image {
+    margin-bottom: 1.75rem;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--pdq-border-default);
+  }
+
+  .article-hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Summary — Fraunces italic */
   .article-summary {
-    font-family: var(--pdq-font-mono);
-    font-size: 1rem;
+    font-family: var(--pdq-font-serif, "Fraunces", Georgia, serif);
+    font-style: italic;
+    font-size: 1.05rem;
     color: var(--pdq-text-secondary);
-    line-height: 1.7;
+    line-height: 1.75;
     margin: 0 0 1.25rem;
     padding-left: 1rem;
     border-left: 3px solid var(--pdq-sand);
@@ -185,7 +192,7 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-top: 0.75rem;
+    margin-bottom: 1rem;
   }
 
   .tag {
@@ -198,25 +205,11 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
     border-radius: 4px;
   }
 
-  /* Beitragsbild */
-  .article-hero-image {
-    margin-bottom: 2rem;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid var(--pdq-border-default);
-  }
-
-  .article-hero-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
   /* Divider */
   .article-divider {
     border: none;
     border-top: 1px solid var(--pdq-border-default);
-    margin: 2rem 0;
+    margin: 1.5rem 0 2rem;
   }
 
   /* Prose (Artikel-Body) */
@@ -283,55 +276,11 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
     font-style: italic;
   }
 
-  /* Source Box */
-  .source-box {
-    margin-top: 3rem;
-    padding: 1.5rem;
-    background: var(--pdq-bg-elevated);
-    border: 1px solid var(--pdq-border-default);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .source-box-label {
-    font-family: var(--pdq-font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--pdq-text-muted);
-  }
-
-  .source-box-name {
-    font-family: var(--pdq-font-mono);
-    font-size: 0.875rem;
-    color: var(--pdq-text-secondary);
-    font-weight: 600;
-  }
-
-  .btn-source {
-    margin-left: auto;
-    display: inline-block;
-    padding: 0.6rem 1.25rem;
-    background: var(--pdq-orange);
-    color: #fff;
-    font-family: var(--pdq-font-mono);
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: background 0.15s;
-  }
-
-  .btn-source:hover {
-    background: var(--pdq-orange-dark);
-  }
-
   /* Back Link */
   .back-link {
-    margin-top: 2.5rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--pdq-border-default);
   }
 
   .back-link a {
@@ -383,12 +332,6 @@ const dateFormatted = entry.data.date.toLocaleDateString("de-DE", {
 
     .article-date {
       margin-left: 0;
-    }
-
-    .btn-source {
-      margin-left: 0;
-      width: 100%;
-      text-align: center;
     }
   }
 </style>

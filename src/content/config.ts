@@ -24,15 +24,16 @@ const blog = defineCollection({
 
 const news = defineCollection({
   schema: z.object({
-    title: z.string(),                              // Überschrift des Artikels
-    description: z.string().max(155),               // SEO Meta-Description
-    summary: z.string().max(400),                   // Kurzzusammenfassung für Übersichtsseite
-    url: z.string().url(),                          // Link zur Originalquelle
-    source: z.string().optional(),                  // Quellenname, z.B. "Planet Python"
+    title: z.string(),
+    description: z.string().max(155),
+    summary: z.string().max(400),
+    url: z.string().url(),
+    source: z.string().optional(),
     category: z.enum(['Python', 'Godot', 'Coding']),
-    tags: z.array(z.string()).default([]),           // z.B. ["pip", "performance", "packaging"]
+    tags: z.array(z.string()).default([]),
     date: z.date(),
-    og_image: z.string().optional(),                // Beitragsbild-URL (Twitter 16:9, auch OG-Image)
+    og_image: z.string().optional(),
+    image_alt_text: z.string().optional(),          // ← NEU: Alt-Text für Beitragsbild
   })
 });
 
