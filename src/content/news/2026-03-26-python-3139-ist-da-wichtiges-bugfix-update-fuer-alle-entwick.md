@@ -12,7 +12,7 @@ tags: [
   "python 3.13",
   "entwicklungsumgebung"
 ]
-date: 2026-03-26
+date: 2025-10-26
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-26-python-3139-ist-da-wichtiges-bugfix-update-fuer-alle-entwick.jpg"
 ---
 

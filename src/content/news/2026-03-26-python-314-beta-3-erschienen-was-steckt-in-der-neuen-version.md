@@ -12,7 +12,7 @@ tags: [
   "release",
   "neuigkeiten"
 ]
-date: 2026-03-26
+date: 2025-07-20
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-26-python-314-beta-3-erschienen-was-steckt-in-der-neuen-version.jpg"
 ---
 

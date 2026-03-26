@@ -12,7 +12,7 @@ tags: [
   "python 3.12",
   "anfänger"
 ]
-date: 2026-03-26
+date: 2026-03-04
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-26-python-310-311-und-312-wichtige-sicherheits-updates-jetzt-ve.jpg"
 ---
 

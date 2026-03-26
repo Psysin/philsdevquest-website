@@ -12,7 +12,7 @@ tags: [
   "release",
   "versionierung"
 ]
-date: 2026-03-26
+date: 2026-03-11
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-26-python-315-alpha-7-ein-frueher-blick-auf-die-naechste-python.jpg"
 ---
 

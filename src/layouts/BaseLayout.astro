@@ -89,5 +89,17 @@ const ogImageAbsolute = ogImage.startsWith("http")
       <slot />
     </main>
     <Footer />
+    <script>
+      // Externe Links immer in neuem Tab öffnen
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("a[href]").forEach((link) => {
+          const anchor = link as HTMLAnchorElement;
+          if (anchor.hostname && anchor.hostname !== window.location.hostname) {
+            anchor.setAttribute("target", "_blank");
+            anchor.setAttribute("rel", "noopener noreferrer");
+          }
+        });
+      });
+    </script>
   </body>
 </html>

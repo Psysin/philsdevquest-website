@@ -12,7 +12,7 @@ tags: [
   "open source",
   "versionierung"
 ]
-date: 2026-03-26
+date: 2026-01-15
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-26-python-315-alpha-4-wenn-selbst-grosse-projekte-einen-fehler-.jpg"
 ---
 

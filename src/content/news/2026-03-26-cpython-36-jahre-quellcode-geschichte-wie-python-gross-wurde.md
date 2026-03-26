@@ -12,7 +12,7 @@ tags: [
   "programmiergeschichte",
   "python-community"
 ]
-date: 2026-03-26
+date: 2026-03-10
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-26-cpython-36-jahre-quellcode-geschichte-wie-python-gross-wurde.jpg"
 ---
 

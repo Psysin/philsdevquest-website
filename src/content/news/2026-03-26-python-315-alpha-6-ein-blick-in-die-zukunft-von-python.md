@@ -12,7 +12,7 @@ tags: [
   "neuigkeiten",
   "entwicklung"
 ]
-date: 2026-03-26
+date: 2026-02-12
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-26-python-315-alpha-6-ein-blick-in-die-zukunft-von-python.jpg"
 ---
 

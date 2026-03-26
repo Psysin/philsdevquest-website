@@ -12,7 +12,7 @@ tags: [
   "cve",
   "anfänger"
 ]
-date: 2026-03-26
+date: 2025-06-10
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-26-fuenf-python-versionen-auf-einmal-wichtige-sicherheitsupdate.jpg"
 ---
 

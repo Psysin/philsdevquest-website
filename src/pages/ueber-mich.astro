@@ -1,27 +1,51 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+// Neueste Blog-Artikel (max. 2)
+const allBlog = await getCollection("blog", ({ data }) => !data.draft);
+allBlog.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+const latestBlog = allBlog.slice(0, 2);
+
+// Neueste Devlog-Einträge (max. 2)
+const allDevlog = await getCollection("devlog", ({ data }) => !data.draft);
+allDevlog.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+const latestDevlog = allDevlog.slice(0, 2);
+
+const tagLabels: Record<string, string> = {
+  python: "Python",
+  godot: "Godot",
+  allgemein: "Allgemein",
+  tools: "Tools",
+};
+const projectIcons: Record<string, string> = {
+  "Python Lernreise": "🐍",
+  Godot: "🎮",
+};
 ---
 
 <BaseLayout
   title="Über mich"
-  description="Ich bin Philipp — Projektmanager, Lernender, und der Kopf hinter PhilsDevQuest. Python und Godot für Einsteiger, von Anfänger zu Anfänger."
+  description="Ich bin Philipp — Projektmanager, Hobby-Dev und der Kopf hinter PhilsDevQuest. Python und Godot für Indie Game Devs und Anfänger."
 >
   <!-- ─── HERO ─────────────────────────────────────────────── -->
   <section class="about-hero">
     <div class="about-hero__inner">
-      <p class="about-hero__kicker">Themen für Anfänger</p>
+      <p class="about-hero__kicker">Der Mensch hinter PhilsDevQuest</p>
       <h1 class="about-hero__headline">Über mich</h1>
       <p class="about-hero__intro">
-        Ich bin Philipp in meiner freien Zeit tauche ich Schritt für Schritt in
-        Programmierung und Game Development ein.
+        Ich bin Philipp. Tagsüber arbeite ich Vollzeit als Projektmanager,
+        abends sitze ich an meinem Schreibtisch und lerne programmieren.
+        Dazwischen liegt eine Familie, begrenzte Zeit und der aufrichtige
+        Wunsch, endlich tiefer in diese Themen einzusteigen als bisher.
       </p>
       <p class="about-hero__intro">
-        Zeit ist bei mir wie wahrscheinlich bei vielen, eher knapp. Genau
-        deshalb möchte ich Inhalte bauen, die <strong
-          >kompakt, verständlich</strong
-        > und <strong>praxisnah</strong> sind. Nicht „perfekt von Anfang an", sondern
-        so, wie man wirklich lernt: mit kleinen Projekten, echten Problemen, Lösungen,
-        die funktionieren und dem Gefühl, wieder ein Stück weitergekommen zu sein.
+        PhilsDevQuest ist mein Versuch, beides miteinander zu verbinden: das
+        Lernen und das Festhalten was ich dabei erlebe.
       </p>
     </div>
   </section>
@@ -29,122 +53,151 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <!-- ─── MAIN CONTENT ──────────────────────────────────────── -->
   <section class="about-main">
     <div class="about-main__inner">
-      <!-- Was dich erwartet -->
+      <!-- Meine Geschichte -->
       <div class="about-block">
-        <h2 class="about-block__title">Was dich bei PhilsDevQuest erwartet</h2>
+        <h2 class="about-block__title">Meine Geschichte</h2>
         <p class="about-block__text">
-          PhilsDevQuest ist mein persönlicher Lern- und Tech-Hub. Ich sammle
-          hier alles, was mir beim Einstieg in Godot, GDScript, Python und
-          angrenzende Themen hilft und bereite es so auf, dass du es als
-          Einsteiger direkt nutzen kannst.
+          Ich habe zwei Fernkurse absolviert — Frontend-Entwicklung und
+          Fachinformatiker für Anwendungsentwicklung. Beide abgeschlossen, beide
+          bezahlt, beide irgendwie folgenlos. Der eine hat mich inhaltlich nicht
+          gepackt, beim anderen fehlte danach die Struktur um weiterzumachen.
         </p>
         <p class="about-block__text">
-          Wenn du gerade startest (oder nach einer Pause wieder reinkommen
-          willst), bist du hier genau richtig.
+          Dieses Muster kenne ich von mir. Anfangen, eine Weile dranbleiben,
+          dann schleicht sich der Alltag rein. PhilsDevQuest ist mein
+          Gegenmodell: Wenn ich aufschreibe was ich lerne und es mit anderen
+          teile, ist es schwerer aufzuhören. Die Öffentlichkeit hält mich
+          ehrlicher als jede Disziplin.
         </p>
-
-        <ul class="about-list">
-          <li>
-            <span class="about-list__icon">📖</span>
-            <span
-              ><strong>Einsteigerfreundliche Guides & Erklärungen</strong> rund um
-              Godot, GDScript und Python</span
-            >
-          </li>
-          <li>
-            <span class="about-list__icon">🛠</span>
-            <span
-              ><strong>Kleine Tools & Mini-Projekte</strong>, die dir Zeit
-              sparen oder Dinge vereinfachen</span
-            >
-          </li>
-          <li>
-            <span class="about-list__icon">📰</span>
-            <span
-              ><strong>News & Updates</strong>, aber gefiltert: nur das, was für
-              Lernende und Solo-Devs wirklich relevant ist</span
-            >
-          </li>
-          <li>
-            <span class="about-list__icon">🔗</span>
-            <span
-              ><strong>Ressourcen & Setups</strong>, die sich bewährt haben</span
-            >
-          </li>
-          <li>
-            <span class="about-list__icon">💪</span>
-            <span
-              ><strong>Motivation & Dranbleiben</strong>: realistisch bleiben,
-              Routinen finden, Fortschritt sichtbar machen</span
-            >
-          </li>
-        </ul>
+        <p class="about-block__text">
+          Ich lerne Python, arbeite mich in Godot ein und baue dabei kleine
+          Projekte die mir selbst nützen. Was ich dabei entdecke — was klappt,
+          was nicht, was mich überrascht — teile ich hier.
+        </p>
       </div>
 
-      <!-- Themen-Schwerpunkte -->
+      <!-- Warum Python & Godot -->
       <div class="about-block">
-        <h2 class="about-block__title">Meine Themen-Schwerpunkte</h2>
-        <p class="about-block__text">
-          Ich baue die Seite so auf, dass du schnell findest, was du gerade
-          brauchst egal ob du lernen, ein Problem lösen oder dein Setup
-          verbessern willst.
-        </p>
-
+        <h2 class="about-block__title">Warum Python & Godot</h2>
         <div class="about-topics">
           <div class="about-topic about-topic--python">
             <span class="about-topic__icon">🐍</span>
             <div>
               <p class="about-topic__label">Python</p>
               <p class="about-topic__desc">
-                Grundlagen festigen, kleine Tools bauen, praktische Automationen
+                Lesbar, strukturiert, riesiges Ökosystem. Für jemanden der
+                grundlegende Konzepte lernen will der direkteste Weg. Und
+                GDScript in Godot ist Python sehr ähnlich — einmal lernen,
+                zweimal anwenden.
               </p>
             </div>
           </div>
           <div class="about-topic about-topic--godot">
             <span class="about-topic__icon">🎮</span>
             <div>
-              <p class="about-topic__label">Godot & GDScript</p>
+              <p class="about-topic__label">Godot</p>
               <p class="about-topic__desc">
-                Einstieg, Workflows, typische Stolperfallen, kleine
-                Game-Dev-Bausteine
+                Open Source, nicht überladen, schnell zu verstehen. Für kleine
+                Projekte stark genug, für ambitioniertere Ideen ebenfalls. Und
+                niemand kann morgen die Lizenzbedingungen ändern.
               </p>
             </div>
           </div>
           <div class="about-topic about-topic--gamedev">
             <span class="about-topic__icon">🕹</span>
             <div>
-              <p class="about-topic__label">Game Dev als Solo-Dev</p>
+              <p class="about-topic__label">Indie Game Dev</p>
               <p class="about-topic__desc">
-                Pragmatisch denken, klein anfangen, iterativ verbessern
+                Klein anfangen, iterativ verbessern. Kein Triple-A-Anspruch,
+                kein Team — eine Person mit ein paar Abendstunden pro Woche und
+                einer konkreten Idee.
               </p>
             </div>
           </div>
           <div class="about-topic about-topic--ai">
             <span class="about-topic__icon">🤖</span>
             <div>
-              <p class="about-topic__label">KI als Unterstützung</p>
+              <p class="about-topic__label">KI als Werkzeug</p>
               <p class="about-topic__desc">
-                Sinnvoll einsetzen (z.B. Ideen, Assets, Workflows) – ohne „Hype"
+                Ich nutze KI täglich — für Fragen, Ideen, Design-Entscheidungen.
+                Als Gesprächspartner beim Durchdenken von Problemen, nicht als
+                Abkürzung.
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Lern-Philosophie -->
+      <!-- Mein Setup -->
       <div class="about-block">
-        <h2 class="about-block__title">Meine Lern-Philosophie</h2>
-        <blockquote class="about-quote">
-          Ich glaube an <strong>Learning by Doing</strong>. Gerade am Anfang
-          fühlt sich vieles verwirrend an aber wenn man dranbleibt, wird's mit
-          jeder Aufgabe klarer. Fehler gehören dazu. Wichtig ist nur, dass man
-          sie versteht und daraus den nächsten Schritt ableitet.
-        </blockquote>
+        <h2 class="about-block__title">Mein Setup</h2>
         <p class="about-block__text">
-          Mein Ziel ist, dass du hier nicht nur Infos liest, sondern
-          <strong>wirklich weiterkommst</strong> auch mit wenig Zeit.
+          Höhenverstellbarer Schreibtisch, an dem ich auch die meiste Zeit im
+          Homeoffice sitze. Privat läuft entweder der Desktop-Rechner oder ein
+          Lenovo ThinkPad P53 — günstig auf eBay geschossen, SSD und RAM
+          aufgerüstet. Das Teil hat einfach die richtigen Dev-Vibes.
         </p>
+        <p class="about-block__text">
+          VS Code für fast alles, gelegentlich PyCharm. Notion für
+          Projektnotizen und Content-Planung. Und n8n auf meinem NAS für
+          Automatisierungen — unter anderem einen News-Workflow der mir täglich
+          relevante Artikel liefert, von denen die interessantesten hier auf der
+          Website landen.
+        </p>
+        <a href="/blog/mein-setup-als-hobby-dev" class="about-setup-link">
+          Mehr zu meinem Setup im Blog →
+        </a>
       </div>
+
+      <!-- Neueste Blog-Artikel -->
+      {
+        latestBlog.length > 0 && (
+          <div class="about-block">
+            <h2 class="about-block__title">Zuletzt im Blog</h2>
+            <div class="about-recent-list">
+              {latestBlog.map((post) => (
+                <a href={`/blog/${post.slug}/`} class="about-recent-card">
+                  <span class="about-recent-tag">
+                    {tagLabels[post.data.tag] ?? post.data.tag}
+                  </span>
+                  <span class="about-recent-title">{post.data.title}</span>
+                  <span class="about-recent-arrow">→</span>
+                </a>
+              ))}
+            </div>
+            <a href="/blog/" class="about-more-link">
+              Alle Blog-Artikel →
+            </a>
+          </div>
+        )
+      }
+
+      <!-- Neueste Devlog-Einträge -->
+      {
+        latestDevlog.length > 0 && (
+          <div class="about-block">
+            <h2 class="about-block__title">Zuletzt im Devlog</h2>
+            <div class="about-recent-list">
+              {latestDevlog.map((entry) => (
+                <a href={`/devlog/${entry.slug}/`} class="about-recent-card">
+                  <span class="about-recent-tag">
+                    {projectIcons[entry.data.project] ?? ""}{" "}
+                    {entry.data.project}
+                    {entry.data.episode !== undefined
+                      ? ` #${String(entry.data.episode).padStart(2, "0")}`
+                      : ""}
+                  </span>
+                  <span class="about-recent-title">{entry.data.title}</span>
+                  <span class="about-recent-arrow">→</span>
+                </a>
+              ))}
+            </div>
+            <a href="/devlog/" class="about-more-link">
+              Alle Devlog-Einträge →
+            </a>
+          </div>
+        )
+      }
 
       <!-- Social / Links -->
       <div class="about-block">
@@ -152,8 +205,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <div class="about-socials">
           <a
             href="https://www.instagram.com/philsdevquest"
-            target="_blank"
-            rel="noopener noreferrer"
             class="about-social"
           >
             <span class="about-social__icon">📸</span>
@@ -162,12 +213,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               <p class="about-social__handle">@philsdevquest</p>
             </div>
           </a>
-          <a
-            href="https://x.com/PhilsDevQuest"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="about-social"
-          >
+          <a href="https://x.com/PhilsDevQuest" class="about-social">
             <span class="about-social__icon">𝕏</span>
             <div>
               <p class="about-social__name">X / Twitter</p>
@@ -179,13 +225,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
       <!-- CTA -->
       <div class="about-cta">
-        <p class="about-cta__text">
-          Wenn du neugierig bist, schau gern vorbei:
-        </p>
+        <p class="about-cta__text">Schau gern vorbei:</p>
         <div class="about-cta__buttons">
-          <a href="/tutorials/" class="btn btn--primary">Tutorials ansehen →</a>
-          <a href="/tools/" class="btn btn--ghost">Tools & Ressourcen</a>
-          <a href="/news/" class="btn btn--ghost">Aktuelle News</a>
+          <a href="/tutorials/" class="btn btn--primary">Tutorials →</a>
+          <a href="/blog/" class="btn btn--ghost">Blog</a>
+          <a href="/devlog/" class="btn btn--ghost">Devlog</a>
+          <a href="/news/" class="btn btn--ghost">News</a>
+          <a href="/tools/" class="btn btn--ghost">Tools</a>
         </div>
       </div>
     </div>
@@ -202,7 +248,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     max-width: 720px;
     margin: 0 auto;
   }
-
   .about-hero__kicker {
     font-family: var(--pdq-font-mono);
     font-size: 0.75rem;
@@ -212,7 +257,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     color: var(--pdq-terracotta);
     margin-bottom: 0.75rem;
   }
-
   .about-hero__headline {
     font-family: "Fraunces", serif;
     font-style: italic;
@@ -222,7 +266,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     line-height: 1.1;
     margin-bottom: 1.5rem;
   }
-
   .about-hero__intro {
     font-family: var(--pdq-font-mono);
     font-size: 0.95rem;
@@ -254,7 +297,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     flex-direction: column;
     gap: 1rem;
   }
-
   .about-block__title {
     font-family: "Fraunces", serif;
     font-style: italic;
@@ -264,7 +306,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--pdq-border-subtle);
   }
-
   .about-block__text {
     font-family: var(--pdq-font-mono);
     font-size: 0.92rem;
@@ -276,32 +317,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     font-weight: 700;
   }
 
-  /* ── LIST ── */
-  .about-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    list-style: none;
-    padding: 0;
-  }
-
-  .about-list li {
-    display: flex;
-    gap: 0.85rem;
-    align-items: flex-start;
+  /* ── SETUP LINK ── */
+  .about-setup-link {
     font-family: var(--pdq-font-mono);
-    font-size: 0.88rem;
-    color: var(--pdq-text-secondary);
-    line-height: 1.65;
+    font-size: 0.85rem;
+    color: var(--pdq-sand);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.15s;
   }
-  .about-list li strong {
-    color: var(--pdq-text-primary);
-    font-weight: 700;
-  }
-
-  .about-list__icon {
-    flex-shrink: 0;
-    margin-top: 0.1em;
+  .about-setup-link:hover {
+    color: var(--pdq-cream);
   }
 
   /* ── TOPICS ── */
@@ -310,13 +336,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
-
   @media (max-width: 600px) {
     .about-topics {
       grid-template-columns: 1fr;
     }
   }
-
   .about-topic {
     display: flex;
     gap: 0.85rem;
@@ -326,7 +350,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     border: 1px solid var(--pdq-border-default);
     background: var(--pdq-bg-elevated);
   }
-
   .about-topic--python {
     border-left: 3px solid var(--pdq-terracotta);
   }
@@ -339,42 +362,90 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .about-topic--ai {
     border-left: 3px solid var(--pdq-orange);
   }
-
   .about-topic__icon {
     font-size: 1.3rem;
     flex-shrink: 0;
     margin-top: 0.1em;
   }
-
   .about-topic__label {
     font-family: var(--pdq-font-mono);
     font-size: 0.88rem;
     font-weight: 700;
     color: var(--pdq-text-primary);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.35rem;
   }
-
   .about-topic__desc {
     font-family: var(--pdq-font-mono);
     font-size: 0.8rem;
     color: var(--pdq-text-muted);
-    line-height: 1.55;
+    line-height: 1.6;
   }
 
-  /* ── QUOTE ── */
-  .about-quote {
-    font-family: var(--pdq-font-mono);
-    font-size: 0.95rem;
-    color: var(--pdq-text-secondary);
-    line-height: 1.8;
-    border-left: 3px solid var(--pdq-terracotta);
-    padding: 1rem 1.25rem;
-    background: var(--pdq-bg-overlay);
-    border-radius: 0 8px 8px 0;
+  /* ── RECENT ARTICLES ── */
+  .about-recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 10px;
+    overflow: hidden;
   }
-  .about-quote strong {
-    color: var(--pdq-text-primary);
+  .about-recent-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--pdq-bg-elevated);
+    text-decoration: none;
+    border-bottom: 1px solid var(--pdq-border-subtle);
+    transition: background 0.15s;
+  }
+  .about-recent-card:last-child {
+    border-bottom: none;
+  }
+  .about-recent-card:hover {
+    background: var(--pdq-bg-overlay);
+  }
+  .about-recent-tag {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.7rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--pdq-text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .about-recent-title {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.9rem;
+    color: var(--pdq-text-primary);
+    flex: 1;
+    line-height: 1.4;
+  }
+  .about-recent-arrow {
+    font-family: var(--pdq-font-mono);
+    color: var(--pdq-text-muted);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    transition:
+      color 0.15s,
+      transform 0.15s;
+  }
+  .about-recent-card:hover .about-recent-arrow {
+    color: var(--pdq-sand);
+    transform: translateX(3px);
+  }
+  .about-more-link {
+    font-family: var(--pdq-font-mono);
+    font-size: 0.82rem;
+    color: var(--pdq-sand);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.15s;
+  }
+  .about-more-link:hover {
+    color: var(--pdq-cream);
   }
 
   /* ── SOCIALS ── */
@@ -383,7 +454,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     gap: 1rem;
     flex-wrap: wrap;
   }
-
   .about-social {
     display: flex;
     gap: 0.85rem;
@@ -403,19 +473,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     border-color: var(--pdq-orange);
     background: var(--pdq-bg-overlay);
   }
-
   .about-social__icon {
     font-size: 1.4rem;
     flex-shrink: 0;
   }
-
   .about-social__name {
     font-family: var(--pdq-font-mono);
     font-size: 0.85rem;
     font-weight: 700;
     color: var(--pdq-text-primary);
   }
-
   .about-social__handle {
     font-family: var(--pdq-font-mono);
     font-size: 0.78rem;
@@ -432,19 +499,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     flex-direction: column;
     gap: 1.25rem;
   }
-
   .about-cta__text {
     font-family: var(--pdq-font-mono);
     font-size: 0.9rem;
     color: var(--pdq-text-secondary);
   }
-
   .about-cta__buttons {
     display: flex;
     gap: 0.75rem;
     flex-wrap: wrap;
   }
-
   .btn {
     font-family: var(--pdq-font-mono);
     font-size: 0.85rem;
