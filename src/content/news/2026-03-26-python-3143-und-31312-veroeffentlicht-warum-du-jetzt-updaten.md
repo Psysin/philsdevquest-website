@@ -12,7 +12,7 @@ tags: [
   "wartungsrelease",
   "python 3.14"
 ]
-date: 2026-12-05
+date: 2026-02-05
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-26-python-3143-und-31312-veroeffentlicht-warum-du-jetzt-updaten.jpg"
 ---
 
