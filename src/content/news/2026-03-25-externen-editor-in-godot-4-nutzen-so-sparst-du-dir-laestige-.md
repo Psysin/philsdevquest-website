@@ -12,7 +12,7 @@ tags: [
   "workflow",
   "skripte"
 ]
-date: 2026-03-25
+date: 2026-03-15
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-25-externen-editor-in-godot-4-nutzen-so-sparst-du-dir-laestige-.jpg"
 ---
 

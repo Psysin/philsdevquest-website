@@ -12,7 +12,7 @@ tags: [
   "vibe coding",
   "anfänger"
 ]
-date: 2026-03-25
+date: 2026-03-22
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-25-ki-entwickelt-ein-3d-tower-defense-spiel-in-godot-was-ist-vi.jpg"
 ---
 

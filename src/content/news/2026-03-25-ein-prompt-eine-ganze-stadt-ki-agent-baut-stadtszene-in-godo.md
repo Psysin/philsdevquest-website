@@ -12,7 +12,7 @@ tags: [
   "automatisierung",
   "godot 4"
 ]
-date: 2026-03-25
+date: 2026-03-14
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-25-ein-prompt-eine-ganze-stadt-ki-agent-baut-stadtszene-in-godo.jpg"
 ---
 

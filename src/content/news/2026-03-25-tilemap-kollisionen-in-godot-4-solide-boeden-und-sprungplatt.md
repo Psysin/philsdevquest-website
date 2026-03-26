@@ -12,7 +12,7 @@ tags: [
   "kollision",
   "platformer"
 ]
-date: 2026-03-25
+date: 2026-03-12
 og_image: "https://raw.githubusercontent.com/Psysin/philsdevquest-website/main/public/images/news/2026-03-25-tilemap-kollisionen-in-godot-4-solide-boeden-und-sprungplatt.jpg"
 ---
 

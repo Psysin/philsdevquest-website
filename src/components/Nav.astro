@@ -84,6 +84,12 @@ const currentPath = Astro.url.pathname;
         >
       </li>
       <li>
+        <a
+          href="/devlog"
+          class={currentPath.startsWith("/devlog") ? "active" : ""}>Devlog</a
+        >
+      </li>
+      <li>
         <a href="/news" class={currentPath.startsWith("/news") ? "active" : ""}
           >News</a
         >
@@ -128,6 +134,12 @@ const currentPath = Astro.url.pathname;
       <li>
         <a href="/blog" class={currentPath.startsWith("/blog") ? "active" : ""}
           >Blog</a
+        >
+      </li>
+      <li>
+        <a
+          href="/devlog"
+          class={currentPath.startsWith("/devlog") ? "active" : ""}>Devlog</a
         >
       </li>
       <li>
@@ -313,15 +325,6 @@ const currentPath = Astro.url.pathname;
     }
     .nav-cta {
       display: none !important;
-    }
-    .nav-hamburger {
-      display: flex;
-    }
-    .nav-links {
-      display: none;
-    }
-    .nav-cta {
-      display: none;
     }
     .nav-hamburger {
       display: flex;
