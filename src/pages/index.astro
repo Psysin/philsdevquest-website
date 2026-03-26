@@ -25,7 +25,7 @@ const allNews = await getCollection("news");
 allNews.sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
 );
-const newsItems = allNews;
+const newsItems = allNews.slice(0, 5); // ← nur die 5 neuesten
 
 // Helper-Funktionen
 function getCatClass(category: string) {
@@ -911,7 +911,7 @@ const tools = [
     }
     .ticker-track {
       display: flex;
-      animation: ticker 40s linear infinite;
+      animation: ticker 100s linear infinite;
       width: max-content;
       padding-left: 140px;
     }
