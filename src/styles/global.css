@@ -1,34 +1,35 @@
-/* ===== EARTHY WARM — PhilsDevQuest Design System ===== */
+/* ===== EARTHY WARM LIGHT — PhilsDevQuest Design System ===== */
 
 :root {
   /* Backgrounds */
-  --pdq-bg-base:     #12100E;
-  --pdq-bg-elevated: #1C1916;
-  --pdq-bg-overlay:  #252018;
-  --pdq-bg-subtle:   #2E2820;
+  --pdq-bg-base:     #FBF7F1;
+  --pdq-bg-elevated: #FFFFFF;
+  --pdq-bg-overlay:  #F3EDE3;
+  --pdq-bg-subtle:   #EFE8DC;
 
   /* Kernfarben */
-  --pdq-terracotta:       #C1634F;
-  --pdq-terracotta-light: #D4816B;
-  --pdq-sand:             #D4A96A;
-  --pdq-sand-light:       #E3C08A;
+  --pdq-terracotta:       #B85540;
+  --pdq-terracotta-light: #C1634F;
+  --pdq-sand:             #B8903F;
+  --pdq-sand-light:       #D4A96A;
   --pdq-cream:            #E8C99A;
-  --pdq-orange:           #FF6B35;
-  --pdq-orange-dark:      #E85A25;
+  --pdq-orange:           #E85A25;
+  --pdq-orange-dark:      #D14A1A;
 
   /* Text */
-  --pdq-text-primary:   #E8E0D8;
-  --pdq-text-secondary: #B5A99A;
+  --pdq-text-primary:   #1A1512;
+  --pdq-text-secondary: #4A4039;
   --pdq-text-muted:     #7A6E63;
-  --pdq-text-disabled:  #4A4039;
+  --pdq-text-disabled:  #A89C90;
 
   /* Borders */
-  --pdq-border-subtle:  rgba(232,224,216,0.06);
-  --pdq-border-default: rgba(232,224,216,0.12);
-  --pdq-border-strong:  rgba(232,224,216,0.22);
+  --pdq-border-subtle:  rgba(26,21,18,0.06);
+  --pdq-border-default: rgba(26,21,18,0.10);
+  --pdq-border-strong:  rgba(26,21,18,0.18);
 
   /* Fonts */
   --pdq-font-mono: 'JetBrains Mono', monospace;
+  --pdq-font-hand: 'Caveat', cursive;
 }
 
 /* ===== RESET ===== */
@@ -51,18 +52,34 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--pdq-bg-base); }
+::-webkit-scrollbar-thumb { background: #D8CFBF; border-radius: 4px; }
+::selection { background: rgba(184,85,64,0.18); color: var(--pdq-text-primary); }
+
 a {
-  color: var(--pdq-cream);
+  color: inherit;
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--pdq-sand);
+  color: var(--pdq-terracotta);
 }
 
 img {
   max-width: 100%;
   display: block;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .5; transform: scale(.85); }
 }

@@ -5,112 +5,20 @@ const currentPath = Astro.url.pathname;
 <nav class="nav">
   <div class="nav-inner">
     <!-- Logo -->
-    <a href="/" class="nav-logo">
-      <svg
-        viewBox="0 0 400 400"
-        fill="none"
-        width="36"
-        height="36"
-        style="border-radius:7px;overflow:hidden;"
-      >
-        <rect width="400" height="400" fill="#1C1916"></rect>
-        <text
-          text-anchor="middle"
-          x="82"
-          y="276"
-          font-family="JetBrains Mono,monospace"
-          font-size="210"
-          font-weight="700"
-          fill="#C1634F">&#123;</text
-        >
-        <text
-          text-anchor="middle"
-          x="318"
-          y="276"
-          font-family="JetBrains Mono,monospace"
-          font-size="210"
-          font-weight="700"
-          fill="#C1634F">&#125;</text
-        >
-        <text
-          text-anchor="middle"
-          x="153"
-          y="256"
-          font-family="JetBrains Mono,monospace"
-          font-size="82"
-          font-weight="800"
-          fill="#B5A99A">P</text
-        >
-        <text
-          text-anchor="middle"
-          x="200"
-          y="256"
-          font-family="JetBrains Mono,monospace"
-          font-size="82"
-          font-weight="800"
-          fill="#D4A96A">D</text
-        >
-        <text
-          text-anchor="middle"
-          x="247"
-          y="256"
-          font-family="JetBrains Mono,monospace"
-          font-size="82"
-          font-weight="800"
-          fill="#B5A99A">Q</text
-        >
-        <circle cx="310" cy="68" r="11" fill="#FF6B35" opacity="0.9"></circle>
-        <circle cx="334" cy="68" r="7" fill="#D4A96A" opacity="0.7"></circle>
-      </svg>
-      <span class="nav-brand">
-        <span class="brand-phils">Phils</span><span class="brand-dev">Dev</span
-        ><span class="brand-quest">Quest</span>
-      </span>
+    <a href="/" class="logo">
+      <span class="brace">{</span><span class="sp"></span><span class="p">P</span><span class="d">D</span><span class="q">Q</span><span class="sp"></span><span class="brace">}</span>
     </a>
 
     <!-- Desktop Links -->
     <ul class="nav-links">
-      <li><a href="/" class={currentPath === "/" ? "active" : ""}>Start</a></li>
-      <li>
-        <a
-          href="/tutorials"
-          class={currentPath.startsWith("/tutorials") ? "active" : ""}
-          >Tutorials</a
-        >
-      </li>
-      <li>
-        <a href="/blog" class={currentPath.startsWith("/blog") ? "active" : ""}
-          >Blog</a
-        >
-      </li>
-      <li>
-        <a
-          href="/devlog"
-          class={currentPath.startsWith("/devlog") ? "active" : ""}>Devlog</a
-        >
-      </li>
-      <li>
-        <a href="/news" class={currentPath.startsWith("/news") ? "active" : ""}
-          >News</a
-        >
-      </li>
-      <li>
-        <a
-          href="/tools"
-          class={currentPath.startsWith("/tools") ? "active" : ""}>Tools</a
-        >
-      </li>
-      <li>
-        <a
-          href="/ueber-mich"
-          class={currentPath.startsWith("/ueber-mich") ? "active" : ""}
-          >Über mich</a
-        >
-      </li>
+      <li><a href="/ueber-mich" class={currentPath.startsWith("/ueber-mich") ? "active" : ""}>Über mich</a></li>
+      <li><a href="/blog" class={currentPath.startsWith("/blog") ? "active" : ""}>Blog</a></li>
+      <li><a href="/devlog" class={currentPath.startsWith("/devlog") ? "active" : ""}>Devlog</a></li>
+      <li><a href="/newsletter" class={currentPath.startsWith("/newsletter") ? "active" : ""}>Newsletter</a></li>
     </ul>
 
     <!-- Desktop CTA -->
-    <a href="#newsletter" class="nav-cta">Newsletter →</a>
+    <a href="/newsletter" class="nav-cta">Abonnieren</a>
 
     <!-- Mobile Hamburger -->
     <button class="nav-hamburger" id="nav-hamburger" aria-label="Menü öffnen">
@@ -124,130 +32,94 @@ const currentPath = Astro.url.pathname;
   <div class="nav-mobile" id="nav-mobile">
     <ul class="nav-mobile-links">
       <li><a href="/" class={currentPath === "/" ? "active" : ""}>Start</a></li>
-      <li>
-        <a
-          href="/tutorials"
-          class={currentPath.startsWith("/tutorials") ? "active" : ""}
-          >Tutorials</a
-        >
-      </li>
-      <li>
-        <a href="/blog" class={currentPath.startsWith("/blog") ? "active" : ""}
-          >Blog</a
-        >
-      </li>
-      <li>
-        <a
-          href="/devlog"
-          class={currentPath.startsWith("/devlog") ? "active" : ""}>Devlog</a
-        >
-      </li>
-      <li>
-        <a href="/news" class={currentPath.startsWith("/news") ? "active" : ""}
-          >News</a
-        >
-      </li>
-      <li>
-        <a
-          href="/tools"
-          class={currentPath.startsWith("/tools") ? "active" : ""}>Tools</a
-        >
-      </li>
-      <li>
-        <a
-          href="/ueber-mich"
-          class={currentPath.startsWith("/ueber-mich") ? "active" : ""}
-          >Über mich</a
-        >
-      </li>
-      <li><a href="#newsletter" class="nav-mobile-cta">Newsletter →</a></li>
+      <li><a href="/ueber-mich" class={currentPath.startsWith("/ueber-mich") ? "active" : ""}>Über mich</a></li>
+      <li><a href="/blog" class={currentPath.startsWith("/blog") ? "active" : ""}>Blog</a></li>
+      <li><a href="/devlog" class={currentPath.startsWith("/devlog") ? "active" : ""}>Devlog</a></li>
+      <li><a href="/newsletter" class={currentPath.startsWith("/newsletter") ? "active" : ""}>Newsletter</a></li>
     </ul>
   </div>
 </nav>
 
 <style>
   .nav {
-    background: rgba(18, 16, 14, 0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(251,247,241,0.82);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
     border-bottom: 1px solid var(--pdq-border-subtle);
     position: sticky;
     top: 0;
     z-index: 100;
+    height: 56px;
   }
 
   .nav-inner {
-    max-width: 1100px;
+    max-width: 1180px;
     margin: 0 auto;
-    padding: 0 1.5rem;
-    height: 60px;
+    padding: 0 32px;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
   }
 
-  .nav-logo {
-    display: flex;
+  /* { PDQ } text logo */
+  .logo {
+    display: inline-flex;
     align-items: center;
-    gap: 0.65rem;
+    gap: 2px;
+    font-family: var(--pdq-font-mono);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    user-select: none;
     text-decoration: none;
     flex-shrink: 0;
   }
-
-  .nav-brand {
-    font-family: var(--pdq-font-mono);
-    font-weight: 700;
-    font-size: 1rem;
-  }
-
-  .brand-phils {
-    color: var(--pdq-text-disabled);
-  }
-  .brand-dev {
-    color: var(--pdq-text-secondary);
-  }
-  .brand-quest {
-    color: var(--pdq-terracotta);
-  }
+  .logo .brace { color: var(--pdq-terracotta); }
+  .logo .p, .logo .q { color: var(--pdq-text-secondary); font-weight: 800; }
+  .logo .d { color: var(--pdq-sand); font-weight: 800; }
+  .logo .sp { display: inline-block; width: 4px; }
 
   /* Desktop Links */
   .nav-links {
     list-style: none;
     display: flex;
-    gap: 1.75rem;
+    gap: 4px;
+    align-items: center;
   }
 
   .nav-links a {
+    display: block;
+    font-size: 13px;
     color: var(--pdq-text-secondary);
-    font-size: 0.875rem;
-    font-weight: 600;
-    transition: color 0.2s;
+    padding: 8px 14px;
+    border-radius: 999px;
+    transition: color .2s, background .2s;
+    letter-spacing: 0.01em;
     text-decoration: none;
   }
-
-  .nav-links a:hover,
+  .nav-links a:hover { color: var(--pdq-text-primary); }
   .nav-links a.active {
-    color: var(--pdq-sand);
+    color: var(--pdq-text-primary);
+    background: rgba(26,21,18,0.05);
   }
 
   .nav-cta {
-    background: var(--pdq-orange);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: var(--pdq-terracotta);
     color: #fff;
-    font-size: 0.8rem;
-    font-weight: 700;
-    padding: 0.45rem 1rem;
-    border-radius: 6px;
     text-decoration: none;
     flex-shrink: 0;
-    transition: background 0.2s;
+    transition: background .2s;
   }
-  .nav-cta:hover {
-    background: var(--pdq-orange-dark);
-    color: #fff;
-  }
+  .nav-cta:hover { background: #A04A38; color: #fff; }
 
-  /* Hamburger Button */
+  /* Hamburger */
   .nav-hamburger {
     display: none;
     flex-direction: column;
@@ -257,7 +129,6 @@ const currentPath = Astro.url.pathname;
     cursor: pointer;
     padding: 4px;
   }
-
   .nav-hamburger span {
     display: block;
     width: 22px;
@@ -266,27 +137,17 @@ const currentPath = Astro.url.pathname;
     border-radius: 2px;
     transition: all 0.3s;
   }
-
-  .nav-hamburger.open span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-  .nav-hamburger.open span:nth-child(2) {
-    opacity: 0;
-  }
-  .nav-hamburger.open span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
-  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
   /* Mobile Menu */
   .nav-mobile {
     display: none;
     border-top: 1px solid var(--pdq-border-subtle);
-    background: rgba(18, 16, 14, 0.98);
+    background: rgba(251,247,241,0.98);
   }
-
-  .nav-mobile.open {
-    display: block;
-  }
+  .nav-mobile.open { display: block; }
 
   .nav-mobile-links {
     list-style: none;
@@ -295,40 +156,25 @@ const currentPath = Astro.url.pathname;
     flex-direction: column;
     gap: 0.25rem;
   }
-
   .nav-mobile-links a {
     display: block;
     padding: 0.65rem 0;
     color: var(--pdq-text-secondary);
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 500;
     text-decoration: none;
     border-bottom: 1px solid var(--pdq-border-subtle);
     transition: color 0.2s;
   }
-
   .nav-mobile-links a:hover,
   .nav-mobile-links a.active {
-    color: var(--pdq-sand);
+    color: var(--pdq-terracotta);
   }
 
-  .nav-mobile-cta {
-    color: var(--pdq-orange) !important;
-    border-bottom: none !important;
-    margin-top: 0.5rem;
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    .nav-links {
-      display: none !important;
-    }
-    .nav-cta {
-      display: none !important;
-    }
-    .nav-hamburger {
-      display: flex;
-    }
+  @media (max-width: 720px) {
+    .nav-links { display: none !important; }
+    .nav-cta { display: none !important; }
+    .nav-hamburger { display: flex; }
   }
 </style>
 
@@ -341,7 +187,6 @@ const currentPath = Astro.url.pathname;
     mobileMenu?.classList.toggle("open");
   });
 
-  // Menü schließen wenn Link geklickt
   mobileMenu?.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
       hamburger?.classList.remove("open");

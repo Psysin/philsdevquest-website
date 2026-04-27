@@ -1,233 +1,152 @@
 <footer class="footer">
-  <div class="container">
+  <div class="footer-container">
     <div class="footer-inner">
       <!-- Brand -->
       <div class="footer-brand">
-        <div class="footer-logo">
-          <svg
-            viewBox="0 0 400 400"
-            fill="none"
-            width="28"
-            height="28"
-            style="border-radius:7px;overflow:hidden;"
-          >
-            <rect width="400" height="400" fill="#1C1916"></rect>
-            <text
-              text-anchor="middle"
-              x="82"
-              y="276"
-              font-family="JetBrains Mono,monospace"
-              font-size="210"
-              font-weight="700"
-              fill="#C1634F">&#123;</text
-            >
-            <text
-              text-anchor="middle"
-              x="318"
-              y="276"
-              font-family="JetBrains Mono,monospace"
-              font-size="210"
-              font-weight="700"
-              fill="#C1634F">&#125;</text
-            >
-            <text
-              text-anchor="middle"
-              x="153"
-              y="256"
-              font-family="JetBrains Mono,monospace"
-              font-size="82"
-              font-weight="800"
-              fill="#B5A99A">P</text
-            >
-            <text
-              text-anchor="middle"
-              x="200"
-              y="256"
-              font-family="JetBrains Mono,monospace"
-              font-size="82"
-              font-weight="800"
-              fill="#D4A96A">D</text
-            >
-            <text
-              text-anchor="middle"
-              x="247"
-              y="256"
-              font-family="JetBrains Mono,monospace"
-              font-size="82"
-              font-weight="800"
-              fill="#B5A99A">Q</text
-            >
-            <circle cx="310" cy="68" r="11" fill="#FF6B35" opacity="0.9"
-            ></circle>
-            <circle cx="334" cy="68" r="7" fill="#D4A96A" opacity="0.7"
-            ></circle>
-          </svg>
-          <span class="footer-logo-text">Phils<span>Dev</span>Quest</span>
-        </div>
-        <p class="footer-tagline">
-          Python & Godot für Indie Game Devs und Anfänger.<br />
-        </p>
-        <div class="footer-social">
-          <a
-            href="https://twitter.com/PhilsDevQuest"
-            target="_blank"
-            class="footer-social-link">𝕏</a
-          >
-          <a
-            href="https://instagram.com/philsdevquest"
-            target="_blank"
-            class="footer-social-link">📷</a
-          >
-        </div>
+        <a href="/" class="footer-logo">
+          <span class="brace">{</span><span class="sp"></span><span class="p">P</span><span class="d">D</span><span class="q">Q</span><span class="sp"></span><span class="brace">}</span>
+        </a>
+        <div class="footer-tagline">Python · Godot · Indie Dev</div>
       </div>
 
       <!-- Links -->
-      <div>
-        <div class="footer-col-title">Lernen</div>
+      <div class="footer-col">
+        <div class="footer-col-title">Inhalt</div>
         <ul class="footer-links">
-          <li><a href="/tutorials">Tutorials</a></li>
           <li><a href="/blog">Blog</a></li>
+          <li><a href="/devlog">Devlog</a></li>
           <li><a href="/tools">Tools</a></li>
-          <li><a href="#newsletter">Newsletter</a></li>
         </ul>
       </div>
-      <div>
-        <div class="footer-col-title">Themen</div>
-        <ul class="footer-links">
-          <li><a href="/tutorials">Python</a></li>
-          <li><a href="/tutorials">Godot</a></li>
-          <li><a href="/blog">Indie Dev</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">Sonstiges</div>
+      <div class="footer-col">
+        <div class="footer-col-title">Phil</div>
         <ul class="footer-links">
           <li><a href="/ueber-mich">Über mich</a></li>
-          <li><a href="/impressum">Impressum</a></li>
-          <li><a href="/datenschutz">Datenschutz</a></li>
+          <li><a href="/newsletter">Newsletter</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Sozial</div>
+        <ul class="footer-links">
+          <li><a href="https://www.instagram.com/philsdevquest" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.tiktok.com/@philsdevquest" target="_blank" rel="noopener">TikTok</a></li>
+          <li><a href="https://www.youtube.com/@philsdevquest" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://github.com/Psysin" target="_blank" rel="noopener">GitHub</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <span>© 2025–2026 PhilsDevQuest · Alle Rechte vorbehalten</span>
-      <span>Made with ☕ & Python 🐍</span>
+      <span>philsdevquest.de · © 2026</span>
+      <span><a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a></span>
     </div>
   </div>
 </footer>
 
 <style>
   .footer {
-    background: var(--pdq-bg-elevated);
+    background: var(--pdq-bg-subtle);
     border-top: 1px solid var(--pdq-border-subtle);
-    padding: 48px 0 32px;
+    padding: 56px 32px 32px;
   }
-  .container {
-    max-width: 1100px;
+
+  .footer-container {
+    max-width: 1180px;
     margin: 0 auto;
-    padding: 0 32px;
   }
+
   .footer-inner {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 48px;
+    align-items: flex-start;
   }
+
+  /* { PDQ } logo in footer */
   .footer-logo {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-    text-decoration: none;
-  }
-  .footer-logo-text {
+    gap: 2px;
     font-family: var(--pdq-font-mono);
-    font-size: 13px;
     font-weight: 700;
-    color: var(--pdq-text-primary);
-  }
-  .footer-logo-text span {
-    color: var(--pdq-terracotta);
-  }
-  .footer-tagline {
-    font-size: 12px;
-    color: var(--pdq-text-muted);
-    line-height: 1.7;
-    max-width: 240px;
-    margin-bottom: 20px;
-  }
-  .footer-social {
-    display: flex;
-    gap: 8px;
-  }
-  .footer-social-link {
-    width: 34px;
-    height: 34px;
-    border: 1px solid var(--pdq-border-default);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
+    font-size: 18px;
+    letter-spacing: -0.01em;
     text-decoration: none;
-    transition:
-      border-color 0.2s,
-      background 0.2s;
+    user-select: none;
+    margin-bottom: 8px;
   }
-  .footer-social-link:hover {
-    border-color: var(--pdq-border-strong);
-    background: var(--pdq-bg-overlay);
-  }
-  .footer-col-title {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+  .footer-logo .brace { color: var(--pdq-terracotta); }
+  .footer-logo .p, .footer-logo .q { color: var(--pdq-text-muted); font-weight: 800; }
+  .footer-logo .d { color: var(--pdq-sand); font-weight: 800; }
+  .footer-logo .sp { display: inline-block; width: 4px; }
+
+  .footer-tagline {
+    font-family: var(--pdq-font-hand);
+    font-weight: 600;
+    font-size: 18px;
     color: var(--pdq-text-muted);
+  }
+
+  .footer-col-title {
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pdq-text-disabled);
     margin-bottom: 16px;
   }
+
   .footer-links {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
+
   .footer-links a {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--pdq-text-muted);
     text-decoration: none;
     transition: color 0.2s;
+    padding: 2px 0;
+    display: block;
   }
+
   .footer-links a:hover {
-    color: var(--pdq-cream);
+    color: var(--pdq-text-primary);
   }
+
   .footer-bottom {
-    margin-top: 48px;
+    max-width: 1180px;
+    margin: 48px auto 0;
     padding-top: 24px;
     border-top: 1px solid var(--pdq-border-subtle);
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 11px;
+    justify-content: center;
+    gap: 24px;
+    font-size: 11.5px;
     color: var(--pdq-text-disabled);
+    flex-wrap: wrap;
   }
 
-  /* ===== MOBILE ===== */
-  @media (max-width: 768px) {
-    .container {
-      padding: 0 20px;
+  .footer-bottom a {
+    color: var(--pdq-text-disabled);
+    transition: color 0.2s;
+  }
+  .footer-bottom a:hover {
+    color: var(--pdq-text-muted);
+  }
+
+  @media (max-width: 720px) {
+    .footer {
+      padding: 48px 20px 28px;
     }
     .footer-inner {
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto auto auto;
       gap: 32px;
     }
     .footer-brand {
       grid-column: 1 / 3;
-    }
-    .footer-bottom {
-      flex-direction: column;
-      gap: 8px;
-      text-align: center;
     }
   }
 </style>

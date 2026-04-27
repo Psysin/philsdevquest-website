@@ -176,8 +176,8 @@ const formattedDate = date.toLocaleDateString("de-DE", {
   }
 
   .post__title {
-    font-family: "Fraunces", serif;
-    font-style: italic;
+    font-family: var(--pdq-font-mono);
+    
     font-size: clamp(1.9rem, 5vw, 3rem);
     font-weight: 400;
     color: var(--pdq-text-primary);
@@ -214,8 +214,8 @@ const formattedDate = date.toLocaleDateString("de-DE", {
   }
 
   .prose :global(h2) {
-    font-family: "Fraunces", serif;
-    font-style: italic;
+    font-family: var(--pdq-font-mono);
+    
     font-size: 1.65rem;
     font-weight: 400;
     color: var(--pdq-text-primary);
@@ -265,7 +265,7 @@ const formattedDate = date.toLocaleDateString("de-DE", {
   }
   .prose :global(em) {
     color: var(--pdq-sand);
-    font-style: italic;
+    
   }
 
   .prose :global(code:not(pre code)) {
@@ -303,7 +303,7 @@ const formattedDate = date.toLocaleDateString("de-DE", {
     background: var(--pdq-bg-overlay);
     border-radius: 0 6px 6px 0;
     color: var(--pdq-text-muted);
-    font-style: italic;
+    
   }
 
   .prose :global(hr) {

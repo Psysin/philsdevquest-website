@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
+---
+
+<BaseLayout
+  title="Newsletter"
+  description="Einmal im Monat — was ich gelernt hab, woran ich feststecke und das Code-Quiz des Monats. Komm mit auf die Reise."
+>
+  <section class="nl-section">
+    <div class="container">
+      <NewsletterForm variant="section" />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .nl-section {
+    padding: 80px 0 120px;
+    background: var(--pdq-bg-base);
+  }
+</style>

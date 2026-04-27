@@ -13,6 +13,21 @@ const { variant = "section" } = Astro.props;
   variant === "hero" ? (
     <div class="nlf nlf--hero">
       <form data-nlf>
+        <div class="nlf-row">
+          <input
+            type="email"
+            name="email"
+            placeholder="du@example.com"
+            required
+            autocomplete="email"
+            class="nlf-input"
+            aria-label="E-Mail-Adresse"
+          />
+          <button type="submit" class="nlf-btn">
+            <span class="nlf-btn__text">Dabei sein</span>
+            <span class="nlf-btn__loading" hidden>…</span>
+          </button>
+        </div>
         <input
           type="text"
           name="firstname"
@@ -20,23 +35,6 @@ const { variant = "section" } = Astro.props;
           autocomplete="given-name"
           class="nlf-input nlf-input--name"
         />
-        <div class="nlf-row">
-          <input
-            type="email"
-            name="email"
-            placeholder="deine@email.de"
-            required
-            autocomplete="email"
-            class="nlf-input"
-            aria-label="E-Mail-Adresse"
-          />
-          <button type="submit" class="nlf-btn">
-            <span class="nlf-btn__text">Anmelden</span>
-            <span class="nlf-btn__loading" hidden>
-              …
-            </span>
-          </button>
-        </div>
       </form>
       <label class="nlf-consent">
         <input type="checkbox" required />
@@ -45,23 +43,35 @@ const { variant = "section" } = Astro.props;
           <a href="/datenschutz">Datenschutz</a>
         </span>
       </label>
-      <p class="nlf-hint">Kein Spam. Jederzeit abmeldbar.</p>
+      <p class="nlf-hint">Monatlich · Code-Quiz inklusive · Jederzeit abbestellbar</p>
       <p class="nlf-feedback" data-feedback hidden />
     </div>
   ) : (
     <div class="nlf nlf--section">
       <div class="nlf--section__inner">
-        <p class="nlf-label">Newsletter</p>
+        <p class="nlf-kicker">PhilsDevQuest Monthly</p>
         <h2 class="nlf-headline">
-          Jede Woche das Beste aus
-          <br />
-          <em>Python &amp; Godot</em>
+          Komm mit auf die Reise.
         </h2>
         <p class="nlf-description">
-          Tutorials, Code-Snippets, Godot-Tipps und News — kompakt
-          zusammengefasst. Jeden Freitag, direkt in dein Postfach.
+          Einmal im Monat schick ich dir, was ich gelernt hab, woran ich feststecke und das Code-Quiz des Monats. Kurz, ehrlich, ohne Belehrung.
         </p>
         <form data-nlf>
+          <div class="nlf-row">
+            <input
+              type="email"
+              name="email"
+              placeholder="du@example.com"
+              required
+              autocomplete="email"
+              class="nlf-input"
+              aria-label="E-Mail-Adresse"
+            />
+            <button type="submit" class="nlf-btn">
+              <span class="nlf-btn__text">Dabei sein</span>
+              <span class="nlf-btn__loading" hidden>…</span>
+            </button>
+          </div>
           <input
             type="text"
             name="firstname"
@@ -69,23 +79,6 @@ const { variant = "section" } = Astro.props;
             autocomplete="given-name"
             class="nlf-input nlf-input--name"
           />
-          <div class="nlf-row">
-            <input
-              type="email"
-              name="email"
-              placeholder="deine@email.de"
-              required
-              autocomplete="email"
-              class="nlf-input"
-              aria-label="E-Mail-Adresse"
-            />
-            <button type="submit" class="nlf-btn">
-              <span class="nlf-btn__text">Kostenlos abonnieren</span>
-              <span class="nlf-btn__loading" hidden>
-                …
-              </span>
-            </button>
-          </div>
         </form>
         <label class="nlf-consent">
           <input type="checkbox" required />
@@ -95,7 +88,11 @@ const { variant = "section" } = Astro.props;
           </span>
         </label>
         <p class="nlf-feedback" data-feedback hidden />
-        <p class="nlf-hint">Kein Spam. Jederzeit abmeldbar. DSGVO-konform.</p>
+        <div class="nlf-meta">
+          <span>Monatlich</span>
+          <span>Code-Quiz inklusive</span>
+          <span>Jederzeit abbestellbar</span>
+        </div>
       </div>
     </div>
   )
@@ -141,7 +138,7 @@ const { variant = "section" } = Astro.props;
         if (data.success) {
           form.hidden = true;
           container.querySelector(".nlf-consent").hidden = true;
-          feedback.textContent = "✅ " + data.message;
+          feedback.textContent = "Danke, dass du mitliest. Check dein Postfach — da wartet eine Bestätigung.";
           feedback.className = "nlf-feedback nlf-feedback--success";
           feedback.hidden = false;
         } else {
@@ -167,7 +164,6 @@ const { variant = "section" } = Astro.props;
 </script>
 
 <style>
-  /* ── Gemeinsame Basis ───────────────────────────────────────── */
   .nlf form {
     display: flex;
     flex-direction: column;
@@ -175,62 +171,60 @@ const { variant = "section" } = Astro.props;
     width: 100%;
   }
 
-  /* E-Mail + Button nebeneinander */
   .nlf-row {
     display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 480px;
+    background: var(--pdq-bg-overlay);
+    border: 1px solid var(--pdq-border-default);
+    border-radius: 999px;
+    padding: 6px;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .nlf-row:focus-within {
+    border-color: var(--pdq-terracotta);
+    box-shadow: 0 0 0 4px rgba(184,85,64,0.12);
   }
 
   .nlf-input {
-    background: var(--pdq-bg-base);
-    border: 1px solid var(--pdq-border-default);
-    border-radius: 8px;
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
     color: var(--pdq-text-primary);
     font-family: var(--pdq-font-mono);
-    font-size: 0.9rem;
-    padding: 0.65rem 1rem;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 100%;
+    font-size: 14px;
+    padding: 10px 16px;
   }
-  .nlf-input::placeholder {
-    color: var(--pdq-text-muted);
-  }
-  .nlf-input:focus {
-    border-color: var(--pdq-sand);
-  }
+  .nlf-input::placeholder { color: var(--pdq-text-muted); }
 
-  /* E-Mail-Feld füllt verfügbaren Platz */
-  .nlf-row .nlf-input {
-    flex: 1;
-    min-width: 180px;
-    width: auto;
+  .nlf-input--name {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--pdq-border-default);
+    border-radius: 0;
+    padding: 8px 4px;
+    font-size: 13px;
+    max-width: 480px;
+    display: none;
   }
 
   .nlf-btn {
     background: var(--pdq-orange);
     border: none;
-    border-radius: 8px;
+    border-radius: 999px;
     color: #fff;
     cursor: pointer;
     font-family: var(--pdq-font-mono);
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 0.65rem 1.4rem;
-    transition:
-      background 0.2s,
-      transform 0.1s;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 22px;
+    transition: background .2s;
     white-space: nowrap;
+    flex-shrink: 0;
   }
-  .nlf-btn:hover:not(:disabled) {
-    background: var(--pdq-orange-dark);
-    transform: translateY(-1px);
-  }
-  .nlf-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
+  .nlf-btn:hover:not(:disabled) { background: var(--pdq-orange-dark); }
+  .nlf-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
   .nlf-consent {
     display: flex;
@@ -240,116 +234,141 @@ const { variant = "section" } = Astro.props;
     font-size: 0.75rem;
     color: var(--pdq-text-muted);
     cursor: pointer;
+    max-width: 480px;
+    margin-top: 4px;
   }
   .nlf-consent input {
     margin-top: 2px;
     accent-color: var(--pdq-sand);
     flex-shrink: 0;
   }
-  .nlf-consent a {
-    color: var(--pdq-sand);
-  }
+  .nlf-consent a { color: var(--pdq-terracotta); }
 
   .nlf-hint {
     font-family: var(--pdq-font-mono);
-    font-size: 0.75rem;
+    font-size: 11.5px;
     color: var(--pdq-text-muted);
-    margin: 0;
+    margin: 4px 0 0;
   }
 
   .nlf-feedback {
     font-family: var(--pdq-font-mono);
-    font-size: 0.875rem;
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
-    margin: 0;
+    font-size: 13.5px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    margin: 8px 0 0;
+    max-width: 480px;
   }
   .nlf-feedback--success {
-    background: rgba(212, 169, 106, 0.12);
-    color: var(--pdq-sand-light);
-    border: 1px solid rgba(212, 169, 106, 0.25);
+    background: rgba(76,134,64,0.08);
+    color: #4C8640;
+    border: 1px solid rgba(76,134,64,0.22);
   }
   .nlf-feedback--error {
-    background: rgba(193, 99, 79, 0.12);
-    color: var(--pdq-terracotta-light);
-    border: 1px solid rgba(193, 99, 79, 0.25);
+    background: rgba(184,85,64,0.08);
+    color: var(--pdq-terracotta);
+    border: 1px solid rgba(184,85,64,0.22);
   }
 
-  /* ── Hero-Variante ──────────────────────────────────────────── */
+  /* Hero variant */
   .nlf--hero {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  /* ── Section-Variante ───────────────────────────────────────── */
+  /* Section variant */
   .nlf--section {
     background: var(--pdq-bg-elevated);
-    border: 1px solid var(--pdq-border-default);
-    border-radius: 16px;
-    padding: 3rem 2rem;
-  }
-  .nlf--section__inner {
-    max-width: 520px;
+    border-radius: 28px;
+    padding: 72px 48px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(26,21,18,0.04), 0 24px 60px -20px rgba(26,21,18,0.14);
+    max-width: 760px;
     margin: 0 auto;
     text-align: center;
+  }
+
+  .nlf--section__inner {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
   }
-  .nlf--section form {
-    max-width: 420px;
-  }
+
   .nlf--section .nlf-row {
     justify-content: center;
   }
+
   .nlf--section .nlf-consent {
     text-align: left;
+    justify-content: center;
   }
 
-  .nlf-label {
-    font-family: var(--pdq-font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--pdq-sand);
+  .nlf-kicker {
+    font-family: var(--pdq-font-hand);
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--pdq-terracotta);
     margin: 0;
   }
+
   .nlf-headline {
-    font-family: "Fraunces", serif;
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    font-weight: 700;
+    font-family: var(--pdq-font-mono);
+    font-weight: 600;
+    font-size: clamp(32px, 4.5vw, 48px);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
     color: var(--pdq-text-primary);
-    line-height: 1.25;
     margin: 0;
-  }
-  .nlf-headline em {
-    font-style: italic;
-    color: var(--pdq-sand);
   }
 
   .nlf-description {
-    font-family: var(--pdq-font-mono);
-    font-size: 0.9rem;
+    font-size: 16px;
     color: var(--pdq-text-secondary);
-    line-height: 1.7;
+    line-height: 1.65;
+    max-width: 480px;
     margin: 0;
   }
 
-  /* ── Mobile ─────────────────────────────────────────────────── */
-  @media (max-width: 480px) {
+  .nlf-meta {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    color: var(--pdq-text-muted);
+    margin-top: 8px;
+  }
+  .nlf-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nlf-meta span::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--pdq-sand);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 600px) {
+    .nlf--section {
+      padding: 48px 24px;
+      border-radius: 20px;
+    }
     .nlf-row {
       flex-direction: column;
-    }
-    .nlf-row .nlf-input {
-      min-width: unset;
+      border-radius: 14px;
+      padding: 8px;
     }
     .nlf-btn {
+      border-radius: 10px;
       width: 100%;
-    }
-    .nlf--section {
-      padding: 2rem 1.25rem;
+      padding: 12px;
     }
   }
 </style>
