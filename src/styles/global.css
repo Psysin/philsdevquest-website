@@ -75,6 +75,34 @@ img {
   display: block;
 }
 
+/* ===== DARK MODE ===== */
+[data-theme="dark"] {
+  --pdq-bg-base:     #12100E;
+  --pdq-bg-elevated: #1C1916;
+  --pdq-bg-overlay:  #252018;
+  --pdq-bg-subtle:   #2E2820;
+
+  --pdq-terracotta:       #C1634F;
+  --pdq-terracotta-light: #D4816B;
+  --pdq-sand:             #D4A96A;
+  --pdq-sand-light:       #E3C08A;
+  --pdq-cream:            #E8C99A;
+  --pdq-orange:           #FF6B35;
+  --pdq-orange-dark:      #E85A25;
+
+  --pdq-text-primary:   #E8E0D8;
+  --pdq-text-secondary: #B5A99A;
+  --pdq-text-muted:     #7A6E63;
+  --pdq-text-disabled:  #4A4039;
+
+  --pdq-border-subtle:  rgba(232,224,216,0.06);
+  --pdq-border-default: rgba(232,224,216,0.12);
+  --pdq-border-strong:  rgba(232,224,216,0.22);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track { background: #12100E; }
+[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #3A3028; }
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }

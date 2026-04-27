@@ -38,6 +38,16 @@ const ogImageAbsolute = ogImage.startsWith("http")
       content="KXA89P_dH-27ddHp6N59ASrzTGj4x20HmooGFVV8Tzg"
     />
 
+    <!-- ─── Theme: sofort setzen, kein Flackern ────────────── -->
+    <script is:inline>
+      (function() {
+        try {
+          const saved = localStorage.getItem('pdq-theme');
+          if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        } catch(_) {}
+      })();
+    </script>
+
     <!-- ─── Favicons ─────────────────────────────────────── -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
